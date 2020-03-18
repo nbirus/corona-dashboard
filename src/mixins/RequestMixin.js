@@ -69,7 +69,12 @@ export default {
 			return this.$h.exists(this.dataKey) ? this.$h.get(response, this.dataKey) : response
 		},
 		$getTotal(total) {
-			return this.$h.exists(total) ? total : total.length
+			try {
+				return this.$h.exists(total) ? total : total.length
+			} catch (e) {
+				console.log(e)
+				return 0
+			}
 		},
 	},
 }

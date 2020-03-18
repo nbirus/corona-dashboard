@@ -6,7 +6,6 @@ import VuexPersistence from 'vuex-persist'
 import example from '@/store/modules/example'
 import snackbar from '@/store/modules/snackbar'
 import form from '@/store/modules/form'
-import auth from '@/store/modules/auth'
 import table from '@/store/modules/table'
 import presentor from '@/store/modules/presentor'
 import resource from '@/store/modules/resource'
@@ -24,7 +23,6 @@ const vuexLocal = new VuexPersistence({
 		// persisted modules
 		example: state.example,
 		form: state.form,
-		auth: state.auth,
 		table: state.table,
 		keyword: state.keyword,
 	}),
@@ -38,7 +36,6 @@ export default new Vuex.Store({
 	modules: {
 		example,
 		snackbar,
-		auth,
 		form,
 		table,
 		presentor,

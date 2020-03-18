@@ -1,5 +1,8 @@
-import Example from './Example'
-
 export default {
-	...Example,
+	counts: {
+		query: () => ({
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: 'all',
+		}),
+	},
 }

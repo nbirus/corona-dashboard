@@ -1,7 +1,7 @@
-$border-color: color(grey-lighten2);
-$border-color-dark: color(grey-base);
-$border-color-light: color(grey-lighten3);
-$dark-bg-color: color(grey-lighten5);
+$border-color: var(--v-secondary-lighten2);
+$border-color-dark: var(--v-secondary-base);
+$border-color-light: var(--v-secondary-lighten5);
+$dark-bg-color: var(--v-secondary-lighten5);
 
 $max-width: 1264px;
 $max-width-lg: 1440px;

@@ -25,26 +25,36 @@ const projectRoutes = [
 			progressBar: true,
 		},
 	},
+	{
+		path: '/news',
+		name: 'news',
+		component: () =>
+			import(/* webpackChunkName: "NewsPage" */ './views/pages/news-page/NewsPage.vue'),
+		meta: {
+			title: 'News',
+			progressBar: true,
+		},
+	},
+	{
+		path: '/map',
+		name: 'map',
+		component: () => import(/* webpackChunkName: "MapPage" */ './views/pages/map-page/MapPage.vue'),
+		meta: {
+			title: 'Map',
+			progressBar: true,
+		},
+	},
 ]
 
 // special routes and redirects
 const specialRoutes = [
 	{
 		path: '*',
-		redirect: '/not-found',
+		redirect: '/dashboard',
 	},
 	{
 		path: '/',
 		redirect: '/dashboard',
-	},
-	{
-		path: '/not-found',
-		name: 'not-found',
-		component: () =>
-			import(/* webpackChunkName: "NotFoundPage" */ '@/views/error/NotFoundPage.vue'),
-		meta: {
-			title: 'Not Found',
-		},
 	},
 ]
 
