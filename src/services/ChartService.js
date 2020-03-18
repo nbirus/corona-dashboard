@@ -1,4 +1,3 @@
-import colors from 'badc-styleguide/theme/colors'
 import chroma from 'chroma-js'
 
 // spawn web worker to format data coming into the chart
@@ -54,6 +53,8 @@ export const chartColors = {
 		to: 'red',
 	},
 }
+
+const colors = []
 
 // generate color step range
 export function getColors(colorName, numberOfSteps) {

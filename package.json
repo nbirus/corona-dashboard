@@ -1,5 +1,5 @@
 {
-	"name": "badc-ui-template",
+	"name": "corona-dashboard",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {
@@ -16,24 +16,13 @@
 	},
 	"dependencies": {
 		"axios": "^0.19.0",
-		"badc-styleguide": "^0.6.22",
-		"chroma-js": "^2.1.0",
-		"codacy-coverage": "^3.4.0",
 		"copy-to-clipboard": "^3.2.0",
 		"core-js": "^3.1.2",
 		"dayjs": "^1.8.16",
-		"echarts": "^4.6.0",
-		"html-to-image": "^0.1.1",
-		"html2canvas": "^1.0.0-rc.5",
 		"nprogress": "^0.2.0",
-		"okta-sm": "github:BIAD/okta-sm",
-		"pluralize": "^8.0.0",
-		"querystring": "^0.2.0",
 		"simple-web-worker": "^1.2.0",
 		"typy": "^3.1.0",
 		"vue": "^2.6.10",
-		"vue-draggable-resizable": "^2.1.0",
-		"vue-echarts": "^4.1.0",
 		"vue-router": "^3.0.3",
 		"vuetify": "^2.2.1",
 		"vuex": "^3.0.1",
@@ -72,8 +61,7 @@
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "npm run lint",
-			"pre-push": "npm run test"
+			"pre-commit": "npm run lint"
 		}
 	}
 }

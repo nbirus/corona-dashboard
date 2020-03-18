@@ -31,15 +31,13 @@
 
 <script>
 import FieldMixin from '@/mixins/FieldMixin'
-import colors from 'badc-styleguide/theme/colors'
-import { chartColors } from '@/services/ChartService.js'
 
 export default {
 	name: 'color-picker-field',
 	mixins: [FieldMixin],
 	data() {
 		return {
-			colors,
+			colors: [],
 			chartColors,
 		}
 	},
