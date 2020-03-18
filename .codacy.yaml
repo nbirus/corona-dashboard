@@ -1,0 +1,43 @@
+engines:
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+      - python
+      - php
+    checks:
+      Similar code:
+        enabled: false
+  tslint:
+    enabled: true
+  fixme:
+    enabled: true
+ratings:
+paths:
+  - "**.css"
+  - "**.scss"
+  - "**.inc"
+  - "**.js"
+  - "**.vue"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+  - "**.rb"
+exclude_paths:
+  - "build"
+  - "config"
+  - "envconfig"
+  - "public"
+  - "src/assets"
+  - "src/data/**/*"
+  - "tests/**/*"
+languages:
+  javascript:
+    extensions:
+      - '.js'
+      - '.vue'

@@ -1,0 +1,46 @@
+// $padding-t: 1.5rem;
+// $padding-x: 2rem;
+// $padding-b: 1rem;
+
+// .b-dialog {
+//   .v-card {
+//     &__title {
+//       padding: $padding-t $padding-x 0;
+//       margin-bottom: 1.25rem;
+
+//       .dialog-headline-slot {
+//         font-size: 1.5rem!important;
+//       }
+//     }
+//     &__text {
+//       padding: 0 $padding-x;
+//       margin-bottom: 1.5rem;
+//     }
+//     &__actions {
+//       padding: $padding-b $padding-x;
+//       background-color: color(grey-lighten4);
+//     }
+//   }
+// }
+
+.b-dialog {
+	&.v-card {
+		.v-card__title {
+			border-bottom: solid thin $border-color !important;
+			margin-bottom: 1rem;
+		}
+		.v-card__actions {
+			border-top: solid thin $border-color !important;
+			margin-top: 0.5rem;
+		}
+
+		.dialog-headline-slot {
+			font-size: 1.35rem;
+			font-weight: $thin;
+
+			b {
+				font-weight: $thin;
+			}
+		}
+	}
+}

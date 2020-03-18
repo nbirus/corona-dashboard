@@ -1,0 +1,31 @@
+.page {
+	padding: 2.5rem 0;
+	position: relative;
+	min-height: $min-page-height;
+
+	&.max {
+		max-width: $max-width-lg;
+		margin: 0 auto;
+		padding-left: $side-padding;
+		padding-right: $side-padding;
+	}
+}
+.page-side-padding {
+	padding-left: $side-padding;
+	padding-right: $side-padding;
+}
+.page-dark {
+	background-color: $dark-bg-color;
+}
+.limited-width {
+	max-width: $max-width;
+	margin: 0 auto;
+	position: relative;
+	padding-left: $side-padding;
+	padding-right: $side-padding;
+}
+.limited-width-lg {
+	max-width: $max-width-lg;
+	margin: 0 auto;
+	position: relative;
+}

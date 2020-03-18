@@ -1,0 +1,13 @@
+.bold-on-active {
+	font-weight: $thin;
+}
+.trasparent-on-active {
+	opacity: 1;
+}
+.v-expansion-panel-header.v-expansion-panel-header--active {
+	.bold-on-active {
+		font-weight: $bold;
+	}
+	// .trasparent-on-active {
+	// }
+}

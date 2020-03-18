@@ -1,0 +1,10 @@
+@import 'badc-styleguide/theme/components/okta';
+
+#okta-sign-in {
+	div {
+		transition-delay: 2s;
+	}
+	.auth-content {
+		min-height: 490px;
+	}
+}

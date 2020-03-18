@@ -1,0 +1,21 @@
+@import 'badc-styleguide/theme/components/button';
+
+.v-btn {
+	&.yellow,
+	&.warning {
+		.v-btn__content {
+			color: color(yellow-darken4);
+		}
+	}
+
+	&.theme--dark.v-btn.v-btn--outlined.v-btn--text {
+		background-color: fade-out(white, 0.9) !important;
+		border-color: fade-out(white, 1);
+	}
+
+	&.toggle-btn {
+		border: solid thin color(grey-lighten2) !important;
+		padding: 0 0.25rem !important;
+		min-width: 40px !important;
+	}
+}

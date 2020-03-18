@@ -1,0 +1,25 @@
+@import './global';
+@import 'badc-styleguide/theme/badc.global';
+
+// badc component styles
+@import 'badc-styleguide/theme/components/font';
+
+// custom component styles
+@import './components/page.scss';
+@import './components/accordion.scss';
+@import './components/alert.scss';
+@import './components/button.scss';
+@import './components/button-group.scss';
+@import './components/card.scss';
+@import './components/colors.scss';
+@import './components/dialog.scss';
+@import './components/expansion';
+@import './components/font.scss';
+@import './components/navigation.scss';
+@import './components/okta.scss';
+@import './components/progress.scss';
+@import './components/table.scss';
+@import './components/timelines.scss';
+@import './utils/utils';
+@import './utils/transitions';
+// @import './components/icons.scss';

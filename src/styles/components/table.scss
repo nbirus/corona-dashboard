@@ -1,0 +1,75 @@
+@import 'badc-styleguide/theme/components/table';
+
+// replace empty cells with '-'
+.empty-dash {
+	.cell-highlight-value:empty:after {
+		content: '-';
+	}
+}
+
+// add padding to each row
+.row-pad {
+	td .row {
+		margin-left: unset;
+	}
+}
+
+// disabled all padding
+.no-pad {
+	.v-data-table-header th {
+		padding: 0;
+	}
+	.data-table-pagination-bar {
+		margin-top: 1rem;
+		padding: 0 !important;
+	}
+}
+
+// give loading state a min height
+.loading-min-height .date-table-wrapper.loading {
+	min-height: 70vh !important;
+	&.dense {
+		min-height: 320px;
+	}
+}
+
+// pagination bar
+.light-table-footer .data-table-pagination-bar {
+	background-color: white;
+}
+
+// header
+.dark-table-header .v-data-table-header {
+	background-color: color(grey-lighten4) !important;
+}
+
+// data table progress bar
+.v-data-table__progress {
+	.v-progress-linear {
+		height: 3px !important;
+		position: absolute;
+		top: 48px;
+		right: 0;
+		left: 0;
+		width: 100%;
+	}
+	.v-progress-linear__indeterminate.primary {
+		background-color: color(primary-darken1) !important;
+	}
+	.v-progress-linear__background.primary {
+		opacity: 0.5 !important;
+	}
+}
+.dense .v-data-table__progress {
+	.v-progress-linear {
+		top: 32px !important;
+	}
+}
+
+// row mods
+.row--hover {
+	background-color: color(grey-lighten3);
+}
+.row--hover.row--context {
+	background-color: color(primary-lighten4);
+}
