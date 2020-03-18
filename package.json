@@ -21,6 +21,7 @@
 		"dayjs": "^1.8.16",
 		"nprogress": "^0.2.0",
 		"simple-web-worker": "^1.2.0",
+		"stringify": "^5.2.0",
 		"typy": "^3.1.0",
 		"vue": "^2.6.10",
 		"vue-router": "^3.0.3",

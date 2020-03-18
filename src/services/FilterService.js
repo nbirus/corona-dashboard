@@ -3,7 +3,6 @@ import { exists } from './UtilsService'
 import get from 'lodash/get'
 import camelCaseLodash from 'lodash/camelCase'
 import dayjs from 'dayjs'
-import pluralize from 'pluralize'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
@@ -142,14 +141,6 @@ export function timeAgo(value) {
  */
 export function highlight(words, query) {
 	return words.replace(query, '<span class="h--word">' + query + '</span>')
-}
-
-/**
- * 'word' -> 'words'
- * @param {string} word
- */
-export function plural(word) {
-	return pluralize(word)
 }
 
 // helper
