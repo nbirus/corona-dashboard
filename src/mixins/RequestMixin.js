@@ -34,7 +34,7 @@ export default {
 		},
 
 		$requestResolve(response) {
-			const data = this.$getData(response.data.data)
+			const data = this.$getData(response.data)
 			const total = this.$getTotal(response.total)
 			this.$setState(data, false, undefined, total)
 			this.$emit('resolve', { data, total })
@@ -69,12 +69,16 @@ export default {
 			return this.$h.exists(this.dataKey) ? this.$h.get(response, this.dataKey) : response
 		},
 		$getTotal(total) {
-			try {
-				return this.$h.exists(total) ? total : total.length
-			} catch (e) {
-				console.log(e)
-				return 0
+			if (this.$h.exists(total)) {
+				if (Number.isInteger(total)) {
+					return total
+				} else if (Array.isArray(total)) {
+					return total.length
+				} else {
+					return 0
+				}
 			}
+			return 0
 		},
 	},
 }

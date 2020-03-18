@@ -50,7 +50,7 @@ hr.light-border {
 	overflow: hidden !important;
 }
 .text-secondary {
-	color: color(dark-lighten1);
+	color: var(--v-secondary-base);
 }
 .border-radius {
 	border-radius: 4px;

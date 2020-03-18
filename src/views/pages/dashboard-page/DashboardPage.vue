@@ -1,6 +1,6 @@
 <template>
 	<div class="page page-dashboard">
-		<data-wrapper resource="counts" persist v-slot="{ _state }">
+		<data-wrapper resource="counts" persist-data v-slot="{ _state }">
 			<v-layout class="page-dashboard__counts" justify-space-between>
 				<count-widget
 					label="cases"
