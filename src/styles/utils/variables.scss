@@ -1,8 +1,9 @@
-$border-color: var(--v-secondary-lighten2);
+$border-color: var(--v-secondary-lighten5);
 $border-color-dark: var(--v-secondary-base);
 $border-color-light: fade-out(black, 0.85);
 $dark-bg-color: var(--v-secondary-lighten5);
 
+$limited-width: 875px;
 $max-width: 1264px;
 $max-width-lg: 1440px;
 $min-page-height: calc(100vh - 100px);

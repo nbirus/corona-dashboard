@@ -31,10 +31,3 @@ export default {
 	},
 }
 </script>
-
-<style lang="scss">
-.v-application--wrap {
-	max-width: 850px !important;
-	margin: 0 auto;
-}
-</style>

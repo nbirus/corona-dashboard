@@ -1,9 +1,9 @@
 <template>
-	<div class="page page-map">
+	<div class="page page-map no-padding">
 		<data-accessor resource="countriesResource" v-slot="{ _state }">
 			<world-map v-if="!_state.loading" :value="$h.get(_state, 'data.data', [])" />
 			<!-- <state-handler v-bind="_state">
-			</state-handler> -->
+			</state-handler>-->
 		</data-accessor>
 	</div>
 </template>

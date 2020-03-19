@@ -1,6 +1,6 @@
 <template>
 	<data-wrapper resource="news" :params="params" persist-data v-slot="{ _state }">
-		<div class="page page-news">
+		<div class="page limit-width page-news">
 			<news-feed v-bind="{ _state }" :posts="_state.data" />
 		</div>
 	</data-wrapper>

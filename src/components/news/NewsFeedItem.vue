@@ -35,18 +35,19 @@ export default {
 .news-feed-item {
 	display: block;
 	padding: 0;
-	margin: 0 0 0.5rem -1rem;
+	margin: 0 0 0.75rem -1rem;
 
 	a {
 		display: flex;
 		align-items: flex-start;
 		text-decoration: none !important;
-		padding: 1rem;
+		padding: 0.75rem;
 		border-radius: 4px;
 		transition: box-shadow 0.25s ease;
 
 		&:hover {
 			box-shadow: 0 2px 6px fade-out(black, 0.75);
+			background-color: #fff;
 		}
 		&:active {
 			box-shadow: 0 1px 4px fade-out(black, 0.85);
@@ -60,7 +61,7 @@ export default {
 		min-width: 80px;
 		height: 80px;
 		overflow: hidden;
-		margin-right: 1.5rem;
+		margin-right: 1.25rem;
 		border-radius: 3px;
 		border: solid thin fade-out(black, 0.9);
 		background-color: fade-out(black, 0.95);

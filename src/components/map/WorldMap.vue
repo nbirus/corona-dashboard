@@ -55,7 +55,8 @@ export default {
 
 <style lang="scss" scoped>
 .map {
-	height: calc(100vh - 100px - 4rem);
+	height: calc(100vh - 75px);
+
 	img {
 		max-height: none;
 	}

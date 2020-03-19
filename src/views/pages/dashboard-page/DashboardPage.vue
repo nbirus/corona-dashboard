@@ -1,41 +1,44 @@
 <template>
-	<div class="page page-dashboard">
+	<div class="page page-dashboard limit-width">
 		<!-- total counts -->
 		<data-wrapper resource="counts" persist-data v-slot="{ _state }">
 			<v-layout class="page-dashboard__counts" justify-space-between>
-				<count-widget
-					label="cases"
-					v-bind="_state"
-					:count="$h.get(_state, 'data.cases')"
-				></count-widget>
-				<count-widget
-					label="deaths"
-					v-bind="_state"
-					:count="$h.get(_state, 'data.deaths')"
-				></count-widget>
-				<count-widget
-					label="recovered"
-					v-bind="_state"
-					:count="$h.get(_state, 'data.recovered')"
-				></count-widget>
+				<count-widget label="cases" v-bind="_state" :count="$h.get(_state, 'data.cases')"></count-widget>
+				<count-widget label="deaths" v-bind="_state" :count="$h.get(_state, 'data.deaths')"></count-widget>
+				<count-widget label="recovered" v-bind="_state" :count="$h.get(_state, 'data.recovered')"></count-widget>
 			</v-layout>
 		</data-wrapper>
 
 		<!-- country-list -->
 		<v-layout class="mb-4">
-			<v-text-field
+			<!-- <v-text-field
 				class="mr-5"
 				style="max-width: 280px"
 				solo
 				hide-details
 				v-model="keyword"
 				placeholder="Search"
-			/>
+			/>-->
+
+			<data-accessor resource="countriesResource" v-slot="{ _state }">
+				<country-select-field
+					class="mr-5"
+					style="max-width: 280px"
+					placeholder="Search"
+					solo
+					hide-details
+					clearable
+					v-model="country"
+					:items="_state.data"
+				/>
+			</data-accessor>
+
 			<v-select
 				style="max-width: 260px"
 				placeholder="Sory by"
 				solo
 				hide-details
+        clearable
 				:items="sortItems"
 				v-model="sort"
 			></v-select>
@@ -56,13 +59,14 @@
 <script>
 import CountWidget from '@/components/widgets/CountWidget'
 import CountryList from '@/components/country-list/CountryList'
+import CountrySelectField from '@/components/form/fields/CountrySelectField'
 
 export default {
 	name: 'dashboard-page',
-	components: { CountWidget, CountryList },
+	components: { CountWidget, CountryList, CountrySelectField },
 	data() {
 		return {
-			keyword: '',
+			country: '',
 			sort: {},
 			sortItems: [
 				{
@@ -127,7 +131,7 @@ export default {
 	computed: {
 		params() {
 			return {
-				_keyword: this.keyword,
+				country: this.country,
 			}
 		},
 	},

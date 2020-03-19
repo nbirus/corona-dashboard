@@ -1,13 +1,16 @@
 .page {
-	padding: 2rem 4rem;
+	padding: 3rem 4rem;
 	position: relative;
 	min-height: $min-page-height;
 
-	&.max {
-		max-width: $max-width-lg;
+	&.limit-width {
+		max-width: $limited-width;
 		margin: 0 auto;
 		padding-left: $side-padding;
 		padding-right: $side-padding;
+	}
+	&.no-padding {
+		padding: 0;
 	}
 }
 .page-side-padding {
