@@ -26,6 +26,9 @@ export function request(
 	errorFormatter = e => e
 ) {
 	return new Promise((resolve, reject) => {
+		// mock url
+		// config.baseURL = 'http://localhost:3003/'
+
 		HttpService(config.endpoint, config)
 			.then(handleValidation)
 			.then(handleFormatting)

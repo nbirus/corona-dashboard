@@ -69,3 +69,20 @@ hr.light-border {
 .v-input--switch .theme--dark.v-label {
 	color: white;
 }
+
+// key value
+.key-value {
+	.key {
+		margin-right: 0.35rem;
+		color: $text-secondary;
+	}
+	.value {
+		font-weight: $bold;
+		color: $text-secondary;
+	}
+	.secondary-value {
+		font-weight: $bold;
+		margin-left: 0.35rem;
+		color: var(--v-success-base);
+	}
+}

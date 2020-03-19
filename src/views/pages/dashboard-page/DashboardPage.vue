@@ -11,15 +11,6 @@
 
 		<!-- country-list -->
 		<v-layout class="mb-4">
-			<!-- <v-text-field
-				class="mr-5"
-				style="max-width: 280px"
-				solo
-				hide-details
-				v-model="keyword"
-				placeholder="Search"
-			/>-->
-
 			<data-accessor resource="countriesResource" v-slot="{ _state }">
 				<country-select-field
 					class="mr-5"
@@ -38,7 +29,7 @@
 				placeholder="Sory by"
 				solo
 				hide-details
-        clearable
+				clearable
 				:items="sortItems"
 				v-model="sort"
 			></v-select>
@@ -141,7 +132,7 @@ export default {
 <style lang="scss">
 .page-dashboard {
 	&__counts {
-		margin-bottom: 5rem;
+		margin-bottom: 6rem;
 
 		.count-widget {
 			width: 100%;

@@ -1,15 +1,21 @@
 <template>
 	<v-app-bar height="75" app elevation="2" bottom>
 		<div class="nav-bar-container">
-			<router-link class="link" to="dashboard">
+			<v-btn
+				class="btn-nav"
+				text
+				height="75"
+				to="dashboard"
+				:class="{ active: $route.name === 'dashboard' }"
+			>
 				<v-icon size="20" class="mb-1">fa-globe</v-icon>Dashboard
-			</router-link>
-			<router-link class="link" to="news">
+			</v-btn>
+			<v-btn class="btn-nav" text height="75" to="news" :class="{ active: $route.name === 'news' }">
 				<v-icon size="20" class="mb-1">fa-rss-square</v-icon>News
-			</router-link>
-			<router-link class="link" to="map">
+			</v-btn>
+			<v-btn class="btn-nav" text height="75" to="map" :class="{ active: $route.name === 'map' }">
 				<v-icon size="20" class="mb-1">fa-map</v-icon>Map
-			</router-link>
+			</v-btn>
 		</div>
 	</v-app-bar>
 </template>
@@ -27,7 +33,7 @@ export default {
 	border-top: solid thin $border-color !important;
 
 	.nav-bar-container {
-		width: 400px;
+		width: 450px;
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
@@ -37,34 +43,22 @@ export default {
 		padding: 0;
 	}
 
-	a.link {
-		font-size: 1rem;
-		font-weight: $bold;
-		color: fade-out(black, 0.65) !important;
+	.v-btn.btn-nav {
+		background-color: white !important;
 		text-decoration: none !important;
-		display: flex;
-		flex-direction: column;
+		border-radius: 0;
 
-		i {
-			color: fade-out(black, 0.65) !important;
+		.v-btn__content {
+			display: flex;
+			flex-direction: column;
+			width: 100px !important;
 		}
 
-		&:hover:not(.router-link-active) {
-			color: fade-out(black, 0.25) !important;
-			i {
-				color: fade-out(black, 0.25) !important;
-			}
+		&.v-btn--active::before {
+			opacity: 0;
 		}
-
-		&:not(:last-child) {
-			margin-right: 2rem;
-		}
-		&.router-link-active {
-			i {
-				color: fade-out(black, 0) !important;
-			}
-			color: fade-out(black, 0) !important;
-			pointer-events: none;
+		&.active {
+			color: var(--v-primary-base) !important;
 		}
 	}
 }

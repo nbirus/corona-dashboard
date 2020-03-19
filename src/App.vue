@@ -6,7 +6,7 @@
 		<!-- page view -->
 		<transition name="page" mode="out-in">
 			<v-content>
-				<router-view />
+				<router-view :key="$route.name" />
 			</v-content>
 		</transition>
 

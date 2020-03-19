@@ -35,7 +35,7 @@
 		</v-layout>
 
 		<!-- deaths -->
-		<v-layout> </v-layout>
+		<v-layout></v-layout>
 	</li>
 </template>
 
@@ -61,21 +61,5 @@ export default {
 	display: block;
 	padding: 1.25rem 1.5rem;
 	border-bottom: solid thin $border-color-light;
-}
-
-.key-value {
-	.key {
-		margin-right: 0.35rem;
-		color: $text-secondary;
-	}
-	.value {
-		font-weight: $bold;
-		color: $text-secondary;
-	}
-	.secondary-value {
-		font-weight: $bold;
-		margin-left: 0.35rem;
-		color: var(--v-success-base);
-	}
 }
 </style>
