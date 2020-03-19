@@ -1,10 +1,12 @@
 $border-color: var(--v-secondary-lighten2);
 $border-color-dark: var(--v-secondary-base);
-$border-color-light: var(--v-secondary-lighten5);
+$border-color-light: fade-out(black, 0.85);
 $dark-bg-color: var(--v-secondary-lighten5);
 
 $max-width: 1264px;
 $max-width-lg: 1440px;
-$min-page-height: calc(100vh - 120px);
+$min-page-height: calc(100vh - 100px);
 
 $side-padding: 2.5rem;
+
+$text-secondary: fade-out(black, 0.25);

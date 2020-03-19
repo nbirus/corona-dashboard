@@ -1,9 +1,9 @@
 <template>
-	<v-app-bar height="120" color="transparent" app absolute elevation="0">
+	<v-app-bar height="100" color="transparent" app absolute elevation="0">
 		<div class="nav-bar-container">
-			<router-link to="dashboard">Dashboard</router-link>
-			<router-link to="news">News</router-link>
-			<router-link to="map">Map</router-link>
+			<router-link class="link" to="dashboard">Dashboard</router-link>
+			<router-link class="link" to="news">News</router-link>
+			<router-link class="link" to="map">Map</router-link>
 		</div>
 	</v-app-bar>
 </template>
@@ -21,21 +21,27 @@ export default {
 
 	.nav-bar-container {
 		width: 100%;
-		padding-top: 3rem;
+		padding-top: 1rem;
 	}
 	.v-toolbar__content {
 		padding: 0;
 	}
 
-	a {
+	a.link {
 		font-size: 2rem;
+		font-weight: $bold;
+		color: fade-out(black, 0.65) !important;
+		text-decoration: none !important;
+
+		&:hover:not(.router-link-active) {
+			color: fade-out(black, 0.25) !important;
+		}
 
 		&:not(:last-child) {
 			margin-right: 2rem;
 		}
 		&.router-link-active {
-			font-weight: $bold;
-			text-decoration: none;
+			color: fade-out(black, 0) !important;
 			pointer-events: none;
 		}
 	}

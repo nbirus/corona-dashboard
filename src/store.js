@@ -14,7 +14,7 @@ import dialogTable from '@/store/modules/dialogTable'
 import base from '@/store/base'
 
 // resources
-// import resourceExample from '@/store/resources/resource-example'
+import countriesResource from '@/store/resources/countriesResource'
 
 const vuexLocal = new VuexPersistence({
 	key: `${process.env.VUE_APP_PROJECT_TITLE}-store`,
@@ -42,5 +42,6 @@ export default new Vuex.Store({
 		resource,
 		keyword,
 		dialogTable,
+		countriesResource,
 	},
 })

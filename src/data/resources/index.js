@@ -23,4 +23,13 @@ export default {
 			return get(response, 'data.data.children')
 		},
 	},
+	countryCounts: {
+		query: () => ({
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: 'countries',
+		}),
+		formatter(response) {
+			return get(response, 'data', {})
+		},
+	},
 }

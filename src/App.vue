@@ -26,5 +26,15 @@ export default {
 		Snackbar: () => import('@/components/utils/Snackbar'),
 		DialogTable: () => import('@/components/utils/DialogTable'),
 	},
+	created() {
+		this.$store.dispatch('countriesResource/get')
+	},
 }
 </script>
+
+<style lang="scss">
+.v-application--wrap {
+	max-width: 850px !important;
+	margin: 0 auto;
+}
+</style>
