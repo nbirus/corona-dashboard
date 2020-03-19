@@ -10,11 +10,11 @@ $progress-color: var(--v-primary-base);
 
 	position: fixed;
 	z-index: 1031;
-	top: 0;
+	bottom: 75px;
 	left: 0;
 
 	width: 100%;
-	height: 3px;
+	height: 2px;
 }
 
 /* Fancy blur effect */

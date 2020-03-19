@@ -14,7 +14,7 @@
 			<data-accessor resource="countriesResource" v-slot="{ _state }">
 				<country-select-field
 					class="mr-5"
-					style="max-width: 280px"
+					style="max-width: 300px"
 					placeholder="Search"
 					solo
 					hide-details

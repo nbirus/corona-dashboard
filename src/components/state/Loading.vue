@@ -1,5 +1,5 @@
 <template>
-	<v-layout key="loading" class="height-100" align-center justify-center>
+	<v-layout key="loading" class="default-loading" align-center justify-center>
 		<spinner />
 	</v-layout>
 </template>

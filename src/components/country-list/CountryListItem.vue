@@ -5,32 +5,32 @@
 		</div>
 
 		<!-- cases -->
-		<v-layout class="body-1" wrap>
-			<div class="key-value mr-10">
+		<v-layout class="body-2" wrap>
+			<div class="key-value mr-5">
 				<span class="key">Cases</span>
-				<span class="value" v-text="cases"></span>
-				<span class="secondary-value" v-text="`(+${todayCases})`"></span>
+				<span class="value">{{ cases | localeString }}</span>
+				<span class="secondary-value">(+{{ todayCases | localeString }})</span>
 			</div>
-			<div class="key-value mr-10">
+			<div class="key-value mr-5">
 				<span class="key">Deaths</span>
-				<span class="value" v-text="deaths"></span>
-				<span class="secondary-value" v-text="`(+${todayDeaths})`"></span>
+				<span class="value">{{ deaths | localeString }}</span>
+				<span class="secondary-value">(+{{ todayDeaths | localeString }})</span>
 			</div>
-			<div class="key-value mr-10">
+			<div class="key-value mr-5">
 				<span class="key">Critical</span>
-				<span class="value" v-text="critical"></span>
+				<span class="value">{{ critical | localeString }}</span>
 			</div>
-			<div class="key-value mr-10">
+			<div class="key-value mr-5">
 				<span class="key">Recovered</span>
-				<span class="value" v-text="recovered"></span>
+				<span class="value">{{ recovered | localeString }}</span>
 			</div>
-			<div class="key-value mr-10">
+			<div class="key-value mr-5">
 				<span class="key">Active</span>
-				<span class="value" v-text="active"></span>
+				<span class="value">{{ active | localeString }}</span>
 			</div>
 			<div class="key-value">
 				<span class="key">Per Million</span>
-				<span class="value" v-text="casesPerOneMillion"></span>
+				<span class="value">{{ casesPerOneMillion | localeString }}</span>
 			</div>
 		</v-layout>
 
@@ -59,7 +59,7 @@ export default {
 <style lang="scss" scoped>
 .country-list-item {
 	display: block;
-	padding: 1.25rem 1.5rem;
+	padding: 1.5rem 2rem;
 	border-bottom: solid thin $border-color-light;
 }
 </style>
