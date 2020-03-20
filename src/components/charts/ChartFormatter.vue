@@ -15,6 +15,11 @@ export default {
 			error: undefined,
 		}
 	},
+	mounted() {
+		if (this.$h.exists(this.data)) {
+			this.formatData(this.data)
+		}
+	},
 	methods: {
 		async formatData(data) {
 			if (this.$h.exists(data)) {

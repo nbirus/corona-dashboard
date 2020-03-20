@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import Screenshot from '@/utils/ScreenshotUtil'
-
 export default {
 	name: 'chart-presentor-screenshot',
 	props: ['id'],
@@ -40,9 +38,9 @@ export default {
 	methods: {
 		async takeScreenshot() {
 			this.value = false
-			await Screenshot(document.getElementById(`${this.id}-chart`), {
-				filename: this.filename,
-			})
+			// await Screenshot(document.getElementById(`${this.id}-chart`), {
+			// 	filename: this.filename,
+			// })
 			this.$nextTick(() => {
 				this.$store.dispatch('presentor/toggleScreenshot')
 			})

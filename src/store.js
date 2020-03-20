@@ -14,7 +14,10 @@ import dialogTable from '@/store/modules/dialogTable'
 import base from '@/store/base'
 
 // resources
-import countriesResource from '@/store/resources/countriesResource'
+import countriesResource from '@/store/resources/countries-resource'
+import timelineResource from '@/store/resources/timeline-resource'
+import countsResource from '@/store/resources/counts-resource'
+import mainResource from '@/store/resources/main-resource'
 
 const vuexLocal = new VuexPersistence({
 	key: `${process.env.VUE_APP_PROJECT_TITLE}-store`,
@@ -43,5 +46,8 @@ export default new Vuex.Store({
 		keyword,
 		dialogTable,
 		countriesResource,
+		timelineResource,
+		countsResource,
+		mainResource,
 	},
 })

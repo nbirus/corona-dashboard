@@ -16,7 +16,7 @@
 
 		<!-- close button -->
 		<v-btn icon color="white" @click="open = false" v-if="!options.persist && !options.textButton">
-			<v-icon size="20">fa-times</v-icon>
+			<v-icon size="20">mdi-close</v-icon>
 		</v-btn>
 		<v-btn text @click="open = false" v-else-if="!options.persist">close</v-btn>
 	</v-snackbar>

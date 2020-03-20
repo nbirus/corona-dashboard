@@ -23,7 +23,7 @@
 								:color="hover ? 'red' : 'grey'"
 								@click.stop.prevent="onRemove(item)"
 							>
-								<v-icon size="14">fa-times</v-icon>
+								<v-icon size="14">mdi-close</v-icon>
 							</v-btn>
 						</v-hover>
 					</v-flex>

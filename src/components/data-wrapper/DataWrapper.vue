@@ -4,6 +4,8 @@
 		:is="
 			data.attrs.resource
 				? injections.components.AsyncDataWrapper
+				: data.attrs.resourceAccessor
+				? injections.components.DataAccessor
 				: injections.components.LocalDataWrapper
 		"
 		v-bind="data.attrs"
@@ -22,6 +24,7 @@
 <script>
 import LocalDataWrapper from './LocalDataWrapper'
 import AsyncDataWrapper from './AsyncDataWrapper'
+import DataAccessor from './DataAccessor'
 
 export default {
 	inheritAttrs: false,
@@ -30,6 +33,7 @@ export default {
 			default: {
 				LocalDataWrapper,
 				AsyncDataWrapper,
+				DataAccessor,
 			},
 		},
 	},

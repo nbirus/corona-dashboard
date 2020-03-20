@@ -26,8 +26,11 @@ export default {
 		Snackbar: () => import('@/components/utils/Snackbar'),
 		DialogTable: () => import('@/components/utils/DialogTable'),
 	},
-	created() {
-		this.$store.dispatch('countriesResource/get')
+	async created() {
+		await this.$store.dispatch('timelineResource/get')
+		await this.$store.dispatch('countsResource/get')
+		await this.$store.dispatch('countriesResource/get')
+		this.$store.dispatch('mainResource/set')
 	},
 }
 </script>

@@ -14,9 +14,17 @@ export function paginateObject(data, pagination) {
   const from = get(pagination, 'from', 0)
   const size = get(pagination, 'size', 10000)
   const total = data.length
-  
-  return {
-    data: cloneDeep(data).splice(from, size),
-    total,
+
+  if (Array.isArray(data)) {
+    return {
+      data: cloneDeep(data).splice(from, size),
+      total,
+    }
+  }
+  else {
+    return {
+      data,
+      total: -1,
+    }
   }
 }

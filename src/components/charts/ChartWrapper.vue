@@ -8,13 +8,10 @@
 				:refresh="_refresh"
 				@change="$emit('change', _state)"
 			>
-				<!-- error -->
 				<slot v-if="$slots.error" name="error" slot="error" :error="_state.error" />
 
-				<!-- loading -->
 				<slot v-if="$slots.loading" name="loading" slot="loading" />
 
-				<!-- response -->
 				<component
 					:is="`${type}-chart`"
 					ref="chart"
@@ -35,8 +32,7 @@ export default {
 	inheritAttrs: false,
 	components: {
 		ChartFormatter,
-		BarChart: () => import('@/components/charts/types/BarChart'),
-		PieChart: () => import('@/components/charts/types/PieChart'),
+		LineChart: () => import('@/components/charts/types/LineChart'),
 	},
 	props: {
 		type: {
@@ -50,7 +46,7 @@ export default {
 	methods: {
 		resize() {
 			if (this.$refs.chart) {
-				this.$refs.chart.$resize()
+				// this.$refs.chart.$resize()
 			}
 		},
 	},

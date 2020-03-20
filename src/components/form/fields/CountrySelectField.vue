@@ -42,8 +42,6 @@ export default {
 	mounted() {
 		// hide dropdown icon
 		const icon = this.$refs.input.$el.querySelector('.v-input__icon--append')
-		console.log(icon)
-
 		icon.style.display = 'none'
 	},
 }

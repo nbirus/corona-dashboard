@@ -1,40 +1,27 @@
 <template>
 	<div class="chart-body">
 		<!-- actions -->
-		<div class="chart-body__actions" v-if="!state$.expand">
-			<v-btn icon>
-				<v-icon x-small>fa-question</v-icon>
-			</v-btn>
+		<!-- <div class="chart-body__actions" v-if="!state$.expand">
 			<v-tooltip top>
 				<template v-slot:activator="{ on }">
 					<v-btn icon @click="$store.dispatch('presentor/toggleExpand')" v-on="on">
-						<v-icon>fa-expand</v-icon>
+						<v-icon size="20">fa-expand</v-icon>
 					</v-btn>
 				</template>
-				<span>Expand Chart</span>
+				<span>Fullscreen</span>
 			</v-tooltip>
-		</div>
+		</div> -->
 
 		<!-- chart -->
 		<div class="chart-body__chart" :class="state$">
 			<div class="chart-body__chart-container" ref="container" :class="state$">
-				<VueDraggableResizable
-					:class-name="!state$.screenshot ? 'not-dragging' : 'dragging'"
-					:resizable="state$.screenshot"
-					:draggable="false"
-					:style="chartStyle"
-					v-bind="resizeSettings"
-					@resizing="resize"
-					@resizestop="resizeStop"
-				>
-					<chart-wrapper
-						ref="chart"
-						:id="id"
-						:type="type"
-						v-bind="{ ...chartAttrs, ...chartSettings }"
-						@change="updateChartState"
-					/>
-				</VueDraggableResizable>
+				<chart-wrapper
+					ref="chart"
+					:id="id"
+					:type="type"
+					v-bind="{ ...chartAttrs, ...chartSettings }"
+					@change="updateChartState"
+				/>
 			</div>
 		</div>
 
@@ -49,13 +36,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import ChartWrapper from '@/components/charts/ChartWrapper'
-import VueDraggableResizable from 'vue-draggable-resizable'
-import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
 import { camelCaseKeys } from '@/services/UtilsService'
 
 export default {
 	name: 'chart-presentor-body',
-	components: { VueDraggableResizable, ChartWrapper },
+	components: { ChartWrapper },
 	props: ['attrs', 'type', 'id', 'title'],
 	data() {
 		return {
@@ -148,7 +133,7 @@ export default {
 
 	&__actions {
 		position: absolute;
-		top: 0.25rem;
+		top: -3rem;
 		right: 0.35rem;
 		z-index: 12;
 		pointer-events: auto;
@@ -158,6 +143,7 @@ export default {
 		width: 100%;
 		background-color: transparent;
 		transition: background-color 0.5s ease;
+		// padding-top: 1.5rem;
 
 		&.expand {
 			position: fixed;
@@ -178,6 +164,10 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		& > div {
+			width: 100%;
+		}
 	}
 	&__reisze-helper {
 		position: fixed;

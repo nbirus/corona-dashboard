@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 
 export default {
+	// ninja api
 	counts: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
@@ -30,6 +31,24 @@ export default {
 		}),
 		formatter(response) {
 			return normalizeCountryNames(get(response, 'data', []))
+		},
+	},
+
+	// https://github.com/ExpDev07/coronavirus-tracker-api
+	counts2: {
+		query: () => ({
+			baseURL: 'https://coronavirus-tracker-api.herokuapp.com/v2',
+			endpoint: 'latest',
+		}),
+	},
+	// https://github.com/pomber/covid19
+	countryTimeline: {
+		query: () => ({
+			baseURL: 'https://pomber.github.io/covid19',
+			endpoint: 'timeseries.json',
+		}),
+		formatter(response) {
+			return get(response, 'data', {})
 		},
 	},
 }

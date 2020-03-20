@@ -1,11 +1,30 @@
 <template>
-	<li class="country-list-item">
-		<div class="mb-1">
-			<h2 v-text="country"></h2>
-		</div>
+	<v-expansion-panel class="country-list-item">
+		<v-expansion-panel-header>
+			<v-layout>
+				<h3 v-text="name"></h3>
+				<v-flex></v-flex>
+				<div v-if="$h.exists(counts)">
+					<div class="key-value mr-5">
+						<span class="value mr-1">{{ counts.cases | localeString }}</span>
+						<span class="key">total cases</span>
+					</div>
+				</div>
+			</v-layout>
+		</v-expansion-panel-header>
+
+		<v-expansion-panel-content>
+			<chart-wrapper
+				class="page-dashboard__timeline-chart mt-7"
+				id="country-timeline-chart"
+				type="line"
+				formatter="country"
+				:data="history"
+			/>
+		</v-expansion-panel-content>
 
 		<!-- cases -->
-		<v-layout class="body-2" wrap>
+		<!-- <v-layout class="body-2" wrap>
 			<div class="key-value mr-5">
 				<span class="key">Cases</span>
 				<span class="value">{{ cases | localeString }}</span>
@@ -32,34 +51,33 @@
 				<span class="key">Per Million</span>
 				<span class="value">{{ casesPerOneMillion | localeString }}</span>
 			</div>
-		</v-layout>
+		</v-layout> -->
 
 		<!-- deaths -->
 		<v-layout></v-layout>
-	</li>
+	</v-expansion-panel>
 </template>
 
 <script>
+import ChartWrapper from '@/components/charts/ChartWrapper'
+
 export default {
 	name: 'country-list-item',
-	props: [
-		'country',
-		'cases',
-		'todayCases',
-		'deaths',
-		'todayDeaths',
-		'recovered',
-		'active',
-		'critical',
-		'casesPerOneMillion',
-	],
+	components: { ChartWrapper },
+	props: {
+		name: String,
+		counts: {
+			type: Object,
+			default: () => ({}),
+		},
+		history: Array,
+	},
 }
 </script>
 
 <style lang="scss" scoped>
 .country-list-item {
 	display: block;
-	padding: 1.5rem 2rem;
-	border-bottom: solid thin $border-color-light;
+	padding: 1rem 0.5rem;
 }
 </style>

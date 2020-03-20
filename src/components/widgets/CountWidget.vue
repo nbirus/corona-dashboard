@@ -3,11 +3,15 @@
 		<state-handler v-bind="{ loading, error }">
 			<!-- widget -->
 			<v-layout class="count-widget__container" column align-center justify-center>
-				<v-avatar color="secondary lighten-5" size="65" class="mb-5">
-					<v-icon>fa-user</v-icon>
+				<v-avatar :color="color" size="85" class="mb-3">
+					<!-- <v-icon>fa-user</v-icon> -->
 				</v-avatar>
 				<h1>{{ count | localeString }}</h1>
 				<label class="text-secondary">{{ label }}</label>
+
+				<span class="count-widget__banner body-2 text-secondary"
+					>{{ countToday | localeString }} TODAY</span
+				>
 			</v-layout>
 		</state-handler>
 	</v-card>
@@ -18,15 +22,20 @@ export default {
 	name: 'count-widget',
 	inheritAttrs: false,
 	props: {
+		data: Object,
 		loading: Boolean,
-		error: String,
-		count: Number,
+		id: String,
+		color: String,
+		error: [String, Error],
 		label: String,
 		img: String,
 	},
 	computed: {
-		total() {
-			return 0
+		count() {
+			return this.$h.get(this.data, `totals.${this.id}`, 0)
+		},
+		countToday() {
+			return this.$h.get(this.data, `today.${this.id}`, 0)
 		},
 	},
 }
@@ -34,10 +43,21 @@ export default {
 
 <style lang="scss">
 .count-widget {
-	min-height: 250px;
+	min-height: 275px;
 
 	&__container {
 		height: 100%;
+		margin-top: -1rem;
+	}
+	&__banner {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		padding: 0.5rem 1rem;
+		background-color: fade-out(black, 0.95);
+		color: var(--v-secondary-lighten1);
+		text-align: center;
 	}
 }
 </style>

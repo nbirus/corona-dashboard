@@ -5,7 +5,7 @@ $transition-out: cubic-bezier(0.96, 0.01, 1, 0.51);
 // fade
 .fade-enter-active,
 .fade-leave-active {
-	transition: opacity 0.75s ease;
+	transition: opacity 0.25s ease;
 }
 
 .fade-enter,

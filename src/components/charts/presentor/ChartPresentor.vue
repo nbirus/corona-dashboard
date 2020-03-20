@@ -9,9 +9,9 @@
 		<!-- toolbar -->
 		<chart-presentor-toolbar v-bind="{ title, description, dataLabel }" />
 		<!-- settings -->
-		<chart-presentor-form :attrs="$attrs" v-bind="{ id, type }" />
+		<!-- <chart-presentor-form :attrs="$attrs" v-bind="{ id, type }" /> -->
 		<!-- screenshot modal -->
-		<chart-presentor-screenshot v-bind="{ id, title }" />
+		<!-- <chart-presentor-screenshot v-bind="{ id, title }" /> -->
 
 		<!-- link used for download -->
 		<a id="screenshot-link"></a>
@@ -20,10 +20,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import ChartPresentorScreenshot from './ChartPresentorScreenshot'
-import ChartPresentorToolbar from './ChartPresentorToolbar'
-import ChartPresentorForm from './ChartPresentorForm'
 import ChartPresentorBody from './ChartPresentorBody'
+import ChartPresentorToolbar from './ChartPresentorToolbar'
+// import ChartPresentorScreenshot from './ChartPresentorScreenshot'
+// import ChartPresentorForm from './ChartPresentorForm'
 
 export default {
 	name: 'chart-presentor',
@@ -31,8 +31,8 @@ export default {
 	components: {
 		ChartPresentorToolbar,
 		ChartPresentorBody,
-		ChartPresentorForm,
-		ChartPresentorScreenshot,
+		// ChartPresentorForm,
+		// ChartPresentorScreenshot,
 	},
 	props: {
 		type: String,

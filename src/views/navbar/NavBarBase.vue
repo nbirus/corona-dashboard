@@ -8,13 +8,13 @@
 				to="dashboard"
 				:class="{ active: $route.name === 'dashboard' }"
 			>
-				<v-icon size="20" class="mb-1">fa-globe</v-icon>Dashboard
+				<v-icon size="20" class="mb-1">mdi-view-dashboard</v-icon>Dashboard
 			</v-btn>
 			<v-btn class="btn-nav" text height="75" to="news" :class="{ active: $route.name === 'news' }">
-				<v-icon size="20" class="mb-1">fa-rss-square</v-icon>News
+				<v-icon size="20" class="mb-1">mdi-rss-box</v-icon>News
 			</v-btn>
 			<v-btn class="btn-nav" text height="75" to="map" :class="{ active: $route.name === 'map' }">
-				<v-icon size="20" class="mb-1">fa-map</v-icon>Map
+				<v-icon size="20" class="mb-1">mdi-map-marker-outline</v-icon>Map
 			</v-btn>
 		</div>
 	</v-app-bar>

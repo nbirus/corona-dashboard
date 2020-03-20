@@ -1,4 +1,4 @@
-import chroma from 'chroma-js'
+// import chroma from 'chroma-js'
 
 // spawn web worker to format data coming into the chart
 export function formatChartData(data, type) {
@@ -77,8 +77,8 @@ function getDefaultColors(colorName, numberOfSteps) {
 		colorDark = colors[colorName].darken2
 	}
 
-	return chroma.scale([colorLight, color, colorDark])
+	// return chroma.scale([colorLight, color, colorDark])
 }
 function getSpecialColors(colorName) {
-	return chroma.scale([chartColors[colorName].from, chartColors[colorName].to])
+	// return chroma.scale([chartColors[colorName].from, chartColors[colorName].to])
 }

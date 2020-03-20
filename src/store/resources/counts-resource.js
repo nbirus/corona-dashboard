@@ -4,10 +4,10 @@ export default {
 	namespaced: true,
 	state() {
 		return {
+			data: undefined,
+			total: null,
 			loading: false,
 			error: null,
-			data: null,
-			total: null,
 		}
 	},
 	getters: {
@@ -15,6 +15,7 @@ export default {
 			loading: state.loading,
 			error: state.error,
 			data: state.data,
+			total: state.total,
 		}),
 	},
 	mutations: {
@@ -24,22 +25,17 @@ export default {
 		SET_ERROR(state, error = null) {
 			state.error = error
 		},
-		SET_DATA(state, data = null) {
-			state.data = data
-		},
-		SET_TOTAL(state) {
-			if (state.data) {
-				state.total = state.data.length
-			}
+		SET_DATA(state, data = {}) {
+			state.data = data.data
+			state.total = data.total
 		},
 	},
 	actions: {
-		async get({ commit }, resource) {
+		async get({ commit }) {
 			try {
 				commit('SET_LOADING')
 				commit('SET_ERROR')
-				commit('SET_DATA', await requestResource(resource))
-				commit('SET_TOTAL')
+				commit('SET_DATA', await requestResource('counts'))
 			} catch (error) {
 				commit('SET_ERROR', error)
 			} finally {

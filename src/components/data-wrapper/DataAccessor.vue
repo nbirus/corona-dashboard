@@ -3,17 +3,22 @@ export default {
 	name: 'asnyc-data-wrapper',
 	inheritAttrs: false,
 	props: {
-		resource: String,
+		resourceAccessor: String,
 	},
 	computed: {
 		resourceState() {
-			return this.$store.getters[`${this.resource}/state`]
+			return this.$store.getters[`${this.resourceAccessor}/state`]
 		},
 	},
 	render() {
 		if (this.$scopedSlots.default !== undefined) {
 			return this.$scopedSlots.default({
-				_state: this.resourceState,
+				_state: {
+					loading: this.resourceState.loading,
+					data: this.resourceState.data,
+					error: this.resourceState.error,
+				},
+				_refresh() {},
 			})
 		} else {
 			return this.$slots
