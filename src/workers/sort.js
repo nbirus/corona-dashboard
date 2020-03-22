@@ -1,5 +1,6 @@
 import t from 'typy'
 import cloneDeep from 'lodash/cloneDeep'
+import get from 'lodash/get'
 
 // format certin row data before sort
 const specialFormat = {
@@ -8,7 +9,10 @@ const specialFormat = {
 
 /* istanbul ignore next */
 addEventListener('message', e => {
-  const { data, params } = e.data
+  const {
+    data,
+    params
+  } = e.data
   postMessage(sortObject(cloneDeep(data), params))
 })
 
@@ -28,8 +32,8 @@ export function sortObject(data, sort = {}) {
 
     // sort data
     data.sort((a, b) => {
-      const aValue = specialKeys.includes(sort.key) ? specialFormat[sort.key](a[sort.key]) : a[sort.key]
-      const bValue = specialKeys.includes(sort.key) ? specialFormat[sort.key](b[sort.key]) : b[sort.key]
+      const aValue = specialKeys.includes(sort.key) ? specialFormat[sort.key](a[sort.key]) : get(a, sort.key)
+      const bValue = specialKeys.includes(sort.key) ? specialFormat[sort.key](b[sort.key]) : get(b, sort.key)
       const aType = t(aValue)
       const bType = t(bValue)
 
@@ -42,7 +46,7 @@ export function sortObject(data, sort = {}) {
       if (aType.isNumber && bType.isNumber) {
         return bValue - aValue
       }
-      
+
       // default compare
       return bValue.localeCompare(aValue, undefined, {
         numeric: true,

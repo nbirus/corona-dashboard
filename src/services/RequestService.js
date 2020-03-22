@@ -6,7 +6,9 @@ import {
 	getResourceErrorFormatter,
 } from '@/services/ResourceService'
 import HttpService from '@/services/HttpService'
-import { exists } from '@/services/UtilsService'
+import {
+	exists
+} from '@/services/UtilsService'
 import get from 'lodash/get'
 
 /**
@@ -42,12 +44,14 @@ export function request(
 				return response
 			}
 		}
+
 		function handleFormatting(response) {
 			return resolve({
 				data: formatter(response),
 				total: totalFormatter(response),
 			})
 		}
+
 		function handleError(error) {
 			return reject({
 				data: get(error, 'response.data'),

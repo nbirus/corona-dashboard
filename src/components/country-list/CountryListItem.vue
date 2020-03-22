@@ -4,12 +4,21 @@
 			<v-layout>
 				<h3 v-text="name"></h3>
 				<v-flex></v-flex>
-				<div v-if="$h.exists(counts)">
-					<div class="key-value mr-5">
+				<!-- cases, deaths, recovered  -->
+				<v-layout v-if="$h.exists(counts)" justify-end>
+					<v-flex shrink class="key-value mr-5 body-2">
 						<span class="value mr-1">{{ counts.cases | localeString }}</span>
 						<span class="key">total cases</span>
-					</div>
-				</div>
+					</v-flex>
+					<v-flex shrink class="key-value mr-5 body-2">
+						<span class="value mr-1">{{ counts.deaths | localeString }}</span>
+						<span class="key">deaths</span>
+					</v-flex>
+					<v-flex shrink class="key-value mr-5 body-2">
+						<span class="value mr-1">{{ counts.recovered | localeString }}</span>
+						<span class="key">recovered</span>
+					</v-flex>
+				</v-layout>
 			</v-layout>
 		</v-expansion-panel-header>
 
@@ -51,7 +60,7 @@
 				<span class="key">Per Million</span>
 				<span class="value">{{ casesPerOneMillion | localeString }}</span>
 			</div>
-		</v-layout> -->
+		</v-layout>-->
 
 		<!-- deaths -->
 		<v-layout></v-layout>

@@ -9,6 +9,9 @@ export default {
 					confirmed: 0,
 					deaths: 0,
 					recovered: 0,
+					critical: 0,
+					active: 0,
+					casesPerOneMillion: 0,
 				},
 				today: {
 					confirmed: 0,
@@ -51,6 +54,10 @@ export default {
 			let deathTotalYesterday = 0
 			let recoveredTotalYesterday = 0
 
+			let critical = 0
+			let active = 0
+			let casesPerOneMillion = 0
+
 			// loop over each country
 			Object.keys(timeline.data).forEach(countryName => {
 				let countryArray = timeline.data[countryName]
@@ -62,6 +69,10 @@ export default {
 				confirmedTotalYesterday += lastItem.confirmed
 				deathTotalYesterday += lastItem.deaths
 				recoveredTotalYesterday += lastItem.recovered
+
+				critical += lastItem.critical
+				active += lastItem.active
+				casesPerOneMillion += lastItem.casesPerOneMillion
 			})
 
 			state.data.totals.confirmed = confirmedTotal
@@ -74,12 +85,21 @@ export default {
 			state.data.today.deaths = deathTotal - deathTotalYesterday
 			state.data.today.recovered = recoveredTotal - recoveredTotalYesterday
 
+			console.log(critical);
+
+
+			state.data.today.critical = critical
+			state.data.today.active = active
+			state.data.today.casesPerOneMillion = casesPerOneMillion
+
 			// set countries
 			state.data.countries = countries.data
 		},
 	},
 	actions: {
-		async set({ commit }) {
+		async set({
+			commit
+		}) {
 			try {
 				commit('SET_DATA')
 			} catch (error) {

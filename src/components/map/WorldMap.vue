@@ -17,10 +17,7 @@
 		</l-map>
 		<v-card class="world-map__legend" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<h4 v-text="hoverCountry.name"></h4>
-			<div class="body-2 mr-10">
-				<span class="mr-1">{{ hoverCountry.cases || 0 | localeString }}</span>
-				<span>(+{{ hoverCountry.todayCases || 0 | localeString }})</span>
-			</div>
+			<span class="body-2 mr-1">{{ $h.get(hoverCountry, 'totals.confirmed') | localeString }}</span>
 		</v-card>
 	</div>
 </template>
@@ -66,7 +63,7 @@ export default {
 			return {
 				type: 'FeatureCollection',
 				features: Countries.features.map(feature => {
-					let country = this.value.find(c => c.country === feature.properties.name)
+					let country = this.value[feature.code]
 					if (country !== undefined) {
 						feature.properties = {
 							...country,
@@ -84,11 +81,7 @@ export default {
 			let color = ''
 			let fillColor = ''
 			let fillOpacity = 0.4
-
-			if (this.$h.exists(feature.properties.cases)) {
-				fillColor = getColor(feature.properties.cases)
-			}
-
+			fillColor = getColor(this.$h.get(feature, 'properties.totals.confirmed', 0))
 			return {
 				weight: 1,
 				color,
@@ -115,26 +108,30 @@ export default {
 			this.$refs.map.mapObject.fitBounds(e.target.getBounds())
 		},
 		setBox(e) {
-			this.hoverStyle.left = `${e.containerPoint.x + 16}px`
-			this.hoverStyle.top = `${e.containerPoint.y + 16}px`
+			this.hoverStyle.left = `${e.originalEvent.x + 16}px`
+			this.hoverStyle.top = `${e.originalEvent.y + 16}px`
 		},
 	},
 }
 
-function getColor(d) {
-	return d > 1000
+function getColor(d = 0) {
+	if (d === 0) {
+		return ''
+	}
+
+	return d > 300000
 		? '#800026'
-		: d > 500
+		: d > 300000
 		? '#BD0026'
-		: d > 200
+		: d > 50000
 		? '#E31A1C'
-		: d > 100
+		: d > 1000
 		? '#FC4E2A'
-		: d > 50
+		: d > 500
 		? '#FD8D3C'
-		: d > 20
+		: d > 100
 		? '#FEB24C'
-		: d > 10
+		: d > 0
 		? '#FED976'
 		: '#FFEDA0'
 }
@@ -142,8 +139,11 @@ function getColor(d) {
 
 <style lang="scss" scoped>
 .world-map {
+	position: relative;
+
 	&__map {
-		height: calc(100vh - 75px);
+		height: 500px;
+
 		img {
 			max-height: none;
 		}

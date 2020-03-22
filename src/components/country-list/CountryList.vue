@@ -1,16 +1,18 @@
 <template>
 	<div class="country-list">
-		<div class="country-list__header">
+		<!-- <v-layout class="country-list__header" v-if="!loading">
 			<v-text-field
-				v-if="!loading"
-				style="max-width: 300px"
+				class="mr-10"
+				style="max-width: 250px"
 				placeholder="Find a country"
-				prepend-icon="mdi-magnify"
+				prepend-inner-icon="mdi-magnify"
 				hide-details
 				clearable
+				solo
 				v-model="keyword"
 			/>
-		</div>
+			<v-text-field solo style="max-width: 200px" placeholder="Sort countries" hide-details clearable />
+		</v-layout>-->
 
 		<div class="country-list__card">
 			<state-handler v-bind="{ loading }">
@@ -18,6 +20,7 @@
 					:data="countries"
 					:pagination="pagination"
 					:params="{ name: keyword }"
+					:sort="sort"
 					v-slot="{ _state }"
 				>
 					<v-expansion-panels class="country-list__list">
@@ -29,6 +32,7 @@
 							@click="pagination.size += 15"
 						>
 							See more
+							<v-icon>mdi-chevron-down</v-icon>
 						</li>
 					</v-expansion-panels>
 				</data-wrapper>
@@ -50,6 +54,10 @@ export default {
 			pagination: {
 				from: 0,
 				size: 10,
+			},
+			sort: {
+				key: 'counts.cases',
+				desc: false,
 			},
 		}
 	},
@@ -83,7 +91,7 @@ export default {
 <style lang="scss" scoped>
 .country-list {
 	&__header {
-		margin-bottom: 1.25rem;
+		margin-bottom: 1.5rem;
 	}
 	&__list {
 		margin: 0 !important;
@@ -96,13 +104,19 @@ export default {
 	}
 }
 .see-more {
-	padding: 0.75rem 1rem;
+	padding: 1rem 1rem;
 	text-align: center;
 	display: block;
 	cursor: pointer;
 	width: 100%;
-	background-color: fade-out(black, 0.975);
 	text-transform: uppercase;
-	font-size: 0.9rem;
+	color: var(--v-secondary-base);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	i {
+		font-size: 2rem;
+	}
 }
 </style>

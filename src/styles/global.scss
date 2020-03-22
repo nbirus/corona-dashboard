@@ -6,7 +6,9 @@
 	font-family: 'Noto Sans', 'Helvetica Neue', 'Arial', sans-serif;
 	font-size: 16px;
 	color: color(gray-darken3) !important;
+	background-color: darken(#F8F9FA, 1);
 }
+
 .v-application .display-4,
 .v-application .display-3,
 .v-application .display-2,
@@ -29,43 +31,54 @@ a,
 	color: color(blue-base) !important;
 	text-decoration: none;
 }
+
 a:hover,
 .v-application a:hover {
 	text-decoration: underline;
 }
+
 hr.light-border {
 	border: none;
 	border-top: solid thin $border-color;
 }
+
 .no-scroll {
 	overflow: hidden !important;
 }
+
 .border {
 	border: solid thin $border-color !important;
 }
+
 .border-light {
 	border: solid thin $border-color-light !important;
 }
+
 .hide-overflow {
 	overflow: hidden !important;
 }
+
 .text-secondary {
 	color: var(--v-secondary-base);
 }
+
 .border-radius {
 	border-radius: 4px;
 }
+
 .bold {
 	font-weight: $bold;
 }
+
 .no-underline {
 	text-decoration: none !important;
 }
 
 // fixes
-.v-text-field > .v-input__control > .v-input__slot:after {
+.v-text-field>.v-input__control>.v-input__slot:after {
 	color: color(primary-base);
 }
+
 .v-input--switch .theme--dark.v-label {
 	color: white;
 }
@@ -76,10 +89,12 @@ hr.light-border {
 		margin-right: 0.35rem;
 		color: $text-secondary;
 	}
+
 	.value {
 		font-weight: $bold;
 		color: $text-secondary;
 	}
+
 	.secondary-value {
 		font-weight: $bold;
 		margin-left: 0.35rem;

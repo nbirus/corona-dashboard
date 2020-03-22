@@ -1,6 +1,34 @@
 import get from 'lodash/get'
 
 export default {
+
+	// https: //github.com/ExpDev07/coronavirus-tracker-api
+	totals: {
+		query: () => ({
+			baseURL: 'https://coronavirus-tracker-api.herokuapp.com',
+			endpoint: 'v2/latest'
+		}),
+		formatter(response) {
+			return get(response, 'data.latest', {})
+		},
+	},
+	locations: {
+		query: () => ({
+			baseURL: 'https://coronavirus-tracker-api.herokuapp.com',
+			endpoint: 'v2/locations',
+			params: {
+				timelines: 1
+			}
+		}),
+		formatter(response) {
+			return get(response, 'data.locations', [])
+		},
+	},
+
+
+	////////////////////////////////////////////////////
+
+
 	// ninja api
 	counts: {
 		query: () => ({
@@ -67,7 +95,6 @@ function normalizeCountryNames(countries) {
 		return country
 	})
 }
-
 const countryNameMap = {
 	USA: 'United States of America',
 	'S. Korea': 'South Korea',

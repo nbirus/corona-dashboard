@@ -1,16 +1,21 @@
 import cloneDeep from 'lodash/cloneDeep'
-import set from 'lodash/set'
-import get from 'lodash/get'
-import dayjs from 'dayjs'
-const formatMap = { pie, bar, line, country }
 
-const blue = 'rgba(33,150,243, 0.15)'
+const formatMap = {
+  pie,
+  bar,
+  line,
+  linedeaths,
+  linerecovered,
+  lineconfirmed,
+}
+
+const blue = 'rgba(218,235,249, 1)'
 const blueBorder = 'rgba(33,150,243, 1)'
 
-const red = 'rgba(244,67,53, 0.3)'
+const red = 'rgba(252,198,194, 1)'
 const redBorder = 'rgba(244,67,53, 1)'
 
-const green = 'rgba(76,175,80, 0.2)'
+const green = 'rgba(219,239,220, 1)'
 const greenBorder = 'rgba(76,175,80, 1)'
 
 /**
@@ -18,7 +23,10 @@ const greenBorder = 'rgba(76,175,80, 1)'
  */
 /* istanbul ignore next */
 addEventListener('message', e => {
-  const { data, type } = e.data
+  const {
+    data,
+    type
+  } = e.data
   postMessage(formatChartData(cloneDeep(data), type))
 })
 
@@ -30,114 +38,91 @@ export function formatChartData(data, type = 'bar') {
 }
 
 /**
- * Bar chart formatting
+ * Line chart formatting
  */
-function country(data) {
-  const casesDataSet = {
-    label: 'Confirmed',
-    data: [],
-    backgroundColor: [blue],
-    borderColor: [blueBorder],
-    pointBackgroundColor: blueBorder,
-    pointBorderColor: blueBorder,
-    pointBorderWidth: 1,
-    borderWidth: 2,
-    order: 3,
+function line(data) {
+  let cases = {
+    ...casesDataSet,
+    data: data.confirmed,
   }
-  const deathDataSet = {
-    label: 'Deaths',
-    data: [],
-    backgroundColor: [red],
-    borderColor: [redBorder],
-    pointBackgroundColor: redBorder,
-    pointBorderColor: redBorder,
-    pointBorderWidth: 1,
-    order: 1,
+  let deaths = {
+    ...deathsDataSet,
+    data: data.deaths,
   }
-  const recoveredDataSet = {
-    label: 'Recovered',
-    data: [],
-    backgroundColor: [green],
-    borderColor: [greenBorder],
-    pointBackgroundColor: greenBorder,
-    pointBorderColor: greenBorder,
-    pointBorderWidth: 1,
-    order: 2,
+  let recovered = {
+    ...recoveredDataSet,
+    data: data.recovered,
   }
-  const dates = []
-
-  data.forEach((day, i) => {
-    set(casesDataSet, `data.${i}`, day.confirmed)
-    set(deathDataSet, `data.${i}`, day.deaths)
-    set(recoveredDataSet, `data.${i}`, day.recovered)
-    set(dates, i, dayjs(day.date).format('MMM DD'))
-  })
 
   return {
-    datasets: [casesDataSet, deathDataSet, recoveredDataSet],
-    labels: dates,
+    datasets: [cases, deaths, recovered],
+    labels: data.dates,
   }
 }
 
-/**
- * Bar chart formatting
- */
-function line(data) {
-  
-  
-  const casesDataSet = {
-    label: 'Confirmed',
-    data: [],
-    backgroundColor: [blue],
-    borderColor: [blueBorder],
-    pointBackgroundColor: blueBorder,
-    pointBorderColor: blueBorder,
-    pointBorderWidth: 1,
-    borderWidth: 2,
-    order: 3,
+let daysAgo = 14
+
+function lineconfirmed(data) {
+  return formatLineData(data, casesDataSet)
+}
+
+function linedeaths(data) {
+  return formatLineData(data, deathsDataSet)
+}
+
+function linerecovered(data) {
+  return formatLineData(data, recoveredDataSet)
+}
+
+// extra data
+const casesDataSet = {
+  label: 'Cases',
+  data: [],
+  backgroundColor: [blue],
+  borderColor: [blueBorder],
+  pointBackgroundColor: blueBorder,
+  pointBorderColor: blueBorder,
+  pointBorderWidth: 1,
+  pointRadius: 2,
+  borderWidth: 1,
+  order: 3,
+}
+const deathsDataSet = {
+  label: 'Deaths',
+  data: [],
+  backgroundColor: [red],
+  borderColor: [redBorder],
+  pointBackgroundColor: redBorder,
+  pointBorderColor: redBorder,
+  pointBorderWidth: 1,
+  pointRadius: 2,
+  borderWidth: 1,
+  order: 1,
+}
+const recoveredDataSet = {
+  label: 'Recovered',
+  data: [],
+  backgroundColor: [green],
+  borderColor: [greenBorder],
+  pointBackgroundColor: greenBorder,
+  pointBorderColor: greenBorder,
+  pointBorderWidth: 1,
+  pointRadius: 2,
+  borderWidth: 1,
+  order: 2,
+}
+
+function formatLineData(data, dataset) {
+  let length = data.dates.length
+  let modifiedDataset = {
+    ...dataset,
+    pointRadius: 0,
+    borderWidth: 0,
+    data: data.data.splice(length - daysAgo, length - 1),
   }
-  const deathDataSet = {
-    label: 'Deaths',
-    data: [],
-    backgroundColor: [red],
-    borderColor: [redBorder],
-    pointBackgroundColor: redBorder,
-    pointBorderColor: redBorder,
-    pointBorderWidth: 1,
-    order: 1,
-  }
-  const recoveredDataSet = {
-    label: 'Recovered',
-    data: [],
-    backgroundColor: [green],
-    borderColor: [greenBorder],
-    pointBackgroundColor: greenBorder,
-    pointBorderColor: greenBorder,
-    pointBorderWidth: 1,
-    order: 2,
-  }
-  const dates = []
-
-  Object.keys(data).forEach(countryName => {
-    data[countryName].forEach((country, i) => {
-
-      let currentConfirmedCount = get(casesDataSet, `data.${i}`, 0)
-      let currentDeathCount = get(deathDataSet, `data.${i}`, 0)
-      let currentRecoveredCount = get(recoveredDataSet, `data.${i}`, 0)
-
-      set(casesDataSet, `data.${i}`, currentConfirmedCount + country.confirmed)
-      set(deathDataSet, `data.${i}`, currentDeathCount + country.deaths)
-      set(recoveredDataSet, `data.${i}`, currentRecoveredCount + country.recovered)
-
-      if (dates[i] === undefined) {
-        set(dates, i, dayjs(country.date).format('MMM DD'))
-      }
-    })
-  })
-
   return {
-    datasets: [casesDataSet, deathDataSet, recoveredDataSet],
-    labels: dates,
+    datasets: [modifiedDataset],
+    labels: data.dates.splice(length - daysAgo, length - 1),
   }
 }
 

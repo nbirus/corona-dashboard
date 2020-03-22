@@ -11,6 +11,7 @@ import presentor from '@/store/modules/presentor'
 import resource from '@/store/modules/resource'
 import keyword from '@/store/modules/keyword'
 import dialogTable from '@/store/modules/dialogTable'
+import data from '@/store/modules/data'
 import base from '@/store/base'
 
 // resources
@@ -38,6 +39,7 @@ export default new Vuex.Store({
 	...base,
 	modules: {
 		example,
+		data,
 		snackbar,
 		form,
 		table,
