@@ -1,9 +1,7 @@
 <template>
-	<v-card class="stat-widget" elevation="2">
-		<state-handler v-bind="{ loading, error }">
-			<div class="label" v-text="label"></div>
-			<div class="value">{{ value | localeString }}</div>
-		</state-handler>
+	<v-card class="stat-widget">
+		<div class="label body-1" v-text="label"></div>
+		<h3 class="value">{{ value | localeString }}</h3>
 	</v-card>
 </template>
 

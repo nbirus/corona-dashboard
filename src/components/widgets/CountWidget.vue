@@ -97,7 +97,7 @@ div.count-widget {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 30px;
+		bottom: 29px;
 		height: calc(100% - 65px);
 	}
 	&__banner {

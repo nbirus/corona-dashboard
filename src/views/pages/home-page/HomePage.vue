@@ -1,5 +1,6 @@
 <template>
 	<div class="home-page page limit-width">
+		<!-- totals -->
 		<div class="home-page__totals">
 			<count-widget
 				id="cases"
@@ -30,25 +31,39 @@
 			/>
 		</div>
 
+		<!-- extra stats -->
+		<div class="home-page__stats">
+			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
+			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
+			<stat-widget
+				:value="$h.get(data, 'totals.casesPerOneMillion')"
+				id="casesPerOneMillion"
+				label="Cases Per One Million"
+			/>
+		</div>
+
+		<!-- timeline -->
 		<v-card class="home-page__timeline">
 			<h2 class="text-center">Timeline</h2>
 			<chart-wrapper type="line" id="timeline" :data="$h.get(data, 'timeline')" />
 		</v-card>
 
-		<!-- <v-card class="home-page__geolocation">
-			<world-map :value="$h.get(data, 'countries')" />
-		</v-card>-->
+		<!-- map -->
+		<v-card class="home-page__geolocation">
+			<spread-map :value="$h.get(data, 'countries')" />
+		</v-card>
 	</div>
 </template>
 
 <script>
 import CountWidget from '@/components/widgets/CountWidget'
+import StatWidget from '@/components/widgets/StatWidget'
 import ChartWrapper from '@/components/charts/ChartWrapper'
-import WorldMap from '@/components/map/WorldMap'
+import SpreadMap from '@/components/map/SpreadMap'
 
 export default {
 	name: 'home-page',
-	components: { CountWidget, ChartWrapper, WorldMap },
+	components: { StatWidget, CountWidget, ChartWrapper, SpreadMap },
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
@@ -60,7 +75,7 @@ export default {
 <style lang="scss" scoped>
 .home-page {
 	&__totals {
-		margin-bottom: 2rem;
+		margin-bottom: 1.5rem;
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -69,18 +84,18 @@ export default {
 		.count-widget {
 			width: 100%;
 		}
-		.last-updated {
-			position: absolute;
-			bottom: -2rem;
-			right: 0.25rem;
-			opacity: 0.75;
-			font-style: italic;
-		}
+	}
+	&__stats {
+		margin-bottom: 2.5rem;
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-gap: 1rem;
 	}
 	&__timeline {
 		min-height: 432px;
 		padding: 2rem 1.5rem;
-		margin-bottom: 2rem;
+		margin-bottom: 2.5rem;
 
 		h2 {
 			line-height: 0.8;
