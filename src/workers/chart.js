@@ -6,7 +6,7 @@ const formatMap = {
   line,
   linedeaths,
   linerecovered,
-  lineconfirmed,
+  linecases,
 }
 
 const blue = 'rgba(218,235,249, 1)'
@@ -43,7 +43,7 @@ export function formatChartData(data, type = 'bar') {
 function line(data) {
   let cases = {
     ...casesDataSet,
-    data: data.confirmed,
+    data: data.cases,
   }
   let deaths = {
     ...deathsDataSet,
@@ -62,7 +62,7 @@ function line(data) {
 
 let daysAgo = 14
 
-function lineconfirmed(data) {
+function linecases(data) {
   return formatLineData(data, casesDataSet)
 }
 

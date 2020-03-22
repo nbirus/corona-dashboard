@@ -17,7 +17,7 @@
 		</l-map>
 		<v-card class="world-map__legend" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<h4 v-text="hoverCountry.name"></h4>
-			<span class="body-2 mr-1">{{ $h.get(hoverCountry, 'totals.confirmed') | localeString }}</span>
+			<span class="body-2 mr-1">{{ $h.get(hoverCountry, 'totals.cases') | localeString }}</span>
 		</v-card>
 	</div>
 </template>
@@ -81,7 +81,7 @@ export default {
 			let color = ''
 			let fillColor = ''
 			let fillOpacity = 0.4
-			fillColor = getColor(this.$h.get(feature, 'properties.totals.confirmed', 0))
+			fillColor = getColor(this.$h.get(feature, 'properties.totals.cases', 0))
 			return {
 				weight: 1,
 				color,

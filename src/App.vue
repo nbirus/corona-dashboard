@@ -28,12 +28,16 @@ export default {
 	},
 	async created() {
 		let totals = await requestResource('totals')
-		let locations = await requestResource('locations')
+		let countries = await requestResource('countries')
+		let history = await requestResource('history')
+
+		// format response
 		let response = await new Promise(resolve => {
 			const dataWorker = new Worker('./workers/data.js', { type: 'module' })
-			dataWorker.postMessage({ totals, locations })
+			dataWorker.postMessage({ totals, countries, history })
 			dataWorker.onmessage = e => resolve(e.data)
 		})
+
 		this.$store.dispatch('data/set', response)
 		this.loading = false
 	},

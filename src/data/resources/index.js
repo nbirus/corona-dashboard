@@ -2,28 +2,75 @@ import get from 'lodash/get'
 
 export default {
 
-	// https: //github.com/ExpDev07/coronavirus-tracker-api
+
 	totals: {
 		query: () => ({
-			baseURL: 'https://coronavirus-tracker-api.herokuapp.com',
-			endpoint: 'v2/latest'
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: 'all'
 		}),
 		formatter(response) {
-			return get(response, 'data.latest', {})
+			return get(response, 'data', {})
 		},
 	},
-	locations: {
+	countries: {
 		query: () => ({
-			baseURL: 'https://coronavirus-tracker-api.herokuapp.com',
-			endpoint: 'v2/locations',
-			params: {
-				timelines: 1
-			}
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: 'countries'
 		}),
 		formatter(response) {
-			return get(response, 'data.locations', [])
+			return get(response, 'data', {})
 		},
 	},
+	states: {
+		query: () => ({
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: 'states'
+		}),
+		formatter(response) {
+			return get(response, 'data', {})
+		},
+	},
+	history: {
+		query: () => ({
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: 'historical'
+		}),
+		formatter(response) {
+			return get(response, 'data', {})
+		},
+	},
+	countryHistory: {
+		query: (params) => ({
+			baseURL: 'https://corona.lmao.ninja',
+			endpoint: `historical/${params.country}`
+		}),
+		formatter(response) {
+			return get(response, 'data', {})
+		},
+	},
+
+	// https: //github.com/ExpDev07/coronavirus-tracker-api
+	// totals: {
+	// 	query: () => ({
+	// 		baseURL: 'https://coronavirus-tracker-api.herokuapp.com',
+	// 		endpoint: 'v2/latest'
+	// 	}),
+	// formatter(response) {
+	// 	return get(response, 'data.latest', {})
+	// },
+	// },
+	// locations: {
+	// 	query: () => ({
+	// 		baseURL: 'https://coronavirus-tracker-api.herokuapp.com',
+	// 		endpoint: 'v2/locations',
+	// 		params: {
+	// 			timelines: 1
+	// 		}
+	// 	}),
+	// 	formatter(response) {
+	// 		return get(response, 'data.locations', [])
+	// 	},
+	// },
 
 
 	////////////////////////////////////////////////////

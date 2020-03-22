@@ -2,12 +2,12 @@
 	<div class="home-page page limit-width">
 		<div class="home-page__totals">
 			<count-widget
-				id="confirmed"
+				id="cases"
 				color="blue"
-				label="confirmed"
-				:value="$h.get(data, 'totals.confirmed')"
-				:value-today="$h.get(data, 'today.confirmed')"
-				:chart-data="$h.get(data, 'timeline.confirmed')"
+				label="cases"
+				:value="$h.get(data, 'totals.cases')"
+				:value-today="$h.get(data, 'today.cases')"
+				:chart-data="$h.get(data, 'timeline.cases')"
 				:dates="$h.get(data, 'timeline.dates')"
 			/>
 			<count-widget

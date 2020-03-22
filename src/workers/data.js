@@ -6,13 +6,65 @@ import dayjs from 'dayjs'
 addEventListener('message', e => {
   const {
     totals,
-    locations,
+    countries,
+    history,
   } = e.data
-  postMessage(format(totals.data, locations.data))
+  postMessage(format(totals.data, countries.data, history.data))
 })
 
+export function format(totals, countries, history) {
+  let updated = dayjs(new Date(totals.updated))
+  let today = {
+    cases: 0,
+    deaths: 0,
+    recovered: 0,
+  }
+  let timeline = {
+    cases: [],
+    deaths: [],
+    recovered: [],
+    dates: Object.keys(get(history, '0.timeline.cases', {})).map(date => {
+      return dayjs(date).format('MMM D')
+    }),
+  }
 
-export function format(totals, locationData) {
+  // loop over each location
+  history.forEach(country => {
+
+    // get timeline
+    let casesTimeline = Object.values(get(country, 'timeline.cases', [])).map(n => Number.parseInt(n))
+    let deathsTimeline = Object.values(get(country, 'timeline.deaths', [])).map(n => Number.parseInt(n))
+    let recoveredTimeline = Object.values(get(country, 'timeline.recovered', [])).map(n => Number.parseInt(n))
+
+    // get today's count
+    today.cases += casesTimeline[casesTimeline.length - 1]
+    today.deaths += deathsTimeline[deathsTimeline.length - 1]
+    today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
+
+    // loop over each day in a country
+    timeline.dates.forEach((date, index) => {
+      set(timeline.cases, index, get(timeline.cases, index, 0) + casesTimeline[index])
+      set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
+      set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
+    })
+  })
+
+  // set totals
+  today.cases = totals.cases - today.cases
+  today.deaths = totals.deaths - today.deaths
+  today.recovered = totals.recovered - today.recovered
+
+  return {
+    updated,
+    totals,
+    today,
+    timeline,
+    countries,
+  }
+}
+
+
+export function format2(totals, locationData) {
   let today = {
     confirmed: 0,
     deaths: 0,

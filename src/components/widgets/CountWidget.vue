@@ -105,12 +105,11 @@ div.count-widget {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		padding: 0 1rem;
+		padding: 0.15rem 1rem 0;
 		height: 30px;
 		background-color: fade-out(black, 0.975);
 		color: var(--v-secondary-lighten1);
 		display: flex;
-		align-items: flex-start;
 		justify-content: center;
 
 		.icon {
@@ -118,7 +117,7 @@ div.count-widget {
 			left: 1rem;
 		}
 	}
-	.confirmed {
+	.cases {
 		background-color: rgba(218, 235, 249, 1);
 		color: var(--v-primary-darken3);
 	}

@@ -6,7 +6,7 @@ export default {
 		return {
 			data: {
 				totals: {
-					confirmed: 0,
+					cases: 0,
 					deaths: 0,
 					recovered: 0,
 					critical: 0,
@@ -14,7 +14,7 @@ export default {
 					casesPerOneMillion: 0,
 				},
 				today: {
-					confirmed: 0,
+					cases: 0,
 					deaths: 0,
 					recovered: 0,
 				},
