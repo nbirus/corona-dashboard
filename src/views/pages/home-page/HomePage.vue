@@ -103,7 +103,6 @@ export default {
 
 		h2 {
 			line-height: 0.5;
-			margin-top: 0.5rem;
 		}
 	}
 	&__geolocation {

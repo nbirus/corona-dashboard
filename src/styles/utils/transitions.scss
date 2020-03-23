@@ -13,6 +13,18 @@ $transition-out: cubic-bezier(0.96, 0.01, 1, 0.51);
 	opacity: 0;
 }
 
+// enter
+.enter-enter-active,
+.enter-leave-active {
+	transition: opacity 0.35s ease, transform 0.35s $transition-in;
+}
+
+.enter-enter,
+.enter-leave-to {
+	opacity: 0;
+	transform: translateY(40px);
+}
+
 // page
 .page-enter-active {
 	transition: transform 0.35s $transition-in, opacity 0.35s ease;

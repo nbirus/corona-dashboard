@@ -1,5 +1,5 @@
 <template>
-	<v-card class="count-widget">
+	<v-card class="count-widget" :class="{loading: chartLoading}">
 		<chart-wrapper
 			class="count-widget__chart"
 			:id="`timeline-chart-${id}`"
@@ -8,14 +8,17 @@
 			:formatter="`line${id}`"
 			:data="{ data: chartData, dates }"
 			:extra-options="chartOptions"
+			@change="chartLoading=$event.loading"
 		/>
+
+		<!-- data -->
 		<div class="count-widget__data">
 			<h1>{{ value | localeString }}</h1>
 			<label class="text--secondary">{{ label }}</label>
 		</div>
-		<v-icon class="count-widget__badge">mdi-badge-account</v-icon>
+
+		<!-- bottom data -->
 		<div :class="id" class="count-widget__banner body-2">
-			<!-- <v-icon class="icon" left>mdi-trending-up</v-icon> -->
 			<span>
 				<strong>{{ valueToday | localeString }}</strong>
 				today (+{{percent}}%)
@@ -42,6 +45,7 @@ export default {
 	},
 	data() {
 		return {
+			chartLoading: true,
 			chartOptions: {
 				scales: {
 					xAxes: [
@@ -109,18 +113,19 @@ div.count-widget {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		padding: 0.15rem 1rem 0;
 		height: 30px;
 		background-color: fade-out(black, 0.975);
 		color: var(--v-secondary-lighten1);
 		display: flex;
 		justify-content: center;
+		align-items: center;
 
 		.icon {
 			position: absolute;
 			left: 1rem;
 		}
 	}
+
 	.cases {
 		background-color: rgba(218, 235, 249, 1);
 		color: var(--v-primary-darken3);
@@ -132,6 +137,18 @@ div.count-widget {
 	.recovered {
 		background-color: rgba(219, 239, 220, 1);
 		color: var(--v-success-darken3);
+	}
+
+	&.loading {
+		.cases {
+			border-top: solid 1px var(--v-primary-lighten1);
+		}
+		.deaths {
+			border-top: solid 1px var(--v-error-lighten1);
+		}
+		.recovered {
+			border-top: solid 1px var(--v-success-lighten1);
+		}
 	}
 }
 </style>

@@ -1,20 +1,35 @@
 <template>
 	<div class="map-container">
 		<!-- map -->
-		<spread-map :date-index="dateIndex" :value="$h.get(data, 'countries')" :by="type" />
+		<spread-map :date-index="dateIndex" :value="$h.get(data, 'countries')" :type="type" />
 
-		<!-- date tracker -->
-		<div class="map-container__dropdown">
-			<v-select rounded class="select" solo :items="typeItems" v-model="type" @change="dateIndex=0" />
+		<div class="map-container__info" :class="`active-${type}`">
+			<div class="map-container__info-item cases" @click="type='cases'">
+				<span class="bullet"></span>
+				<span class="label">Cases</span>
+				<strong class="value">{{activeDate.cases | localeString }}</strong>
+			</div>
+			<div class="map-container__info-item deaths" @click="type='deaths'">
+				<span class="bullet"></span>
+				<span class="label">Deaths</span>
+				<strong class="value">{{activeDate.deaths | localeString }}</strong>
+			</div>
+			<div class="map-container__info-item recovered" @click="type='recovered'">
+				<span class="bullet"></span>
+				<span class="label">Recovered</span>
+				<strong class="value">{{activeDate.recovered | localeString }}</strong>
+			</div>
 		</div>
 
+		<!-- date tracker -->
 		<div class="map-container__tracker" :style="trackerStyle">
 			<span>{{ dates[activeDateIndex] | date('MMM D') }}</span>
 		</div>
 
+		<!-- pause button -->
 		<div class="map-container__pause">
 			<v-btn @click="paused=!paused" class="button leaflet-bar" small rounded color="white">
-				<v-icon size="16">mdi-{{!paused ? 'pause' : 'play'}}</v-icon>
+				<v-icon size="15">mdi-{{!paused ? 'pause' : 'play'}}</v-icon>
 			</v-btn>
 		</div>
 
@@ -26,7 +41,7 @@
 					v-for="(date, index) in dates"
 					:id="`point-${index}`"
 					:key="date"
-					:class="{ 'active': index < dateIndex + 1, 'current': index === dateIndex + 1 }"
+					:class="{ 'active': index <= dateIndex, 'current': index === dateIndex }"
 					tabindex="0"
 					@click="setDateIndex(index)"
 				>
@@ -46,21 +61,7 @@ export default {
 	components: { SpreadMap },
 	data() {
 		return {
-			type: 'cases',
-			typeItems: [
-				{
-					text: 'Cases',
-					value: 'cases',
-				},
-				{
-					text: 'Deaths',
-					value: 'deaths',
-				},
-				{
-					text: 'Recovered',
-					value: 'recovered',
-				},
-			],
+			type: 'deaths',
 			paused: false,
 			dateIndex: 0,
 			activeDateIndex: 0,
@@ -69,6 +70,11 @@ export default {
 			hover: false,
 			trackerStyle: {
 				left: '16px',
+			},
+			activeDate: {
+				cases: 0,
+				deaths: 0,
+				recovered: 0,
 			},
 		}
 	},
@@ -111,8 +117,13 @@ export default {
 			if (index % 2 === 0 || index === this.dateLength || ignore) {
 				this.activeDateIndex = index
 				let point = document.getElementById(`point-${index}`)
-				this.trackerStyle.left = `${point.getClientRects()[0].left - 26}px`
+				this.trackerStyle.left = `${point.getClientRects()[0].left - 20}px`
 				this.trackerStyle.top = `${point.getClientRects()[0].top - 72}px`
+				this.activeDate = {
+					cases: this.$h.get(this.data, `timeline.cases.${this.activeDateIndex}`),
+					deaths: this.$h.get(this.data, `timeline.deaths.${this.activeDateIndex}`),
+					recovered: this.$h.get(this.data, `timeline.recovered.${this.activeDateIndex}`),
+				}
 			}
 		},
 		setDateIndex(index) {
@@ -153,7 +164,7 @@ export default {
 		align-items: center;
 		justify-content: flex-start;
 		overflow: hidden;
-		padding: 2.25rem 1.5rem 2rem;
+		padding: 2.25rem 2rem 2rem;
 		position: relative;
 	}
 	&__timeline-date {
@@ -165,7 +176,7 @@ export default {
 			display: block;
 			width: 3px;
 			height: 3px;
-			background-color: var(--v-secondary-lighten3);
+			background-color: var(--v-secondary-lighten4);
 			position: absolute;
 			top: 1.25rem;
 			z-index: 2;
@@ -178,6 +189,7 @@ export default {
 			height: auto;
 			font-size: 0.9rem;
 			position: absolute;
+			transform: translateX(-0.75rem);
 		}
 
 		&:first-child,
@@ -210,6 +222,17 @@ export default {
 				background-color: var(--v-success-base);
 			}
 		}
+		&:hover .point {
+			&.cases {
+				box-shadow: 0 0 0 3px var(--v-primary-lighten3);
+			}
+			&.deaths {
+				box-shadow: 0 0 0 3px var(--v-error-lighten3);
+			}
+			&.recovered {
+				box-shadow: 0 0 0 3px var(--v-success-lighten3);
+			}
+		}
 		&.current .point {
 			&.cases {
 				background-color: var(--v-primary-base);
@@ -226,7 +249,6 @@ export default {
 		}
 	}
 	&__tracker {
-		opacity: 0;
 		background-color: fade-out(black, 0.1);
 		color: white;
 		position: fixed;
@@ -245,7 +267,8 @@ export default {
 
 		.button {
 			padding: 0;
-			min-width: 28px;
+			min-width: 26px;
+			max-height: 26px;
 
 			.v-btn__content {
 				width: 1px;
@@ -266,6 +289,61 @@ export default {
 
 		.select {
 			width: 150px;
+		}
+	}
+	&__info {
+		position: absolute;
+		top: 0.75rem;
+		right: 0.75rem;
+		z-index: 9999;
+		background-color: fade-out(black, 0.2);
+		color: white;
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.75rem;
+		width: 175px;
+
+		&.active-cases {
+			.deaths,
+			.recovered {
+				opacity: 0.5;
+			}
+		}
+		&.active-deaths {
+			.cases,
+			.recovered {
+				opacity: 0.5;
+			}
+		}
+		&.active-recovered {
+			.cases,
+			.deaths {
+				opacity: 0.5;
+			}
+		}
+	}
+	&__info-item {
+		display: flex;
+		align-items: center;
+		cursor: pointer;
+
+		.label {
+			margin-right: 0.25rem;
+		}
+		.bullet {
+			border-radius: 50%;
+			width: 10px;
+			height: 10px;
+			margin-right: 0.5rem;
+			display: block;
+		}
+		&.cases .bullet {
+			background-color: var(--v-primary-base);
+		}
+		&.deaths .bullet {
+			background-color: var(--v-error-base);
+		}
+		&.recovered .bullet {
+			background-color: var(--v-success-base);
 		}
 	}
 

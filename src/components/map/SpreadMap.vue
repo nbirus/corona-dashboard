@@ -12,7 +12,7 @@
 				:geojson="countryGeojson"
 				:optionsStyle="geoStyle"
 				:options="geoOptions"
-				:key="dateIndex"
+				:key="`${dateIndex}-${type}`"
 			/>
 		</l-map>
 
@@ -35,7 +35,7 @@ export default {
 	props: {
 		value: Object,
 		dateIndex: Number,
-		by: {
+		type: {
 			type: String,
 			default: 'cases',
 		},
@@ -94,7 +94,8 @@ export default {
 		// style country overlay
 		geoStyle(feature) {
 			let fillColor = getColor(
-				this.$h.get(feature, `properties.timeline.${this.by}.${this.dateIndex}`, 0)
+				this.$h.get(feature, `properties.timeline.${this.type}.${this.dateIndex}`, 0),
+				this.type
 			)
 
 			return {
@@ -129,28 +130,74 @@ export default {
 	},
 }
 
-let colors = [
-	'rgba(0,0,0,0)',
-	'rgba(25, 118, 210, 0.1)',
-	'rgba(25, 118, 210, 0.2)',
-	'rgba(25, 118, 210, 0.3)',
-	'rgba(25, 118, 210, 0.4)',
-	'rgba(25, 118, 210, 0.5)',
-	'rgba(25, 118, 210, 0.6)',
-	'rgba(25, 118, 210, 0.7)',
-	'rgba(25, 118, 210, 0.8)',
-	'rgba(25, 118, 210, 0.9)',
-	'rgba(25, 118, 210, 1)',
-	'#4f79bf',
-	'#446db6',
-	'#3961ac',
-	'#2e56a2',
-	'#244a97',
-	'#1a3f8c',
-	'#0f3480',
-	'#062974',
-	'#001e67',
-]
+let colors = {
+	cases: [
+		'rgba(0,0,0,0)',
+		'rgba(25, 118, 210, 0.1)',
+		'rgba(25, 118, 210, 0.2)',
+		'rgba(25, 118, 210, 0.3)',
+		'rgba(25, 118, 210, 0.4)',
+		'rgba(25, 118, 210, 0.5)',
+		'rgba(25, 118, 210, 0.6)',
+		'rgba(25, 118, 210, 0.7)',
+		'rgba(25, 118, 210, 0.8)',
+		'rgba(25, 118, 210, 0.9)',
+		'rgba(25, 118, 210, 1)',
+		'#4f79bf',
+		'#446db6',
+		'#3961ac',
+		'#2e56a2',
+		'#244a97',
+		'#1a3f8c',
+		'#0f3480',
+		'#062974',
+		'#001e67',
+	],
+	deaths: [
+		'rgba(0,0,0,0)',
+		'rgba(244,67,53, 0.1)',
+		'rgba(244,67,53, 0.2)',
+		'rgba(244,67,53, 0.3)',
+		'rgba(244,67,53, 0.4)',
+		'rgba(244,67,53, 0.5)',
+		'rgba(244,67,53, 0.6)',
+		'rgba(244,67,53, 0.7)',
+		'rgba(244,67,53, 0.8)',
+		'rgba(244,67,53, 0.9)',
+		'rgba(244,67,53, 1)',
+		'#ff5252',
+		'#ee4948',
+		'#de3f3d',
+		'#ce3633',
+		'#be2c29',
+		'#ae2320',
+		'#9e1916',
+		'#8f0d0c',
+		'#800000',
+	],
+	recovered: [
+		'rgba(0,0,0,0)',
+		'rgba(76,175,80, 0.1)',
+		'rgba(76,175,80, 0.2)',
+		'rgba(76,175,80, 0.3)',
+		'rgba(76,175,80, 0.4)',
+		'rgba(76,175,80, 0.5)',
+		'rgba(76,175,80, 0.6)',
+		'rgba(76,175,80, 0.7)',
+		'rgba(76,175,80, 0.8)',
+		'rgba(76,175,80, 0.9)',
+		'rgba(76,175,80, 1)',
+		'#4caf50',
+		'#43a146',
+		'#3a943c',
+		'#318632',
+		'#287928',
+		'#1f6c1e',
+		'#155f14',
+		'#0a5309',
+		'#004700',
+	],
+}
 let scale = [
 	0,
 	2,
@@ -172,11 +219,11 @@ let scale = [
 	75000,
 	100000,
 ]
-function getColor(d = 0) {
+function getColor(d = 0, type) {
 	let color = ''
 	scale.forEach((scaleValue, i) => {
 		if (scaleValue <= d) {
-			color = colors[i]
+			color = colors[type][i]
 		}
 	})
 	return color
