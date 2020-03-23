@@ -64,7 +64,7 @@ const router = new Router({
 })
 
 // update page title according to current route
-router.beforeEach(PageTitleUtil)
+// router.beforeEach(PageTitleUtil)
 
 // page load progress bar
 router.beforeResolve(PageProgressUtil.start)

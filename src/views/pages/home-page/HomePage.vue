@@ -47,6 +47,12 @@
 				label="Cases Per Million"
 			/>
 		</div>
+
+		<div class="home-page__countries">
+			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
+			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />
+		</div>
+
 		<!-- map -->
 		<v-card class="home-page__geolocation">
 			<map-container />
@@ -63,13 +69,14 @@
 <script>
 import CountWidget from '@/components/widgets/CountWidget'
 import StatWidget from '@/components/widgets/StatWidget'
+import CountryWidget from '@/components/widgets/CountryWidget'
 import ChartWrapper from '@/components/charts/ChartWrapper'
 import MapContainer from '@/components/map/MapContainer'
 import NewsFeed from '@/components/news/NewsFeed'
 
 export default {
 	name: 'home-page',
-	components: { StatWidget, CountWidget, ChartWrapper, MapContainer, NewsFeed },
+	components: { StatWidget, CountWidget, CountryWidget, ChartWrapper, MapContainer, NewsFeed },
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
@@ -81,7 +88,7 @@ export default {
 <style lang="scss" scoped>
 .home-page {
 	&__totals {
-		margin-bottom: 1.5rem;
+		margin-bottom: 2.5rem;
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -91,21 +98,27 @@ export default {
 			width: 100%;
 		}
 	}
-	&__stats {
-		margin-bottom: 2.5rem;
-		position: relative;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-gap: 1rem;
-	}
 	&__timeline {
 		min-height: 432px;
-		padding: 2rem 1.25rem 2rem 1rem;
+		padding: 2rem 1.25rem 1.5rem 1rem;
 		margin-bottom: 2.5rem;
 
 		h2 {
 			line-height: 0.5;
 		}
+	}
+	&__stats {
+		margin-bottom: 1rem;
+		position: relative;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-gap: 1rem;
+	}
+	&__countries {
+		margin-bottom: 2.5rem;
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		grid-gap: 1rem;
 	}
 	&__geolocation {
 		height: auto;

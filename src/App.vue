@@ -10,22 +10,14 @@
 		<div class="loader" v-if="loading">
 			<spinner></spinner>
 		</div>
-
-		<!-- global components -->
-		<!-- <snackbar /> -->
 	</v-app>
 </template>
 
 <script>
-import NavBarBase from '@/views/navbar/NavBarBase'
 import { requestResource } from '@/services/RequestService'
 
 export default {
 	name: 'App',
-	components: {
-		NavBarBase,
-		Snackbar: () => import('@/components/utils/Snackbar'),
-	},
 	async created() {
 		let totals = await requestResource('totals')
 		let countries = await requestResource('countries')

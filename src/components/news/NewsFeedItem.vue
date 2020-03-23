@@ -6,7 +6,11 @@
 			</div>
 			<span class="news-feed-item__info">
 				<span class="news-feed-item__title body-1" v-html="data.title"></span>
-				<span class="news-feed-item__date body-2 text-secondary">{{ data.date | date('MMMM D, YYYY') }}</span>
+				<span class="news-feed-item__date body-2 text-secondary">
+					{{
+					data.date | date('MMMM D, YYYY')
+					}}
+				</span>
 			</span>
 		</a>
 	</li>
@@ -55,7 +59,7 @@ function convertUTCDateToLocalDate(date) {
 
 		border-radius: 4px;
 		transition: box-shadow 0.25s ease;
-		padding: 0.75rem 1rem;
+		padding: 0.5rem 1rem;
 
 		&:hover {
 			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
