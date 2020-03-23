@@ -4,7 +4,7 @@ export default {
 	totals: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'all'
+			endpoint: 'all',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})
@@ -13,7 +13,7 @@ export default {
 	countries: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'countries'
+			endpoint: 'countries',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})
@@ -22,7 +22,7 @@ export default {
 	states: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'states'
+			endpoint: 'states',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})
@@ -31,16 +31,16 @@ export default {
 	history: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'historical'
+			endpoint: 'historical',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})
 		},
 	},
 	countryHistory: {
-		query: (params) => ({
+		query: params => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: `historical/${params.country}`
+			endpoint: `historical/${params.country}`,
 		}),
 		formatter(response) {
 			return get(response, 'data', {})

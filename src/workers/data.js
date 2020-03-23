@@ -1,47 +1,44 @@
 import get from 'lodash/get'
 import set from 'lodash/set'
 import dayjs from 'dayjs'
-import Countries from '@/assets/Countries.json'
 
 /* istanbul ignore next */
-addEventListener('message', e => {
+addEventListener('message',  e => {
   const {
-    totals,
-    countries,
-    history,
+    totals, 
+    countries, 
+    history, 
   } = e.data
-  postMessage(format(totals.data, countries.data, history.data))
+  postMessage(format(totals.data,  countries.data,  history.data))
 })
 
-export function format(totalsData, countries, history) {
+export function format(totalsData,  countries,  history) {
   let updated = dayjs(new Date(totalsData.updated))
   let countryMap = {}
   let totals = {
-    ...totalsData,
-    active: 0,
-    critical: 0,
-    casesPerOneMillion: 0,
+    ...totalsData, 
+    active: 0, 
+    critical: 0, 
+    casesPerOneMillion: 0, 
   }
   let today = {
-    cases: 0,
-    deaths: 0,
-    recovered: 0,
+    cases: 0, 
+    deaths: 0, 
+    recovered: 0, 
   }
   let countryMax = {
-    cases: 0,
-    deaths: 0,
-    recovered: 0,
+    cases: 0, 
+    deaths: 0, 
+    recovered: 0, 
   }
   let timeline = {
-    cases: [],
-    deaths: [],
-    recovered: [],
-    dates: Object.keys(get(history, '0.timeline.cases', {})).map(date => {
+    cases: [], 
+    deaths: [], 
+    recovered: [], 
+    dates: Object.keys(get(history,  '0.timeline.cases',  {})).map(date => {
       return dayjs(date).format('MMM D')
-    }),
+    }), 
   }
-
-  let ok = []
 
   // loop over countries
   countries.forEach(country => {
@@ -61,14 +58,13 @@ export function format(totalsData, countries, history) {
       countryMax.recovered = country.recovered
     }
 
-    let id = getCountryId(country.country)
-    if (id !== undefined) {
-      countryMap[id] = country
-      countryMap[id].timeline = {
-        cases: [],
-        deaths: [],
-        recovered: [],
-      }
+    let id = country.country === 'USA' ? 'US' : country.countryInfo.iso2
+
+    countryMap[id] = country
+    countryMap[id].timeline = {
+      cases: [], 
+      deaths: [], 
+      recovered: [], 
     }
 
   })
@@ -77,29 +73,24 @@ export function format(totalsData, countries, history) {
   history.forEach(country => {
 
     // get timeline
-    let casesTimeline = Object.values(get(country, 'timeline.cases', [])).map(n => Number.parseInt(n))
-    let deathsTimeline = Object.values(get(country, 'timeline.deaths', [])).map(n => Number.parseInt(n))
-    let recoveredTimeline = Object.values(get(country, 'timeline.recovered', [])).map(n => Number.parseInt(n))
-
-    // add timeline to country object
-    let id = getCountryId(country.country)
-
-    if (id !== undefined && countryMap[id] !== undefined) {
-      let t = countryMap[id].timeline
-      countryMap[id].timeline = {
-        cases: casesTimeline.map((c, i) => get(t, i, 0) + c),
-        deaths: deathsTimeline.map((c, i) => get(t, i, 0) + c),
-        recovered: recoveredTimeline.map((c, i) => get(t, i, 0) + c),
-      }
-    }
+    let casesTimeline = Object.values(get(country,  'timeline.cases',  [])).map(n => Number.parseInt(n))
+    let deathsTimeline = Object.values(get(country,  'timeline.deaths',  [])).map(n => Number.parseInt(n))
+    let recoveredTimeline = Object.values(get(country,  'timeline.recovered',  [])).map(n => Number.parseInt(n))
 
     // get today's count
     today.cases += casesTimeline[casesTimeline.length - 1]
     today.deaths += deathsTimeline[deathsTimeline.length - 1]
     today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
+    
+    let id = getCountryId(country.country)
+    if (countryMap.hasOwnProperty(id)) {           
+      set(countryMap, `${id}.timeline.cases`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.cases`, [])))
+      set(countryMap, `${id}.timeline.deaths`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.deaths`, [])))
+      set(countryMap, `${id}.timeline.recovered`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.recovered`, [])))
+    }
 
-    // loop over each day in a country
-    timeline.dates.forEach((date, index) => {
+    // loop over each day in a country and set timeline
+    timeline.dates.forEach((date,  index) => {
       set(timeline.cases, index, get(timeline.cases, index, 0) + casesTimeline[index])
       set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
       set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
@@ -112,23 +103,27 @@ export function format(totalsData, countries, history) {
   today.recovered = totalsData.recovered - today.recovered
 
   return {
-    updated,
-    totals,
-    today,
-    timeline,
-    countries: countryMap,
+    updated, 
+    totals, 
+    today, 
+    timeline, 
+    countries: countryMap, 
   }
 }
 
-
-function getCountryId(label = '') {
-  let code
-  Countries.features.forEach(country => {
-    if (country.properties.name.toLowerCase() === label.toLowerCase()) {
-      code = country.code
+function mergeTimeline(array1, array2) {
+  let createdArray = []
+  array1.forEach((array1Number, index) => {
+    if (array2[index] !== undefined) {
+      createdArray.push(array1Number + array2[index])
+    }
+    else {
+      createdArray.push(array1Number)
     }
   })
-  return code
+  return createdArray
 }
 
-// let test = ["", "", "Czechia", "Diamond Princess", "Singapore", "Bahrain", "Hong Kong", "", "San Marino", "", "", "Faeroe Islands", "Andorra", "Réunion", "Palestine", "Guadeloupe", "Liechtenstein", "Martinique", "Channel Islands", "DRC", "Mauritius", "Guam", "Monaco", "Macao", "French Polynesia", "Gibraltar", "Barbados", "Maldives", "Tanzania", "Mayotte", "Aruba", "Seychelles", "U.S. Virgin Islands", "Isle of Man", "Saint Martin", "Bahamas", "Eswatini", "Cayman Islands", "Curaçao", "Cabo Verde", "CAR", "Congo", "St. Barth", "Saint Lucia", "Antigua and Barbuda", "Dominica", "Grenada", "Vatican City", "Montserrat", "St. Vincent Grenadines", "Sint Maarten", "Timor-Leste"]
+function getCountryId(label) {
+  return { "cote d'ivoire":'CI', 'thailand':'TH','japan':'JP','singapore':'SG','nepal':'NP','malaysia':'MY','canada':'CA','australia':'AU','cambodia':'KH','sri lanka':'LK','germany':'DE','finland':'FI','uae':'AE','philippines':'PH','india':'IN','italy':'IT','sweden':'SE','spain':'ES','belgium':'BE','egypt':'EG','lebanon':'LB','iraq':'IQ','oman':'OM','afghanistan':'AF','bahrain':'BH','kuwait':'KW','algeria':'DZ','croatia':'HR','switzerland':'CH','austria':'AT','israel':'IL','pakistan':'PK','brazil':'BR','georgia':'GE','greece':'GR','north macedonia':'MK','norway':'NO','romania':'RO','estonia':'EE','san marino':'SM','belarus':'BY','iceland':'IS','lithuania':'LT','mexico':'MX','new zealand':'NZ','nigeria':'NG','ireland':'IE','luxembourg':'LU','monaco':'MC','qatar':'QA','ecuador':'EC','azerbaijan':'AZ','armenia':'AM','dominican republic':'DO','indonesia':'ID','portugal':'PT','andorra':'AD','latvia':'LV','morocco':'MA','saudi arabia':'SA','senegal':'SN','argentina':'AR','chile':'CL','jordan':'JO','ukraine':'UA','hungary':'HU','liechtenstein':'LI','poland':'PL','tunisia':'TN','bosnia':'','slovenia':'SI','south africa':'ZA','bhutan':'BT','cameroon':'CM','colombia':'CO','costa rica':'CR','peru':'PE','serbia':'RS','slovakia':'SK','togo':'TG','malta':'MT','martinique':'MQ','bulgaria':'BG','maldives':'MV','bangladesh':'BD','paraguay':'PY','albania':'AL','cyprus':'CY','brunei':'BN','usa':'US','burkina faso':'BF','holy see':'VA','mongolia':'MN','panama':'PA','china':'CN','iran':'IR','s. korea':'KR','france':'FR','cruise ship':'','denmark':'DK','czech republic':'CZ','taiwan*':'TW','vietnam':'VN','russia':'RU','moldova':'MD','bolivia':'BO','honduras':'HN','uk':'GB','congo (kinshasa)':'', 'jamaica':'JM','turkey':'TR','cuba':'CU','guyana':'GY','kazakhstan':'KZ','ethiopia':'ET','sudan':'SD','guinea':'GN','kenya':'KE','antigua and barbuda':'AG','uruguay':'UY','ghana':'GH','namibia':'NA','seychelles':'SC','trinidad and tobago':'TT','venezuela':'VE','eswatini':'','gabon':'GA','guatemala':'GT','mauritania':'MR','rwanda':'RW','saint lucia':'LC','saint vincent and the grenadines':'VC','suriname':'SR','kosovo':'','central african republic':'CF','congo (brazzaville)':'CG','equatorial guinea':'GQ','uzbekistan':'UZ','netherlands':'NL','benin':'BJ','liberia':'LR','somalia':'SO','tanzania':'TZ','barbados':'BB','montenegro':'ME','kyrgyzstan':'KG','mauritius':'MU','zambia':'ZM','djibouti':'DJ','gambia, the':'GM','bahamas, the':'BS','chad':'TD','el salvador':'SV','fiji':'FJ','nicaragua':'NI','madagascar':'MG','haiti':'HT','angola':'AO','cabo verde':'','niger':'NE','papua new guinea':'PG','zimbabwe':'ZW','cape verde':'CV','east timor':'TL','eritrea':'ER','uganda':'UG','dominica':'DM','grenada':'GD','mozambique':'MZ','syria':'SY','timor-leste':'TL'}[label]
+}

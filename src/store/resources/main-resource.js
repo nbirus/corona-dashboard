@@ -85,8 +85,7 @@ export default {
 			state.data.today.deaths = deathTotal - deathTotalYesterday
 			state.data.today.recovered = recoveredTotal - recoveredTotalYesterday
 
-			console.log(critical);
-
+			console.log(critical)
 
 			state.data.today.critical = critical
 			state.data.today.active = active
@@ -97,9 +96,7 @@ export default {
 		},
 	},
 	actions: {
-		async set({
-			commit
-		}) {
+		async set({ commit }) {
 			try {
 				commit('SET_DATA')
 			} catch (error) {

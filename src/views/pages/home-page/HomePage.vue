@@ -54,7 +54,8 @@
 
 		<!-- map -->
 		<v-card class="home-page__news">
-			<h2 class="text-center">Top Stories</h2>
+			<h2 class="text-center mb-2">Top Stories</h2>
+			<news-feed />
 		</v-card>
 	</div>
 </template>
@@ -64,10 +65,11 @@ import CountWidget from '@/components/widgets/CountWidget'
 import StatWidget from '@/components/widgets/StatWidget'
 import ChartWrapper from '@/components/charts/ChartWrapper'
 import MapContainer from '@/components/map/MapContainer'
+import NewsFeed from '@/components/news/NewsFeed'
 
 export default {
 	name: 'home-page',
-	components: { StatWidget, CountWidget, ChartWrapper, MapContainer },
+	components: { StatWidget, CountWidget, ChartWrapper, MapContainer, NewsFeed },
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
@@ -98,7 +100,7 @@ export default {
 	}
 	&__timeline {
 		min-height: 432px;
-		padding: 2rem 1.5rem;
+		padding: 2rem 1.25rem 2rem 1rem;
 		margin-bottom: 2.5rem;
 
 		h2 {

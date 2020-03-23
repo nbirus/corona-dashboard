@@ -4,20 +4,20 @@
 		<spread-map :date-index="dateIndex" :value="$h.get(data, 'countries')" :type="type" />
 
 		<div class="map-container__info" :class="`active-${type}`">
-			<div class="map-container__info-item cases" @click="type='cases'">
+			<div class="map-container__info-item cases" @click="type = 'cases'">
 				<span class="bullet"></span>
 				<span class="label">Cases</span>
-				<strong class="value">{{activeDate.cases | localeString }}</strong>
+				<strong class="value">{{ activeDate.cases | localeString }}</strong>
 			</div>
-			<div class="map-container__info-item deaths" @click="type='deaths'">
+			<div class="map-container__info-item deaths" @click="type = 'deaths'">
 				<span class="bullet"></span>
 				<span class="label">Deaths</span>
-				<strong class="value">{{activeDate.deaths | localeString }}</strong>
+				<strong class="value">{{ activeDate.deaths | localeString }}</strong>
 			</div>
-			<div class="map-container__info-item recovered" @click="type='recovered'">
+			<div class="map-container__info-item recovered" @click="type = 'recovered'">
 				<span class="bullet"></span>
 				<span class="label">Recovered</span>
-				<strong class="value">{{activeDate.recovered | localeString }}</strong>
+				<strong class="value">{{ activeDate.recovered | localeString }}</strong>
 			</div>
 		</div>
 
@@ -28,8 +28,8 @@
 
 		<!-- pause button -->
 		<div class="map-container__pause">
-			<v-btn @click="paused=!paused" class="button leaflet-bar" small rounded color="white">
-				<v-icon size="15">mdi-{{!paused ? 'pause' : 'play'}}</v-icon>
+			<v-btn @click="paused = !paused" class="button leaflet-bar" small rounded color="white">
+				<v-icon size="15">mdi-{{ !paused ? 'pause' : 'play' }}</v-icon>
 			</v-btn>
 		</div>
 
@@ -41,7 +41,7 @@
 					v-for="(date, index) in dates"
 					:id="`point-${index}`"
 					:key="date"
-					:class="{ 'active': index <= dateIndex, 'current': index === dateIndex }"
+					:class="{ active: index <= dateIndex, current: index === dateIndex }"
 					tabindex="0"
 					@click="setDateIndex(index)"
 				>
@@ -61,7 +61,7 @@ export default {
 	components: { SpreadMap },
 	data() {
 		return {
-			type: 'deaths',
+			type: 'cases',
 			paused: false,
 			dateIndex: 0,
 			activeDateIndex: 0,
@@ -117,8 +117,10 @@ export default {
 			if (index % 2 === 0 || index === this.dateLength || ignore) {
 				this.activeDateIndex = index
 				let point = document.getElementById(`point-${index}`)
-				this.trackerStyle.left = `${point.getClientRects()[0].left - 20}px`
-				this.trackerStyle.top = `${point.getClientRects()[0].top - 72}px`
+				let parent = point.parentElement.parentElement
+				let pointBounds = point.getBoundingClientRect()
+				let parentBounds = parent.getBoundingClientRect()
+				this.trackerStyle.left = `${pointBounds.left - parentBounds.left - 22}px`
 				this.activeDate = {
 					cases: this.$h.get(this.data, `timeline.cases.${this.activeDateIndex}`),
 					deaths: this.$h.get(this.data, `timeline.deaths.${this.activeDateIndex}`),
@@ -251,8 +253,9 @@ export default {
 	&__tracker {
 		background-color: fade-out(black, 0.1);
 		color: white;
-		position: fixed;
+		position: absolute;
 		font-size: 0.9rem;
+		bottom: 5rem;
 
 		border-radius: 8px;
 		padding: 0.25rem 0.5rem 0.1rem;

@@ -1,5 +1,5 @@
 <template>
-	<v-card class="count-widget" :class="{loading: chartLoading}">
+	<v-card class="count-widget" :class="{ loading: chartLoading }">
 		<chart-wrapper
 			class="count-widget__chart"
 			:id="`timeline-chart-${id}`"
@@ -8,7 +8,7 @@
 			:formatter="`line${id}`"
 			:data="{ data: chartData, dates }"
 			:extra-options="chartOptions"
-			@change="chartLoading=$event.loading"
+			@change="chartLoading = $event.loading"
 		/>
 
 		<!-- data -->
@@ -21,7 +21,7 @@
 		<div :class="id" class="count-widget__banner body-2">
 			<span>
 				<strong>{{ valueToday | localeString }}</strong>
-				today (+{{percent}}%)
+				today (+{{ percent }}%)
 			</span>
 		</div>
 	</v-card>

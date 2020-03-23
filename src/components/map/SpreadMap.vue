@@ -17,10 +17,14 @@
 		</l-map>
 
 		<!-- popover -->
-		<!-- <v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
-			<h4 v-text="hoverCountry.name"></h4>
-			<span class="body-2 mr-1">{{ $h.get(hoverCountry, 'cases', 0) | localeString }}</span>
-		</v-card>-->
+		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
+			<span class="body-2" v-text="hoverCountry.name"></span>
+			&nbsp;
+			<strong
+				:key="`${dateIndex}-${type}`"
+				class="bold"
+			>{{ $h.get(hoverCountry, `timeline.${type}.${dateIndex}`, 0) | localeString }}</strong>
+		</v-card>
 	</div>
 </template>
 
@@ -78,6 +82,8 @@ export default {
 			return {
 				type: 'FeatureCollection',
 				features: Countries.features.map(feature => {
+					// console.log(this.value[feature.code])
+
 					let country = this.value[feature.code]
 					if (country !== undefined) {
 						feature.properties = {
@@ -108,17 +114,17 @@ export default {
 
 		// map events
 		highlightFeature(e) {
-			// let country = e.target
+			let country = e.target
+			this.hoverCountry = country.feature.properties
 			// country.setStyle({
 			// 	fillOpacity: 1,
 			// })
-			// this.hoverCountry = country.feature.properties
 		},
 		resetHighlight(e) {
 			// e.target.setStyle({
 			// 	fillOpacity: 0.9,
 			// })
-			// this.hoverCountry = {}
+			this.hoverCountry = {}
 		},
 		zoomToFeature(e) {
 			this.$refs.map.mapObject.fitBounds(e.target.getBounds())
@@ -155,16 +161,16 @@ let colors = {
 	],
 	deaths: [
 		'rgba(0,0,0,0)',
-		'rgba(244,67,53, 0.1)',
-		'rgba(244,67,53, 0.2)',
-		'rgba(244,67,53, 0.3)',
-		'rgba(244,67,53, 0.4)',
-		'rgba(244,67,53, 0.5)',
-		'rgba(244,67,53, 0.6)',
-		'rgba(244,67,53, 0.7)',
-		'rgba(244,67,53, 0.8)',
-		'rgba(244,67,53, 0.9)',
-		'rgba(244,67,53, 1)',
+		'rgba(244, 67, 53, 0.1)',
+		'rgba(244, 67, 53, 0.2)',
+		'rgba(244, 67, 53, 0.3)',
+		'rgba(244, 67, 53, 0.4)',
+		'rgba(244, 67, 53, 0.5)',
+		'rgba(244, 67, 53, 0.6)',
+		'rgba(244, 67, 53, 0.7)',
+		'rgba(244, 67, 53, 0.8)',
+		'rgba(244, 67, 53, 0.9)',
+		'rgba(244, 67, 53, 1)',
 		'#ff5252',
 		'#ee4948',
 		'#de3f3d',
@@ -177,16 +183,16 @@ let colors = {
 	],
 	recovered: [
 		'rgba(0,0,0,0)',
-		'rgba(76,175,80, 0.1)',
-		'rgba(76,175,80, 0.2)',
-		'rgba(76,175,80, 0.3)',
-		'rgba(76,175,80, 0.4)',
-		'rgba(76,175,80, 0.5)',
-		'rgba(76,175,80, 0.6)',
-		'rgba(76,175,80, 0.7)',
-		'rgba(76,175,80, 0.8)',
-		'rgba(76,175,80, 0.9)',
-		'rgba(76,175,80, 1)',
+		'rgba(76, 175, 80, 0.1)',
+		'rgba(76, 175, 80, 0.2)',
+		'rgba(76, 175, 80, 0.3)',
+		'rgba(76, 175, 80, 0.4)',
+		'rgba(76, 175, 80, 0.5)',
+		'rgba(76, 175, 80, 0.6)',
+		'rgba(76, 175, 80, 0.7)',
+		'rgba(76, 175, 80, 0.8)',
+		'rgba(76, 175, 80, 0.9)',
+		'rgba(76, 175, 80, 1)',
 		'#4caf50',
 		'#43a146',
 		'#3a943c',
@@ -199,9 +205,9 @@ let colors = {
 	],
 }
 let scale = [
-	0,
-	2,
-	5,
+	1,
+	3,
+	7,
 	10,
 	25,
 	50,
@@ -222,7 +228,7 @@ let scale = [
 function getColor(d = 0, type) {
 	let color = ''
 	scale.forEach((scaleValue, i) => {
-		if (scaleValue <= d) {
+		if (scaleValue < d) {
 			color = colors[type][i]
 		}
 	})
@@ -241,7 +247,9 @@ function getColor(d = 0, type) {
 		height: auto;
 		z-index: 999;
 		pointer-events: none;
-		padding: 0.75rem;
+		padding: 0.25rem 0.5rem;
+		background-color: fade-out(black, 0.2);
+		color: white;
 	}
 }
 </style>

@@ -1,7 +1,13 @@
 <template>
-	<ul class="news-feed">
-		<news-feed-item v-for="(post, index) in posts" :key="index" v-bind="post.data" />
-	</ul>
+	<div class="news-feed-container">
+		<data-wrapper resource="news" :params="params" v-slot="{ _state }">
+			<state-handler v-bind="_state">
+				<ul class="news-feed">
+					<news-feed-item v-for="(post, index) in _state.data" :key="index" v-bind="post.data" />
+				</ul>
+			</state-handler>
+		</data-wrapper>
+	</div>
 </template>
 
 <script>
@@ -14,13 +20,23 @@ export default {
 		loading: Boolean,
 		posts: Array,
 	},
+	data() {
+		return {
+			params: {
+				size: 5,
+			},
+		}
+	},
 }
 </script>
 
 <style lang="scss">
+.news-feed-container {
+	min-height: 300px;
+	position: relative;
+}
 .news-feed {
 	padding: 0 !important;
 	margin: 0 !important;
-	max-width: 90ch;
 }
 </style>

@@ -12,7 +12,8 @@ Vue.use(Router)
 SetFavicon()
 
 // project routes
-const projectRoutes = [{
+const projectRoutes = [
+	{
 		path: '/',
 		name: 'home',
 		component: () =>
@@ -29,7 +30,7 @@ const projectRoutes = [{
 		path: '/news',
 		name: 'news',
 		component: () =>
-			import( /* webpackChunkName: "NewsPage" */ './views/pages/news-page/NewsPage.vue'),
+			import(/* webpackChunkName: "NewsPage" */ './views/pages/news-page/NewsPage.vue'),
 		meta: {
 			title: 'News',
 			progressBar: true,
@@ -38,7 +39,7 @@ const projectRoutes = [{
 	{
 		path: '/map',
 		name: 'map',
-		component: () => import( /* webpackChunkName: "MapPage" */ './views/pages/map-page/MapPage.vue'),
+		component: () => import(/* webpackChunkName: "MapPage" */ './views/pages/map-page/MapPage.vue'),
 		meta: {
 			title: 'Map',
 			progressBar: true,
@@ -47,10 +48,12 @@ const projectRoutes = [{
 ]
 
 // special routes and redirects
-const specialRoutes = [{
-	path: '*',
-	redirect: '/',
-}]
+const specialRoutes = [
+	{
+		path: '*',
+		redirect: '/',
+	},
+]
 
 // create router
 const router = new Router({
