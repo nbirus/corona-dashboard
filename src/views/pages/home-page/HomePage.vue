@@ -31,6 +31,12 @@
 			/>
 		</div>
 
+		<!-- timeline -->
+		<v-card class="home-page__timeline">
+			<h2 class="text-center">Timeline</h2>
+			<chart-wrapper type="line" id="timeline" :data="$h.get(data, 'timeline')" />
+		</v-card>
+
 		<!-- extra stats -->
 		<div class="home-page__stats">
 			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
@@ -38,19 +44,17 @@
 			<stat-widget
 				:value="$h.get(data, 'totals.casesPerOneMillion')"
 				id="casesPerOneMillion"
-				label="Cases Per One Million"
+				label="Cases Per Million"
 			/>
 		</div>
-
-		<!-- timeline -->
-		<v-card class="home-page__timeline">
-			<h2 class="text-center">Timeline</h2>
-			<chart-wrapper type="line" id="timeline" :data="$h.get(data, 'timeline')" />
+		<!-- map -->
+		<v-card class="home-page__geolocation">
+			<map-container />
 		</v-card>
 
 		<!-- map -->
-		<v-card class="home-page__geolocation">
-			<spread-map :value="$h.get(data, 'countries')" />
+		<v-card class="home-page__news">
+			<h2 class="text-center">Top Stories</h2>
 		</v-card>
 	</div>
 </template>
@@ -59,11 +63,11 @@
 import CountWidget from '@/components/widgets/CountWidget'
 import StatWidget from '@/components/widgets/StatWidget'
 import ChartWrapper from '@/components/charts/ChartWrapper'
-import SpreadMap from '@/components/map/SpreadMap'
+import MapContainer from '@/components/map/MapContainer'
 
 export default {
 	name: 'home-page',
-	components: { StatWidget, CountWidget, ChartWrapper, SpreadMap },
+	components: { StatWidget, CountWidget, ChartWrapper, MapContainer },
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
@@ -98,11 +102,16 @@ export default {
 		margin-bottom: 2.5rem;
 
 		h2 {
-			line-height: 0.8;
+			line-height: 0.5;
+			margin-top: 0.5rem;
 		}
 	}
 	&__geolocation {
 		height: auto;
+		margin-bottom: 2.5rem;
+	}
+	&__news {
+		padding: 2rem 1.5rem;
 	}
 }
 </style>

@@ -17,9 +17,8 @@
 		<div :class="id" class="count-widget__banner body-2">
 			<!-- <v-icon class="icon" left>mdi-trending-up</v-icon> -->
 			<span>
-				+
 				<strong>{{ valueToday | localeString }}</strong>
-				today ({{parseInt(value / valueToday)}}%)
+				today (+{{percent}}%)
 			</span>
 		</div>
 	</v-card>
@@ -62,12 +61,17 @@ export default {
 			},
 		}
 	},
+	computed: {
+		percent() {
+			return ((this.valueToday / this.value) * 100).toFixed(1)
+		},
+	},
 }
 </script>
 
 <style lang="scss">
 div.count-widget {
-	min-height: 170px;
+	min-height: 150px;
 	transition: transform 0.2s ease;
 	overflow: hidden;
 	display: flex !important;
@@ -84,7 +88,7 @@ div.count-widget {
 
 		label {
 			display: block;
-			margin-top: -0.3rem;
+			margin-top: -0.5rem;
 		}
 	}
 	&__badge {
