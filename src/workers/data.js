@@ -74,10 +74,16 @@ export function format(totalsData,  countries,  history) {
     let deathsTimeline = Object.values(get(country,  'timeline.deaths',  [])).map(n => Number.parseInt(n))
     let recoveredTimeline = Object.values(get(country,  'timeline.recovered',  [])).map(n => Number.parseInt(n))
 
-    // get today's count
-    today.cases += casesTimeline[casesTimeline.length - 1]
-    today.deaths += deathsTimeline[deathsTimeline.length - 1]
-    today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
+    if (!isNaN(casesTimeline[casesTimeline.length - 1])) {
+      today.cases += casesTimeline[casesTimeline.length - 1]
+    }
+    if (!isNaN(deathsTimeline[deathsTimeline.length - 1])) {
+      today.deaths += deathsTimeline[deathsTimeline.length - 1]
+    }
+    if (!isNaN(recoveredTimeline[recoveredTimeline.length - 1])) {
+      today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
+    }
+    
     
     let id = getCountryId(country.country)
     if (countryMap.hasOwnProperty(id)) {           
@@ -88,9 +94,15 @@ export function format(totalsData,  countries,  history) {
 
     // loop over each day in a country and set timeline
     timeline.dates.forEach((date,  index) => {
-      set(timeline.cases, index, get(timeline.cases, index, 0) + casesTimeline[index])
-      set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
-      set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
+      if (!isNaN(get(timeline.cases, index, 0)) && !isNaN(casesTimeline[index])) {
+        set(timeline.cases, index, get(timeline.cases, index, 0) + casesTimeline[index])
+      }
+      if (!isNaN(get(timeline.deaths, index, 0)) && !isNaN(deathsTimeline[index])) {
+        set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
+      }
+      if (!isNaN(get(timeline.recovered, index, 0)) && !isNaN(recoveredTimeline[index])) {
+        set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
+      }
     })
   })
 
@@ -113,7 +125,7 @@ export function format(totalsData,  countries,  history) {
 function mergeTimeline(array1, array2) {
   let createdArray = []
   array1.forEach((array1Number, index) => {
-    if (array2[index] !== undefined) {
+    if (!isNaN(array1[index]) && !isNaN(array2[index]) ) {
       createdArray.push(array1Number + array2[index])
     }
     else {

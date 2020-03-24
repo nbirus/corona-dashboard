@@ -2,8 +2,8 @@
 	<v-card class="country-widget">
 		<div v-text="label"></div>
 		<h3>
-			{{value.country }}
-			<span>({{value.deathsPerCases }}%)</span>
+			{{ value.country }}
+			<span>({{ value.deathsPerCases }}%)</span>
 		</h3>
 	</v-card>
 </template>
