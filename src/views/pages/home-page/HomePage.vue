@@ -40,11 +40,7 @@
 		<!-- extra stats -->
 		<div class="home-page__stats">
 			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
-			<stat-widget
-				:value="$h.get(data, 'totals.critical')"
-				id="critical"
-				label="Critical Condition"
-			/>
+			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
 			<stat-widget
 				:value="$h.get(data, 'totals.casesPerOneMillion')"
 				id="casesPerOneMillion"
@@ -52,6 +48,7 @@
 			/>
 		</div>
 
+		<!-- other stats -->
 		<div class="home-page__countries">
 			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
 			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />
@@ -60,6 +57,12 @@
 		<!-- map -->
 		<v-card class="home-page__geolocation">
 			<map-container />
+		</v-card>
+
+		<!-- timeline -->
+		<v-card class="home-page__per-million">
+			<h2 class="text-center">Per Million</h2>
+			<chart-wrapper type="bar" id="million" :data="$h.get(data, 'countries')" />
 		</v-card>
 
 		<!-- map -->
@@ -103,6 +106,15 @@ export default {
 		}
 	}
 	&__timeline {
+		min-height: 432px;
+		padding: 2rem 1.25rem 1.5rem 1rem;
+		margin-bottom: 2.5rem;
+
+		h2 {
+			line-height: 0.5;
+		}
+	}
+	&__per-million {
 		min-height: 432px;
 		padding: 2rem 1.25rem 1.5rem 1rem;
 		margin-bottom: 2.5rem;

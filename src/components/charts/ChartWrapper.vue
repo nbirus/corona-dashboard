@@ -33,6 +33,7 @@ export default {
 	components: {
 		ChartFormatter,
 		LineChart: () => import('@/components/charts/types/LineChart'),
+		BarChart: () => import('@/components/charts/types/BarChart'),
 	},
 	props: {
 		type: {

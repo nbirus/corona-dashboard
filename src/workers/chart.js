@@ -129,8 +129,40 @@ function formatLineData(data, dataset) {
 /**
  * Bar chart formatting
  */
-function bar(data) {
-  return data
+function bar(response) {
+  const limit = 2000
+  const data = Object.values(response)
+  const countries = []
+  const casesPerOneMillion = []
+  const deathsPerOneMillion = []
+
+  data.sort((a, b) => b.casesPerOneMillion - a.casesPerOneMillion).forEach(country => {
+    if (country.cases > limit) {
+      countries.push(country.country)
+      casesPerOneMillion.push(country.casesPerOneMillion)
+      deathsPerOneMillion.push(country.deathsPerOneMillion)
+    }
+  })
+
+  const deathDataSet = {
+    label: 'Deaths Per Million',
+    backgroundColor: red,
+    borderColor: redBorder,
+    borderWidth: 1,
+    data: deathsPerOneMillion,
+  }
+  const caseDataSet = {
+    label: 'Cases Per Million',
+    data: casesPerOneMillion,
+    backgroundColor: blue,
+    // borderColor: blueBorder,
+    borderWidth: 1,
+  }
+  
+  return {
+    datasets: [deathDataSet, caseDataSet],
+    labels: countries,
+  }
 }
 
 /**
