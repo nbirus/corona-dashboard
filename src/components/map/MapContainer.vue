@@ -38,9 +38,10 @@
 		<div class="map-container__timeline">
 			<v-slider
 				ref="slider"
-				v-model="dateIndex"
+				v-model.lazy="dateIndex"
 				@click="stop"
 				:tick-labels="dates"
+				tick-size="3"
 				:min="0"
 				:max="dateLength"
 			/>
@@ -154,14 +155,16 @@ export default {
 	}
 
 	&__timeline {
-		padding: 0.75rem 1.4rem 0.25rem 1.25em;
+		padding: 0.4rem 1.4rem 0.25rem 1.25em;
+		z-index: 9999;
+		overflow: visible;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
 		color: white;
 		position: absolute;
 		font-size: 0.9rem;
-		bottom: 5.25rem;
+		bottom: 4.75rem;
 		min-width: 60px;
 		text-align: center;
 
