@@ -24,6 +24,7 @@ export function format(totalsData,  countries,  history) {
     critical: 0, 
     casesPerOneMillion: 0, 
     deathsPerCases: 0,
+    averageDeathsPerCases: 0,
   }
   let today = {
     cases: 0, 
@@ -39,16 +40,22 @@ export function format(totalsData,  countries,  history) {
   let highestDeathsPerCases = undefined
   let lowestDeathsPerCases = undefined
 
+  let casesPerMillionArray = []
+  let deathsPerCases = []
+
   // loop over countries
   countries.forEach(country => {
 
+    let d = (country.deaths / country.cases) * 100
+
     // deaths / cases
-    country.deathsPerCases = ((country.deaths / country.cases) * 100).toFixed(1)
+    country.deathsPerCases = d.toFixed(1)
+    deathsPerCases.push(d)
 
     // set totals
     totals.active += country.active
     totals.critical += country.critical
-    totals.casesPerOneMillion += country.casesPerOneMillion
+    casesPerMillionArray.push(country.casesPerOneMillion)
 
     let id = country.country === 'USA' ? 'US' : country.countryInfo.iso2
     countryMap[id] = country
@@ -65,6 +72,9 @@ export function format(totalsData,  countries,  history) {
       lowestDeathsPerCases = country
     }
   })
+
+  totals.casesPerOneMillion = casesPerMillionArray.reduce((a, b) => (a + b)) / casesPerMillionArray.length
+  totals.deathsPerCases = (deathsPerCases.reduce((a, b) => (a + b)) / deathsPerCases.length).toFixed(1)
 
   // loop over each location
   history.forEach(country => {
@@ -105,6 +115,7 @@ export function format(totalsData,  countries,  history) {
       }
     })
   })
+  
 
   // set totals
   today.cases = totalsData.cases - today.cases

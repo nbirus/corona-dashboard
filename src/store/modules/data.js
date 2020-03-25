@@ -10,6 +10,7 @@ export default {
 				today: {},
 				countries: {},
 				highestDeathsPerCases: {},
+				averageDeathsPerCases: {},
 				lowestDeathsPerCases: {},
 			},
 		}

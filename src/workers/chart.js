@@ -49,13 +49,13 @@ function line(data) {
     ...deathsDataSet,
     data: data.deaths,
   }
-  let recovered = {
-    ...recoveredDataSet,
-    data: data.recovered,
-  }
+  // let recovered = {
+  //   ...recoveredDataSet,
+  //   data: data.recovered,
+  // }
 
   return {
-    datasets: [cases, deaths, recovered],
+    datasets: [cases, deaths],
     labels: data.dates,
   }
 }
@@ -155,7 +155,7 @@ function bar(response) {
     label: 'Cases Per Million',
     data: casesPerOneMillion,
     backgroundColor: blue,
-    // borderColor: blueBorder,
+    borderColor: blueBorder,
     borderWidth: 1,
   }
   

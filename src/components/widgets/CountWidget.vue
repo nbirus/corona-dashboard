@@ -35,7 +35,7 @@ export default {
 	components: { ChartWrapper },
 	inheritAttrs: false,
 	props: {
-		value: Number,
+		value: [Number, String],
 		valueToday: Number,
 		id: String,
 		label: String,

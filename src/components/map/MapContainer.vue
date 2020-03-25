@@ -14,16 +14,16 @@
 				<span class="label">Deaths</span>
 				<strong class="value">{{ activeDate.deaths | localeString }}</strong>
 			</div>
-			<div class="map-container__info-item recovered" @click="type = 'recovered'">
+			<!-- <div class="map-container__info-item recovered" @click="type = 'recovered'">
 				<span class="bullet"></span>
 				<span class="label">Recovered</span>
 				<strong class="value">{{ activeDate.recovered | localeString }}</strong>
-			</div>
+			</div>-->
 		</div>
 
 		<!-- date tracker -->
 		<div class="map-container__tracker" :style="trackerStyle">
-			<span>{{ dates[activeDateIndex] | date('MMM D') }}</span>
+			<span>{{ dates[dateIndex] | date('MMM D') }}</span>
 		</div>
 
 		<!-- pause button -->
@@ -34,21 +34,15 @@
 		</div>
 
 		<!-- timeline -->
-		<div class="map-container__timeline" @mouseenter="enterTimeline" @mouseleave="leaveTimeline">
-			<ul class="map-container__timeline-dates">
-				<li
-					class="map-container__timeline-date"
-					v-for="(date, index) in dates"
-					:id="`point-${index}`"
-					:key="date"
-					:class="{ active: index <= dateIndex, current: index === dateIndex }"
-					tabindex="0"
-					@click="setDateIndex(index)"
-				>
-					<span :class="type" class="point"></span>
-					<span class="label">{{ date | date('MMM D') }}</span>
-				</li>
-			</ul>
+		<div class="map-container__timeline">
+			<v-slider
+				ref="slider"
+				v-model="dateIndex"
+				@click="stop"
+				:tick-labels="dates"
+				:min="0"
+				:max="dateLength"
+			/>
 		</div>
 	</div>
 </template>
@@ -64,8 +58,7 @@ export default {
 			type: 'cases',
 			paused: false,
 			dateIndex: 0,
-			activeDateIndex: 0,
-			intervalSpeed: 150,
+			intervalSpeed: 200,
 			interval: null,
 			hover: false,
 			trackerStyle: {
@@ -76,6 +69,7 @@ export default {
 				deaths: 0,
 				recovered: 0,
 			},
+			sliderEls: [],
 		}
 	},
 	computed: {
@@ -90,6 +84,8 @@ export default {
 		},
 	},
 	mounted() {
+		let container = this.$refs.slider.$el
+		this.sliderEls = container.querySelector('.v-slider__ticks-container').children
 		this.start()
 	},
 	methods: {
@@ -115,16 +111,16 @@ export default {
 		},
 		setDatePos(index, ignore = false) {
 			if (index % 2 === 0 || index === this.dateLength || ignore) {
-				this.activeDateIndex = index
-				let point = document.getElementById(`point-${index}`)
+				let point = this.sliderEls[index]
 				let parent = point.parentElement.parentElement
 				let pointBounds = point.getBoundingClientRect()
 				let parentBounds = parent.getBoundingClientRect()
-				this.trackerStyle.left = `${pointBounds.left - parentBounds.left - 22}px`
+				this.trackerStyle.left = `${pointBounds.left - parentBounds.left}px`
+
 				this.activeDate = {
-					cases: this.$h.get(this.data, `timeline.cases.${this.activeDateIndex}`),
-					deaths: this.$h.get(this.data, `timeline.deaths.${this.activeDateIndex}`),
-					recovered: this.$h.get(this.data, `timeline.recovered.${this.activeDateIndex}`),
+					cases: this.$h.get(this.data, `timeline.cases.${index}`),
+					deaths: this.$h.get(this.data, `timeline.deaths.${index}`),
+					// recovered: this.$h.get(this.data, `timeline.recovered.${index}`),
 				}
 			}
 		},
@@ -133,18 +129,6 @@ export default {
 			this.dateIndex = index
 			this.setDatePos(index, true)
 		},
-
-		enterTimeline() {
-			this.hover = true
-			setTimeout(() => {
-				if (this.hover) {
-					this.paused = true
-				}
-			}, 500)
-		},
-		leaveTimeline() {
-			this.hover = false
-		},
 	},
 	watch: {
 		dateIndex: 'setDatePos',
@@ -152,110 +136,32 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .map-container {
 	height: auto;
 
-	&__timeline {
-		height: auto;
+	.v-slider__tick-label {
+		display: none;
 	}
-	&__timeline-dates {
-		margin: 0;
-		padding: 0;
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
-		overflow: hidden;
-		padding: 2.25rem 2rem 2rem;
-		position: relative;
-	}
-	&__timeline-date {
-		flex: 2;
-		display: block;
-		width: auto;
-
-		.point {
+	.v-slider__tick:first-child,
+	.v-slider__tick:last-child,
+	.v-slider__tick:nth-child(7n) {
+		.v-slider__tick-label {
 			display: block;
-			width: 3px;
-			height: 3px;
-			background-color: var(--v-secondary-lighten4);
-			position: absolute;
-			top: 1.25rem;
-			z-index: 2;
-			border-radius: 50%;
-			cursor: pointer;
-			transition: box-shadow 0.2s ease;
 		}
-		.label {
-			display: none;
-			height: auto;
-			font-size: 0.9rem;
-			position: absolute;
-			transform: translateX(-0.75rem);
-		}
+	}
 
-		&:first-child,
-		&:last-child,
-		&:nth-child(7n) {
-			flex: 3;
-			.point {
-				width: 10px;
-				height: 10px;
-				transform: translateY(-3px);
-			}
-			.label {
-				display: block;
-			}
-		}
-		&:last-child {
-			.label {
-				display: none;
-			}
-		}
-		&.active .point,
-		&:hover .point {
-			&.cases {
-				background-color: var(--v-primary-base);
-			}
-			&.deaths {
-				background-color: var(--v-error-base);
-			}
-			&.recovered {
-				background-color: var(--v-success-base);
-			}
-		}
-		&:hover .point {
-			&.cases {
-				box-shadow: 0 0 0 3px var(--v-primary-lighten3);
-			}
-			&.deaths {
-				box-shadow: 0 0 0 3px var(--v-error-lighten3);
-			}
-			&.recovered {
-				box-shadow: 0 0 0 3px var(--v-success-lighten3);
-			}
-		}
-		&.current .point {
-			&.cases {
-				background-color: var(--v-primary-base);
-				box-shadow: 0 0 0 3px var(--v-primary-lighten3);
-			}
-			&.deaths {
-				background-color: var(--v-error-base);
-				box-shadow: 0 0 0 3px var(--v-error-lighten3);
-			}
-			&.recovered {
-				background-color: var(--v-success-base);
-				box-shadow: 0 0 0 3px var(--v-success-lighten3);
-			}
-		}
+	&__timeline {
+		padding: 0.75rem 1.25em 0.25rem;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
 		color: white;
 		position: absolute;
 		font-size: 0.9rem;
-		bottom: 5rem;
+		bottom: 5.25rem;
+		min-width: 60px;
+		text-align: center;
 
 		border-radius: 8px;
 		padding: 0.25rem 0.5rem 0.1rem;
@@ -269,8 +175,8 @@ export default {
 		z-index: 9999;
 
 		.button {
-			padding: 0;
-			min-width: 26px;
+			padding: 0 !important;
+			min-width: 26px !important;
 			max-height: 26px;
 
 			.v-btn__content {
@@ -306,18 +212,27 @@ export default {
 		width: 175px;
 
 		&.active-cases {
+			.cases .bullet {
+				background-color: var(--v-primary-base);
+			}
 			.deaths,
 			.recovered {
 				opacity: 0.5;
 			}
 		}
 		&.active-deaths {
+			.deaths .bullet {
+				background-color: var(--v-error-base);
+			}
 			.cases,
 			.recovered {
 				opacity: 0.5;
 			}
 		}
 		&.active-recovered {
+			.recovered .bullet {
+				background-color: var(--v-success-base);
+			}
 			.cases,
 			.deaths {
 				opacity: 0.5;
@@ -340,13 +255,13 @@ export default {
 			display: block;
 		}
 		&.cases .bullet {
-			background-color: var(--v-primary-base);
+			border: solid 2px var(--v-primary-base);
 		}
 		&.deaths .bullet {
-			background-color: var(--v-error-base);
+			border: solid 2px var(--v-error-base);
 		}
 		&.recovered .bullet {
-			background-color: var(--v-success-base);
+			border: solid 2px var(--v-success-base);
 		}
 	}
 

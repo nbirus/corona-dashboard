@@ -1,5 +1,11 @@
 <template>
 	<div class="home-page page limit-width">
+		<h1 class="text-center">Covid-19 Dashboard</h1>
+		<p class="text-center header-0">A collection of analytics about the recent Covid-19 outbreak</p>
+
+		<br />
+		<br />
+
 		<!-- totals -->
 		<div class="home-page__totals">
 			<count-widget
@@ -40,23 +46,26 @@
 		<!-- extra stats -->
 		<div class="home-page__stats">
 			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
+			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
 			<stat-widget
-				:value="$h.get(data, 'totals.critical')"
-				id="critical"
-				label="Critical Condition"
+				:value="$h.get(data, 'totals.deathsPerCases')"
+				id="deathsPerCases"
+				label="Average Deaths Per Cases"
 			/>
 			<stat-widget
 				:value="$h.get(data, 'totals.casesPerOneMillion')"
 				id="casesPerOneMillion"
 				label="Cases Per Million"
 			/>
-		</div>
-
-		<!-- other stats -->
-		<div class="home-page__countries">
 			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
 			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />
 		</div>
+
+		<!-- other stats -->
+		<!-- <div class="home-page__countries">
+			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
+			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />
+		</div>-->
 
 		<!-- map -->
 		<v-card class="home-page__geolocation">
@@ -97,6 +106,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.header-0 {
+	font-size: 1.2rem;
+}
 .home-page {
 	&__totals {
 		margin-bottom: 2.5rem;
@@ -128,7 +140,7 @@ export default {
 		}
 	}
 	&__stats {
-		margin-bottom: 1rem;
+		margin-bottom: 2.5rem;
 		position: relative;
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr;
@@ -137,7 +149,7 @@ export default {
 	&__countries {
 		margin-bottom: 2.5rem;
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: 1fr 1fr 1fr;
 		grid-gap: 1rem;
 	}
 	&__geolocation {

@@ -11,7 +11,7 @@ export default {
 	inheritAttrs: false,
 	props: {
 		label: String,
-		value: Number,
+		value: [Number, String],
 		loading: Boolean,
 		color: String,
 		error: [String, Error],

@@ -1,5 +1,6 @@
 <script>
 import { HorizontalBar } from 'vue-chartjs'
+import { localeString } from '@/services/FilterService.js'
 
 export default {
 	extends: HorizontalBar,
@@ -27,10 +28,14 @@ export default {
 								drawBorder: false,
 								offsetGridLines: true,
 								drawTicks: false,
-								zeroLineColor: 'rgba(0,0,0,0)',
 							},
 							ticks: {
 								fontSize: 14,
+								callback: function(value) {
+									if (value !== 0) {
+										return localeString(value)
+									}
+								},
 							},
 						},
 					],

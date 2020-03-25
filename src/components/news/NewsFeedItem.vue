@@ -6,9 +6,7 @@
 			</div>
 			<span class="news-feed-item__info">
 				<span class="news-feed-item__title body-1" v-html="data.title"></span>
-				<span class="news-feed-item__date body-2 text-secondary">
-					{{ data.date | date('MMMM D, YYYY') }}
-				</span>
+				<span class="news-feed-item__date body-2 text-secondary">{{ data.date | date('MMMM D, YYYY') }}</span>
 			</span>
 		</a>
 	</li>
@@ -30,17 +28,6 @@ export default {
 			}
 		},
 	},
-}
-
-function convertUTCDateToLocalDate(date) {
-	var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000)
-
-	var offset = date.getTimezoneOffset() / 60
-	var hours = date.getHours()
-
-	newDate.setHours(hours - offset)
-
-	return newDate
 }
 </script>
 

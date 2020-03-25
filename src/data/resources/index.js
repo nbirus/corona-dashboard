@@ -31,7 +31,7 @@ export default {
 	history: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'historical',
+			endpoint: 'v2/historical',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})
