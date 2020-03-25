@@ -17,7 +17,9 @@ export function format(totalsData,  countries,  history) {
   let dates = Object.keys(get(history,  '0.timeline.cases',  {})).map(date => {
     return dayjs(date).format('MMM D')
   })
+
   let countryMap = {}
+  let usMap = {}
   let totals = {
     ...totalsData, 
     active: 0, 
@@ -71,6 +73,7 @@ export function format(totalsData,  countries,  history) {
     if (lowestDeathsPerCases === undefined || country.cases > 3000 && get(lowestDeathsPerCases, 'deathsPerCases', 0) >= country.deathsPerCases) {
       lowestDeathsPerCases = country
     }
+  
   })
 
   totals.casesPerOneMillion = casesPerMillionArray.reduce((a, b) => (a + b)) / casesPerMillionArray.length
@@ -82,7 +85,7 @@ export function format(totalsData,  countries,  history) {
     // get timeline
     let casesTimeline = Object.values(get(country,  'timeline.cases',  [])).map(n => Number.parseInt(n))
     let deathsTimeline = Object.values(get(country,  'timeline.deaths',  [])).map(n => Number.parseInt(n))
-    let recoveredTimeline = Object.values(get(country,  'timeline.recovered',  [])).map(n => Number.parseInt(n))
+    // let recoveredTimeline = Object.values(get(country,  'timeline.recovered',  [])).map(n => Number.parseInt(n))
 
     if (!isNaN(casesTimeline[casesTimeline.length - 1])) {
       today.cases += casesTimeline[casesTimeline.length - 1]
@@ -90,16 +93,16 @@ export function format(totalsData,  countries,  history) {
     if (!isNaN(deathsTimeline[deathsTimeline.length - 1])) {
       today.deaths += deathsTimeline[deathsTimeline.length - 1]
     }
-    if (!isNaN(recoveredTimeline[recoveredTimeline.length - 1])) {
-      today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
-    }
+    // if (!isNaN(recoveredTimeline[recoveredTimeline.length - 1])) {
+    //   today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
+    // }
     
     
     let id = getCountryId(country.country)
     if (countryMap.hasOwnProperty(id)) {           
       set(countryMap, `${id}.timeline.cases`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.cases`, [])))
-      set(countryMap, `${id}.timeline.deaths`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.deaths`, [])))
-      set(countryMap, `${id}.timeline.recovered`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.recovered`, [])))
+      set(countryMap, `${id}.timeline.deaths`,  mergeTimeline(deathsTimeline, get(countryMap, `${id}.timeline.deaths`, [])))
+      // set(countryMap, `${id}.timeline.recovered`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.recovered`, [])))
     }
 
     // loop over each day in a country and set timeline
@@ -110,9 +113,9 @@ export function format(totalsData,  countries,  history) {
       if (!isNaN(get(timeline.deaths, index, 0)) && !isNaN(deathsTimeline[index])) {
         set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
       }
-      if (!isNaN(get(timeline.recovered, index, 0)) && !isNaN(recoveredTimeline[index])) {
-        set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
-      }
+      // if (!isNaN(get(timeline.recovered, index, 0)) && !isNaN(recoveredTimeline[index])) {
+      //   set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
+      // }
     })
   })
   
@@ -130,6 +133,7 @@ export function format(totalsData,  countries,  history) {
     highestDeathsPerCases, 
     lowestDeathsPerCases, 
     countries: countryMap, 
+    us: usMap, 
   }
 }
 

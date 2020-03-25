@@ -20,11 +20,10 @@
 		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<span class="body-2" v-text="hoverCountry.name"></span>
 			&nbsp;
-			<strong :key="`${dateIndex}-${type}`" class="bold">
-				{{
-				$h.get(hoverCountry, `timeline.${type}.${dateIndex}`, 0) | localeString
-				}}
-			</strong>
+			<strong
+				:key="`${dateIndex}-${type}`"
+				class="bold"
+			>{{ $h.get(hoverCountry, `timeline.${type}.${dateIndex}`, 0) | localeString }}</strong>
 		</v-card>
 	</div>
 </template>

@@ -3,6 +3,7 @@
 		<!-- map -->
 		<spread-map :date-index="dateIndex" :value="$h.get(data, 'countries')" :type="type" />
 
+		<!-- info -->
 		<div class="map-container__info" :class="`active-${type}`">
 			<div class="map-container__info-item cases" @click="type = 'cases'">
 				<span class="bullet"></span>
@@ -55,9 +56,10 @@ export default {
 	components: { SpreadMap },
 	data() {
 		return {
+			usMap: true,
 			type: 'cases',
 			paused: false,
-			dateIndex: 0,
+			dateIndex: 20,
 			intervalSpeed: 200,
 			interval: null,
 			hover: false,
@@ -209,7 +211,7 @@ export default {
 		color: white;
 		padding: 0.5rem 0.75rem;
 		border-radius: 0.75rem;
-		width: 175px;
+		min-width: 155px;
 
 		&.active-cases {
 			.cases .bullet {
@@ -262,6 +264,31 @@ export default {
 		}
 		&.recovered .bullet {
 			border: solid 2px var(--v-success-base);
+		}
+	}
+	&__choice {
+		position: absolute;
+		top: 0.75rem;
+		right: calc(1.75rem + 155px);
+		z-index: 9999;
+		background-color: fade-out(black, 0.2);
+		color: white;
+		padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+		border-radius: 0.75rem;
+
+		.v-input--radio-group__input {
+			flex-direction: row;
+		}
+		.v-input {
+			height: 30px;
+			margin: 0;
+		}
+		.v-label {
+			color: white;
+			font-size: 0.9rem;
+		}
+		.v-radio {
+			margin-bottom: 0 !important;
 		}
 	}
 

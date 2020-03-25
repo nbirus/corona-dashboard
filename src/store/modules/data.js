@@ -9,6 +9,7 @@ export default {
 				timeline: [],
 				today: {},
 				countries: {},
+				us: {},
 				highestDeathsPerCases: {},
 				averageDeathsPerCases: {},
 				lowestDeathsPerCases: {},

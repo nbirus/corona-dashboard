@@ -61,12 +61,6 @@
 			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />
 		</div>
 
-		<!-- other stats -->
-		<!-- <div class="home-page__countries">
-			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
-			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />
-		</div>-->
-
 		<!-- map -->
 		<v-card class="home-page__geolocation">
 			<map-container />
@@ -83,6 +77,11 @@
 			<h2 class="text-center mb-2">Top Stories</h2>
 			<news-feed />
 		</v-card>
+
+		<!-- map -->
+		<v-card class="home-page__countries">
+			<country-list :data="$h.get(data, 'countries')" />
+		</v-card>
 	</div>
 </template>
 
@@ -93,10 +92,19 @@ import CountryWidget from '@/components/widgets/CountryWidget'
 import ChartWrapper from '@/components/charts/ChartWrapper'
 import MapContainer from '@/components/map/MapContainer'
 import NewsFeed from '@/components/news/NewsFeed'
+import CountryList from '@/components/country-list/CountryList'
 
 export default {
 	name: 'home-page',
-	components: { StatWidget, CountWidget, CountryWidget, ChartWrapper, MapContainer, NewsFeed },
+	components: {
+		StatWidget,
+		CountWidget,
+		CountryWidget,
+		ChartWrapper,
+		MapContainer,
+		NewsFeed,
+		CountryList,
+	},
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
@@ -146,18 +154,16 @@ export default {
 		grid-template-columns: 1fr 1fr 1fr;
 		grid-gap: 1rem;
 	}
-	&__countries {
-		margin-bottom: 2.5rem;
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-gap: 1rem;
-	}
 	&__geolocation {
 		height: auto;
 		margin-bottom: 2.5rem;
 	}
 	&__news {
 		padding: 2rem 1.5rem;
+		margin-bottom: 2.5rem;
+	}
+	&__countries {
+		padding: 2rem 0 0;
 	}
 }
 </style>

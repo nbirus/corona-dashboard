@@ -4,6 +4,7 @@ const formatMap = {
   pie,
   bar,
   line,
+  country,
   linedeaths,
   linerecovered,
   linecases,
@@ -54,6 +55,22 @@ function line(data) {
   //   data: data.recovered,
   // }
 
+  return {
+    datasets: [cases, deaths],
+    labels: data.dates,
+  }
+}
+
+function country(data) {
+  let cases = {
+    ...casesDataSet,
+    data: data.data.cases,
+  }
+  let deaths = {
+    ...deathsDataSet,
+    data: data.data.deaths,
+  }
+  
   return {
     datasets: [cases, deaths],
     labels: data.dates,
