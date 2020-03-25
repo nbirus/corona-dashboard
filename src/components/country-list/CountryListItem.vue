@@ -6,7 +6,7 @@
 			</v-layout>
 			<v-flex shrink class="key-value mr-5 body-1">
 				<span class="value mr-1">{{ activeKey.value | localeString }}</span>
-				<span class="key">{{activeKey.label}}</span>
+				<span class="key">{{ activeKey.label }}</span>
 			</v-flex>
 		</v-expansion-panel-header>
 
