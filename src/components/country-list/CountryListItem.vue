@@ -4,10 +4,14 @@
 			<v-layout column>
 				<h3 v-text="data.country"></h3>
 			</v-layout>
+			<v-flex shrink class="key-value mr-5 body-1">
+				<span class="value mr-1">{{ activeKey.value | localeString }}</span>
+				<span class="key">{{activeKey.label}}</span>
+			</v-flex>
 		</v-expansion-panel-header>
 
 		<v-expansion-panel-content class="content">
-			<v-layout class="mb-5" wrap>
+			<!-- <v-layout class="mb-5" wrap>
 				<v-flex shrink class="key-value mr-5 body-2">
 					<span class="value mr-1">{{ data.cases | localeString }}</span>
 					<span class="key">cases</span>
@@ -48,7 +52,7 @@
 					<span class="value mr-1">{{ data.deathsPerCases | localeString }}</span>
 					<span class="key">deathsPerCases</span>
 				</v-flex>
-			</v-layout>
+			</v-layout>-->
 			<chart-wrapper
 				class="timeline-chart"
 				id="country-timeline-chart"
@@ -56,9 +60,9 @@
 				formatter="country"
 				:key="key"
 				:data="{
-          dates,
-          data: data.timeline,
-        }"
+					dates,
+					data: data.timeline,
+				}"
 			/>
 		</v-expansion-panel-content>
 
@@ -73,7 +77,7 @@ import ChartWrapper from '@/components/charts/ChartWrapper'
 export default {
 	name: 'country-list-item',
 	components: { ChartWrapper },
-	props: ['data'],
+	props: ['data', 'sortKey'],
 	data() {
 		return {
 			key: 0,
@@ -82,6 +86,63 @@ export default {
 	computed: {
 		dates() {
 			return this.$h.get(this.$store.getters['data/get'], 'timeline.dates', [])
+		},
+		totals() {
+			return [
+				{
+					key: 'cases',
+					label: 'Cases',
+					value: this.data.cases,
+				},
+				{
+					key: 'deaths',
+					label: 'deaths',
+					value: this.data.deaths,
+				},
+				{
+					key: 'recovered',
+					label: 'recovered',
+					value: this.data.recovered,
+				},
+				{
+					key: 'todayCases',
+					label: 'todayCases',
+					value: this.data.todayCases,
+				},
+				{
+					key: 'todayDeaths',
+					label: 'todayDeaths',
+					value: this.data.todayDeaths,
+				},
+				{
+					key: 'critical',
+					label: 'critical',
+					value: this.data.critical,
+				},
+				{
+					key: 'active',
+					label: 'active',
+					value: this.data.active,
+				},
+				{
+					key: 'casesPerOneMillion',
+					label: 'casesPerOneMillion',
+					value: this.data.casesPerOneMillion,
+				},
+				{
+					key: 'deathsPerOneMillion',
+					label: 'deathsPerOneMillion',
+					value: this.data.deathsPerOneMillion,
+				},
+				{
+					key: 'deathsPerCases',
+					label: 'deathsPerCases',
+					value: this.data.deathsPerCases,
+				},
+			]
+		},
+		activeKey() {
+			return this.totals.find(t => t.key === this.sortKey)
 		},
 	},
 }

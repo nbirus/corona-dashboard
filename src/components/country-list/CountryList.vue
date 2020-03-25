@@ -29,8 +29,8 @@
 			:sort="sort"
 			v-slot="{ _state }"
 		>
-			<v-expansion-panels flat class="country-list__list" :class="{loading: _state.loading}">
-				<country-list-item v-for="(item, i) in _state.data" :key="i" :data="item" />
+			<v-expansion-panels flat class="country-list__list" :class="{ loading: _state.loading }">
+				<country-list-item v-for="(item, i) in _state.data" :key="i" :data="item" :sortKey="sortKey" />
 				<li
 					v-if="pagination.size < countries.length"
 					v-ripple

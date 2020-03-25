@@ -117,7 +117,7 @@ export default {
 				let parent = point.parentElement.parentElement
 				let pointBounds = point.getBoundingClientRect()
 				let parentBounds = parent.getBoundingClientRect()
-				this.trackerStyle.left = `${pointBounds.left - parentBounds.left}px`
+				this.trackerStyle.left = `${pointBounds.left - parentBounds.left - 2}px`
 
 				this.activeDate = {
 					cases: this.$h.get(this.data, `timeline.cases.${index}`),
@@ -154,7 +154,7 @@ export default {
 	}
 
 	&__timeline {
-		padding: 0.75rem 1.25em 0.25rem;
+		padding: 0.75rem 1.4rem 0.25rem 1.25em;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
