@@ -1,5 +1,5 @@
 .page {
-	padding: 3rem 4rem;
+	padding: 4rem 4rem;
 	position: relative;
 	min-height: $min-page-height;
 
@@ -31,4 +31,10 @@
 	max-width: $max-width-lg;
 	margin: 0 auto;
 	position: relative;
+}
+
+@media screen and (max-width: 480px) {
+	.page {
+		padding: 2rem 1rem !important;
+	}
 }

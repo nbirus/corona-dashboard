@@ -12,12 +12,10 @@ import resource from '@/store/modules/resource'
 import keyword from '@/store/modules/keyword'
 import dialogTable from '@/store/modules/dialogTable'
 import data from '@/store/modules/data'
+import timeline from '@/store/modules/timeline'
 import base from '@/store/base'
 
 // resources
-import countriesResource from '@/store/resources/countries-resource'
-import timelineResource from '@/store/resources/timeline-resource'
-import countsResource from '@/store/resources/counts-resource'
 import mainResource from '@/store/resources/main-resource'
 
 const vuexLocal = new VuexPersistence({
@@ -47,9 +45,7 @@ export default new Vuex.Store({
 		resource,
 		keyword,
 		dialogTable,
-		countriesResource,
-		timelineResource,
-		countsResource,
 		mainResource,
+		timeline,
 	},
 })

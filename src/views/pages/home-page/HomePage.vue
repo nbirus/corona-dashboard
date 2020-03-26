@@ -1,13 +1,15 @@
 <template>
 	<div class="home-page page limit-width">
-		<h1 class="text-center">Covid-19 Dashboard</h1>
-		<p class="text-center header-0">A collection of analytics about the recent Covid-19 outbreak</p>
+		<div class="home-page__totals">
+			<v-card class="home-page__totals-cases"></v-card>
+			<v-card class="home-page__totals-deaths"></v-card>
+			<v-card class="home-page__totals-recoveries"></v-card>
+		</div>
 
-		<br />
-		<br />
+		<v-card class="home-page__timeline"></v-card>
 
 		<!-- totals -->
-		<div class="home-page__totals">
+		<div class="home-page__totals" v-if="false">
 			<count-widget
 				id="cases"
 				color="blue"
@@ -38,19 +40,15 @@
 		</div>
 
 		<!-- timeline -->
-		<v-card class="home-page__timeline">
+		<v-card class="home-page__timeline" v-if="false">
 			<h2 class="text-center">Timeline</h2>
 			<chart-wrapper type="line" id="timeline" :data="$h.get(data, 'timeline')" />
 		</v-card>
 
 		<!-- extra stats -->
-		<div class="home-page__stats">
+		<div class="home-page__stats" v-if="false">
 			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
-			<stat-widget
-				:value="$h.get(data, 'totals.critical')"
-				id="critical"
-				label="Critical Condition"
-			/>
+			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
 			<stat-widget
 				:value="`${$h.get(data, 'totals.deathsPerCases')}%`"
 				id="deathsPerCases"
@@ -66,24 +64,24 @@
 		</div>
 
 		<!-- map -->
-		<v-card class="home-page__geolocation">
+		<v-card class="home-page__geolocation" v-if="false">
 			<map-container />
 		</v-card>
 
 		<!-- timeline -->
-		<v-card class="home-page__per-million">
+		<v-card class="home-page__per-million" v-if="false">
 			<h2 class="text-center">Per Million</h2>
 			<chart-wrapper type="bar" id="million" :data="$h.get(data, 'countries')" />
 		</v-card>
 
 		<!-- map -->
-		<v-card class="home-page__news">
+		<v-card class="home-page__news" v-if="false">
 			<h2 class="text-center mb-2">Top Stories</h2>
 			<news-feed />
 		</v-card>
 
 		<!-- map -->
-		<v-card class="home-page__countries">
+		<v-card class="home-page__countries" v-if="false">
 			<country-list :data="$h.get(data, 'countries')" />
 		</v-card>
 	</div>
@@ -118,10 +116,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.header-0 {
-	font-size: 1.2rem;
-}
 .home-page {
+	display: grid;
+	grid-gap: 1.5rem;
+	grid-template-rows: min-content;
+
+	&__totals {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-rows: 175px;
+		grid-gap: 1.5rem;
+	}
+	&__timeline {
+		min-height: 432px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.home-page {
+		&__totals {
+			grid-template-columns: 1fr;
+			grid-template-rows: 175px 175px 175px;
+			grid-gap: 1rem;
+		}
+		&__timeline {
+			min-height: 300px;
+		}
+	}
+}
+
+.home-page2 {
 	&__totals {
 		margin-bottom: 2.5rem;
 		position: relative;
