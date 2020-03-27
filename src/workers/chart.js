@@ -130,12 +130,10 @@ function formatLineData(data, dataset) {
     ...dataset,
     pointRadius: 3,
     borderWidth: 1,
-    // data: data.data.splice(length - daysAgo, length - 1),
     data: data.data.splice(length - daysAgo, length - 1).filter((d, i) => i % 3 === 0),
   }
   return {
     datasets: [modifiedDataset],
-    // labels: data.dates.splice(length - daysAgo, length - 1),
     labels: data.dates.splice(length - daysAgo, length - 1).filter((d, i) => i % 3 === 0),
   }
 }

@@ -85,7 +85,7 @@ export function format(countryData, historyData) {
   historyData.forEach(dataPoint => {
     let cases = Object.values(dataPoint.timeline.cases)
     let deaths = Object.values(dataPoint.timeline.deaths)
-
+    
     timeline.cases = mergeTimeline(timeline.cases, cases)
     timeline.deaths = mergeTimeline(timeline.deaths, deaths)
 
@@ -95,9 +95,11 @@ export function format(countryData, historyData) {
   })
 
   // set world
+  let map = JSON.parse(JSON.stringify(data))
   data['world'] = {
     totals,
     timeline,
+    map,
   }
 
   return data
@@ -114,10 +116,11 @@ export function format(countryData, historyData) {
     return iso
   }
   function mergeTimeline(array1, array2) {
+    let array = []
     dates.forEach((d, index) => {
-      set(array1, index, get(array1, index, 0) + get(array2, index, 0))
+      set(array, index, get(array1, index, 0) + get(array2, index, 0))
     }) 
-    return array1
+    return array
   }
   function getCountryId(label) {
     return { "cote d'ivoire":'CI', 'mali': 'ML', 'libya': 'LY', 'thailand':'TH','japan':'JP','singapore':'SG','belize': 'BZ', 'nepal':'NP','malaysia':'MY','canada':'CA','australia':'AU','cambodia':'KH','sri lanka':'LK','germany':'DE','finland':'FI','uae':'AE','philippines':'PH','india':'IN','italy':'IT','sweden':'SE','spain':'ES','belgium':'BE','egypt':'EG','lebanon':'LB','iraq':'IQ','oman':'OM','afghanistan':'AF','bahrain':'BH','kuwait':'KW','algeria':'DZ','croatia':'HR','switzerland':'CH','austria':'AT','israel':'IL','pakistan':'PK','brazil':'BR','georgia':'GE','greece':'GR','north macedonia':'MK','norway':'NO','romania':'RO','estonia':'EE','san marino':'SM','belarus':'BY','iceland':'IS','lithuania':'LT','mexico':'MX','new zealand':'NZ','nigeria':'NG','ireland':'IE','luxembourg':'LU','monaco':'MC','qatar':'QA','ecuador':'EC','azerbaijan':'AZ','armenia':'AM','dominican republic':'DO','indonesia':'ID','portugal':'PT','andorra':'AD','latvia':'LV','morocco':'MA','saudi arabia':'SA','senegal':'SN','argentina':'AR','chile':'CL','jordan':'JO','ukraine':'UA','hungary':'HU','liechtenstein':'LI','poland':'PL','tunisia':'TN','bosnia':'BA','slovenia':'SI','south africa':'ZA','bhutan':'BT','cameroon':'CM','colombia':'CO','costa rica':'CR','peru':'PE','serbia':'RS','slovakia':'SK','togo':'TG','malta':'MT','martinique':'MQ','bulgaria':'BG','maldives':'MV','bangladesh':'BD','paraguay':'PY','albania':'AL','cyprus':'CY','brunei':'BN','usa':'US','burkina faso':'BF','holy see':'VA','mongolia':'MN','panama':'PA','china':'CN','iran':'IR','s. korea':'KR','france':'FR','cruise ship':'','denmark':'DK','czech republic':'CZ','taiwan*':'TW','vietnam':'VN','russia':'RU','moldova':'MD','bolivia':'BO','honduras':'HN','uk':'GB','congo (kinshasa)':'', 'jamaica':'JM','turkey':'TR','cuba':'CU','guyana':'GY','kazakhstan':'KZ','ethiopia':'ET','sudan':'SD','guinea':'GN','kenya':'KE','antigua and barbuda':'AG','uruguay':'UY','ghana':'GH','namibia':'NA','seychelles':'SC','trinidad and tobago':'TT','venezuela':'VE','eswatini':'','gabon':'GA','guatemala':'GT','mauritania':'MR','rwanda':'RW','saint lucia':'LC','saint vincent and the grenadines':'VC','suriname':'SR','kosovo':'','central african republic':'CF','congo (brazzaville)':'CG','equatorial guinea':'GQ','uzbekistan':'UZ','netherlands':'NL','benin':'BJ','liberia':'LR','somalia':'SO','tanzania':'TZ','barbados':'BB','montenegro':'ME','kyrgyzstan':'KG','mauritius':'MU','zambia':'ZM','djibouti':'DJ','gambia':'GM','bahamas':'BS','chad':'TD','el salvador':'SV','fiji':'FJ','nicaragua':'NI','madagascar':'MG','haiti':'HT','angola':'AO','cabo verde':'CV','niger':'NE','papua new guinea':'PG','zimbabwe':'ZW','cape verde':'CV','east timor':'TL','eritrea':'ER','uganda':'UG','dominica':'DM','grenada':'GD','mozambique':'MZ','syria':'SY','timor-leste':'TL'}[label]

@@ -22,18 +22,24 @@
 				:dates="$h.get(data, 'timeline.dates')"
 			/>
 			<v-card class="home-page__recovered">
-				<h1 class="mr-2">{{$h.get(data, 'totals.recovered') | localeString}}</h1>
+				<h1 class="mr-2">{{ $h.get(data, 'totals.recovered') | localeString }}</h1>
 				<span>recovered</span>
 			</v-card>
 		</div>
 
 		<v-card class="home-page__timeline">
+			<h2 class="text-center">Timeline</h2>
 			<chart-wrapper
 				v-if="$h.exists(data.timeline)"
 				type="line"
 				id="timeline"
 				:data="$h.get(data, 'timeline')"
 			/>
+		</v-card>
+
+		<!-- map -->
+		<v-card class="home-page__geolocation" v-if="key === 'world'">
+			<map-container />
 		</v-card>
 
 		<!-- extra stats -->
@@ -53,11 +59,6 @@
 			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
 			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />-->
 		</div>
-
-		<!-- map -->
-		<v-card class="home-page__geolocation" v-if="false">
-			<map-container />
-		</v-card>
 
 		<!-- timeline -->
 		<v-card class="home-page__per-million" v-if="false">
@@ -110,7 +111,7 @@ export default {
 <style lang="scss" scoped>
 .home-page {
 	display: grid;
-	grid-gap: 1.5rem;
+	grid-gap: 2rem;
 	grid-template-rows: min-content;
 	grid-template-columns: 1fr 3.5fr;
 
@@ -129,12 +130,18 @@ export default {
 		}
 	}
 	&__timeline {
-		padding: 0.5rem 1rem 1.5rem;
-		min-height: 517px;
+		padding: 0.5rem 1rem 1rem;
+		min-height: 500px;
 
-		#timeline {
-			min-height: 485px;
+		h2 {
+			transform: translateY(0.75rem);
 		}
+		#timeline {
+			min-height: 475px;
+		}
+	}
+	&__geolocation {
+		grid-column: span 2;
 	}
 }
 

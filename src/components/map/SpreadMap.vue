@@ -20,9 +20,11 @@
 		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<span class="body-2" v-text="hoverCountry.name"></span>
 			&nbsp;
-			<strong :key="`${dateIndex}-${type}`" class="bold">{{
+			<strong :key="`${dateIndex}-${type}`" class="bold">
+				{{
 				$h.get(hoverCountry, `timeline.${type}.${dateIndex}`, 0) | localeString
-			}}</strong>
+				}}
+			</strong>
 		</v-card>
 	</div>
 </template>
@@ -51,8 +53,8 @@ export default {
 				maxZoom: 5,
 				minZoom: 2,
 				maxBounds: [
-					[90, -190],
-					[-90, 190],
+					[90, -250],
+					[-90, 250],
 				],
 			},
 			labelOptions: {
@@ -81,8 +83,6 @@ export default {
 			return {
 				type: 'FeatureCollection',
 				features: Countries.features.map(feature => {
-					// console.log(this.value[feature.code])
-
 					let country = this.value[feature.code]
 					if (country !== undefined) {
 						feature.properties = {
@@ -102,7 +102,6 @@ export default {
 				this.$h.get(feature, `properties.timeline.${this.type}.${this.dateIndex}`, 0),
 				this.type
 			)
-
 			return {
 				color: '#fff',
 				weight: 1,
@@ -205,29 +204,29 @@ let colors = {
 }
 let scale = [
 	1,
-	3,
-	7,
 	10,
 	25,
 	50,
 	100,
-	250,
 	500,
 	750,
 	1000,
-	2500,
+	1250,
+	1500,
+	2000,
 	5000,
 	7500,
 	10000,
 	25000,
 	50000,
 	75000,
+	80000,
 	100000,
 ]
 function getColor(d = 0, type) {
 	let color = ''
 	scale.forEach((scaleValue, i) => {
-		if (scaleValue < d) {
+		if (scaleValue <= d) {
 			color = colors[type][i]
 		}
 	})
@@ -238,7 +237,7 @@ function getColor(d = 0, type) {
 <style lang="scss" scoped>
 .spread-map {
 	&__map {
-		height: 500px;
+		height: calc(90vh - 65px);
 	}
 	&__popover {
 		position: fixed;

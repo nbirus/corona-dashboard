@@ -82,7 +82,6 @@ div.count-widget {
 	overflow: hidden;
 	display: flex !important;
 	align-items: center;
-	// justify-content: center;
 	position: relative;
 	padding-left: 2rem;
 
@@ -101,7 +100,6 @@ div.count-widget {
 	}
 	&__data {
 		z-index: 2;
-		// text-align: center;
 		font-size: 1.3rem;
 		transform: translateY(-1.25rem);
 

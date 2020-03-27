@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar height="230">
+	<v-app-bar color="transparent" height="250">
 		<div class="nav-bar-container">
 			<div class="nav__title">
 				<h1>Covid-19 Dashboard</h1>
@@ -15,14 +15,14 @@
 				<v-btn-toggle v-model="dataSet" mandatory color="primary" dense>
 					<v-btn
 						id="world-btn"
-						:class="{active: dataSet === 'world'}"
+						:class="{ active: dataSet === 'world' }"
 						large
 						min-width="200"
 						value="world"
 					>World</v-btn>
 					<v-btn
 						id="us-btn"
-						:class="{active: dataSet === 'us'}"
+						:class="{ active: dataSet === 'us' }"
 						large
 						min-width="200"
 						value="US"
@@ -101,5 +101,12 @@ export default {
 	border-color: var(--v-primary-base) !important;
 	background-color: fade-out(rgb(25, 118, 210), 0.995);
 	border-left-width: 1px;
+}
+
+#us-btn {
+	border-radius: 0 0.75rem 0.75rem 0;
+}
+#world-btn {
+	border-radius: 0.75rem 0 0 0.75rem;
 }
 </style>

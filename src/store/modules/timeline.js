@@ -2,16 +2,15 @@ import dayjs from 'dayjs'
 
 let timelineInterval = null
 let timelinePauseTimeout = null
-let timelineIntervalSpeed = 200
+let timelineIntervalSpeed = 1
 let timelinePauseInterval = 2000
 
 let startDate = '1/22/20'
 
-let dates = getDates()
 function getDates() {
 	var dateArray = []
 	var currentDate = dayjs(startDate)
-	while (currentDate <= dayjs()) {
+	while (currentDate <= dayjs().subtract(1, 'day')) {
 		dateArray.push(dayjs(currentDate).format('MMM D'))
 		currentDate = dayjs(currentDate).add(1, 'days')
 	}
@@ -21,33 +20,38 @@ function getDates() {
 export default {
 	namespaced: true,
 	state() {
+		let dates = getDates()
+		let dateLength = dates.length
+
 		return {
 			timelinePlaying: false,
 			timelineDates: dates,
-			timelineLength: 0,
-			timelineIndex: dates.length - 1,
+			timelineSlider: dateLength * 10,
+			timelineMax: dateLength * 10,
 		}
 	},
 	getters: {
-		timelineDates: state => state.timelineDates,
 		timelinePlaying: state => state.timelinePlaying,
-		timelineIndex: state => state.timelineIndex,
-		timelineLength: state => state.timelineDates.length - 1,
+		timelineDates: state => state.timelineDates,
+		timelineSlider: state => state.timelineSlider,
+		timelineMax: state => state.timelineMax,
+		timelineIndex: state => Math.round(Number.parseInt(state.timelineSlider) / 10) - 1,
+		timelineLength: state => state.timelineLength,
 		timelineActiveDate: state => state.timelineDates[state.timelineIndex],
 	},
 	mutations: {
 		SET_PLAY(state, playing) {
 			state.timelinePlaying = playing
 		},
-		SET_DATE_INDEX(state, index) {
-			state.timelineIndex = index
+		SET_SLIDER(state, value) {
+			state.timelineSlider = value
 		},
 	},
 	actions: {
 		// controls
 		start({ commit, dispatch, getters }) {
 			// pause if the timeline is not already stoped
-			let skipPause = getters.timelineIndex === getters.timelineLength && !getters.timelinePlaying
+			let skipPause = getters.timelineSlider === getters.timelineMax && !getters.timelinePlaying
 			timelinePauseInterval = skipPause ? 0 : 2000
 
 			clear()
@@ -68,24 +72,23 @@ export default {
 				dispatch('start')
 			}
 		},
-		set({ dispatch, commit }, index) {
-			dispatch('pause')
-			commit('SET_DATE_INDEX', index)
+		set({ commit }, value) {
+			commit('SET_SLIDER', value)
 		},
 
 		// methods
 		onInterval({ commit, getters, dispatch }) {
-			if (getters.timelineIndex > getters.timelineLength) {
+			if (getters.timelineSlider === getters.timelineMax) {
 				dispatch('restartAfterPause')
 			} else {
-				commit('SET_DATE_INDEX', getters.timelineIndex + 1)
+				commit('SET_SLIDER', getters.timelineSlider + 1)
 			}
 		},
 		restartAfterPause({ dispatch, commit, getters }) {
 			clear()
 			timelinePauseTimeout = setTimeout(() => {
 				if (getters.timelinePlaying) {
-					commit('SET_DATE_INDEX', 0)
+					commit('SET_SLIDER', 0)
 					dispatch('start')
 				}
 			}, timelinePauseInterval)

@@ -1,7 +1,9 @@
 <template>
 	<div class="map-container">
 		<!-- map -->
-		<spread-map :date-index="dateIndex" :value="$h.get(data, 'countries')" :type="type" />
+		<div class="map-container__map">
+			<spread-map :date-index="timelineIndex" :value="$h.get(data, 'map')" :type="type" />
+		</div>
 
 		<!-- info -->
 		<div class="map-container__info" :class="`active-${type}`">
@@ -15,149 +17,66 @@
 				<span class="label">Deaths</span>
 				<strong class="value">{{ activeDate.deaths | localeString }}</strong>
 			</div>
-			<!-- <div class="map-container__info-item recovered" @click="type = 'recovered'">
-				<span class="bullet"></span>
-				<span class="label">Recovered</span>
-				<strong class="value">{{ activeDate.recovered | localeString }}</strong>
-			</div>-->
-		</div>
-
-		<!-- date tracker -->
-		<div class="map-container__tracker" :style="trackerStyle">
-			<span>{{ dates[dateIndex] | date('MMM D') }}</span>
-		</div>
-
-		<!-- pause button -->
-		<div class="map-container__pause">
-			<v-btn @click="paused = !paused" class="button leaflet-bar" small rounded color="white">
-				<v-icon size="15">mdi-{{ !paused ? 'pause' : 'play' }}</v-icon>
-			</v-btn>
 		</div>
 
 		<!-- timeline -->
 		<div class="map-container__timeline">
-			<v-slider
-				ref="slider"
-				v-model.lazy="dateIndex"
-				@click="stop"
-				:tick-labels="dates"
-				tick-size="3"
-				:min="0"
-				:max="dateLength"
-			/>
+			<timeline-controller />
 		</div>
 	</div>
 </template>
 
 <script>
 import SpreadMap from '@/components/map/SpreadMap'
+import TimelineController from '@/components/timeline/TimelineController'
 
 export default {
 	name: 'map-container',
-	components: { SpreadMap },
+	components: { SpreadMap, TimelineController },
 	data() {
 		return {
-			usMap: true,
 			type: 'cases',
-			paused: false,
-			dateIndex: 20,
-			intervalSpeed: 200,
-			interval: null,
-			hover: false,
 			trackerStyle: {
 				left: '16px',
 			},
-			activeDate: {
-				cases: 0,
-				deaths: 0,
-				recovered: 0,
-			},
-			sliderEls: [],
 		}
 	},
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
 		},
-		dates() {
-			return this.$h.get(this.data, 'timeline.dates', [])
+		timelineIndex() {
+			return this.$store.getters['timeline/timelineIndex']
 		},
-		dateLength() {
-			return this.dates.length - 1
-		},
-	},
-	mounted() {
-		let container = this.$refs.slider.$el
-		this.sliderEls = container.querySelector('.v-slider__ticks-container').children
-		this.start()
-	},
-	methods: {
-		start() {
-			this.stop()
-			this.interval = setInterval(() => {
-				if (!this.paused) {
-					if (this.dateIndex === this.dateLength) {
-						this.paused = true
-						setTimeout(() => {
-							this.paused = false
-							this.dateIndex = 0
-						}, 3000)
-					} else {
-						this.dateIndex++
-					}
-				}
-			}, this.intervalSpeed)
-		},
-		stop() {
-			clearInterval(this.interval)
-			this.interval = 0
-		},
-		setDatePos(index, ignore = false) {
-			if (index % 2 === 0 || index === this.dateLength || ignore) {
-				let point = this.sliderEls[index]
-				let parent = point.parentElement.parentElement
-				let pointBounds = point.getBoundingClientRect()
-				let parentBounds = parent.getBoundingClientRect()
-				this.trackerStyle.left = `${pointBounds.left - parentBounds.left - 2}px`
-
-				this.activeDate = {
-					cases: this.$h.get(this.data, `timeline.cases.${index}`),
-					deaths: this.$h.get(this.data, `timeline.deaths.${index}`),
-					// recovered: this.$h.get(this.data, `timeline.recovered.${index}`),
-				}
+		activeDate() {
+			return {
+				cases: this.$h.get(this.data, `timeline.cases.${this.timelineIndex}`),
+				deaths: this.$h.get(this.data, `timeline.deaths.${this.timelineIndex}`),
 			}
 		},
-		setDateIndex(index) {
-			this.paused = true
-			this.dateIndex = index
-			this.setDatePos(index, true)
-		},
-	},
-	watch: {
-		dateIndex: 'setDatePos',
 	},
 }
 </script>
 
 <style lang="scss">
 .map-container {
-	height: auto;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	height: 90vh;
 
-	.v-slider__tick-label {
-		display: none;
+	&__map {
+		height: 100%;
+		flex: 0 1 100%;
 	}
-	.v-slider__tick:first-child,
-	.v-slider__tick:last-child,
-	.v-slider__tick:nth-child(7n) {
-		.v-slider__tick-label {
-			display: block;
-		}
-	}
-
 	&__timeline {
-		padding: 0.4rem 1.4rem 0.25rem 1.25em;
+		flex: 0 0 auto;
+		display: flex;
+		align-items: center;
+		padding: 0;
 		z-index: 9999;
 		overflow: visible;
+		height: 65px;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
