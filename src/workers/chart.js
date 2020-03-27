@@ -50,11 +50,6 @@ function line(data) {
     ...deathsDataSet,
     data: data.deaths,
   }
-  // let recovered = {
-  //   ...recoveredDataSet,
-  //   data: data.recovered,
-  // }
-
   return {
     datasets: [cases, deaths],
     labels: data.dates,
@@ -77,7 +72,7 @@ function country(data) {
   }
 }
 
-let daysAgo = 14
+let daysAgo = 40
 
 function linecases(data) {
   return formatLineData(data, casesDataSet)
@@ -97,7 +92,7 @@ const casesDataSet = {
   data: [],
   backgroundColor: [blue],
   borderColor: [blueBorder],
-  pointBackgroundColor: blueBorder,
+  pointBackgroundColor: blue,
   pointBorderColor: blueBorder,
   pointBorderWidth: 1,
   pointRadius: 2,
@@ -109,7 +104,7 @@ const deathsDataSet = {
   data: [],
   backgroundColor: [red],
   borderColor: [redBorder],
-  pointBackgroundColor: redBorder,
+  pointBackgroundColor: red,
   pointBorderColor: redBorder,
   pointBorderWidth: 1,
   pointRadius: 2,
@@ -133,13 +128,15 @@ function formatLineData(data, dataset) {
   let length = data.dates.length
   let modifiedDataset = {
     ...dataset,
-    pointRadius: 0,
-    borderWidth: 0,
-    data: data.data.splice(length - daysAgo, length - 1),
+    pointRadius: 3,
+    borderWidth: 1,
+    // data: data.data.splice(length - daysAgo, length - 1),
+    data: data.data.splice(length - daysAgo, length - 1).filter((d, i) => i % 3 === 0),
   }
   return {
     datasets: [modifiedDataset],
-    labels: data.dates.splice(length - daysAgo, length - 1),
+    // labels: data.dates.splice(length - daysAgo, length - 1),
+    labels: data.dates.splice(length - daysAgo, length - 1).filter((d, i) => i % 3 === 0),
   }
 }
 

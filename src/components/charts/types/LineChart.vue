@@ -6,6 +6,7 @@ export default {
 	extends: Line,
 	props: {
 		data: [Array, Object],
+		logarithmic: Boolean,
 		extraOptions: {
 			type: Object,
 			default: () => ({}),
@@ -24,6 +25,7 @@ export default {
 					],
 					yAxes: [
 						{
+							type: this.logarithmic ? 'logarithmic' : 'linear',
 							gridLines: {
 								drawBorder: false,
 								offsetGridLines: true,

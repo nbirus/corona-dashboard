@@ -11,10 +11,12 @@
 			@change="chartLoading = $event.loading"
 		/>
 
+		<div class="count-widget__gradient"></div>
+
 		<!-- data -->
-		<div class="count-widget__data">
-			<h1>{{ value | localeString }}</h1>
-			<label class="text--secondary">{{ label }}</label>
+		<div class="count-widget__data" :class="id">
+			<h1 class="text">{{ value | localeString }}</h1>
+			<label class="text">{{ label }}</label>
 		</div>
 
 		<!-- bottom data -->
@@ -79,41 +81,59 @@ div.count-widget {
 	transition: transform 0.2s ease;
 	overflow: hidden;
 	display: flex !important;
-	// align-items: center;
+	align-items: center;
+	// justify-content: center;
 	position: relative;
-	padding-top: 1rem;
-	padding-left: 1.5rem;
+	padding-left: 2rem;
 
 	.default-loading {
 		display: none;
 	}
+	&__gradient {
+		position: absolute;
+		top: 0;
+		left: -30rem;
+		right: -16rem;
+		bottom: 0;
+		background: rgb(255, 255, 255);
+		background: radial-gradient(circle, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
+		opacity: 1;
+	}
 	&__data {
 		z-index: 2;
+		// text-align: center;
+		font-size: 1.3rem;
+		transform: translateY(-1.25rem);
 
 		label {
 			display: block;
+			font-size: 1.2rem;
 			margin-top: -0.5rem;
 		}
-	}
-	&__badge {
-		position: absolute;
-		right: 1rem;
-		top: 1rem;
-		z-index: 13;
+
+		&.cases .text {
+			color: #2e495f;
+		}
+		&.deaths .text {
+			color: #530505;
+		}
+		&.recovered .text {
+			color: #2e495f;
+		}
 	}
 	&__chart {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: 29px;
-		height: calc(100% - 65px);
+		bottom: 28px;
+		height: calc(100% - 28px);
 	}
 	&__banner {
 		position: absolute;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 30px;
+		height: 28px;
 		background-color: fade-out(black, 0.975);
 		color: var(--v-secondary-lighten1);
 		display: flex;
@@ -124,30 +144,25 @@ div.count-widget {
 			position: absolute;
 			left: 1rem;
 		}
-	}
 
-	.cases {
-		background-color: rgba(218, 235, 249, 1);
-		color: var(--v-primary-darken3);
-	}
-	.deaths {
-		background-color: rgba(252, 198, 194, 1);
-		color: var(--v-error-darken3);
-	}
-	.recovered {
-		background-color: rgba(219, 239, 220, 1);
-		color: var(--v-success-darken3);
-	}
+		&.cases {
+			background-color: rgba(218, 235, 249, 1);
+			color: var(--v-primary-darken3);
 
-	&.loading {
-		.cases {
-			border-top: solid 1px var(--v-primary-lighten1);
+			.text {
+				color: #2e495f;
+			}
+			label {
+				color: var(--v-primary-darken3);
+			}
 		}
-		.deaths {
-			border-top: solid 1px var(--v-error-lighten1);
+		&.deaths {
+			background-color: rgba(252, 198, 194, 1);
+			color: var(--v-error-darken3);
 		}
-		.recovered {
-			border-top: solid 1px var(--v-success-lighten1);
+		&.recovered {
+			background-color: rgba(219, 239, 220, 1);
+			color: var(--v-success-darken3);
 		}
 	}
 }

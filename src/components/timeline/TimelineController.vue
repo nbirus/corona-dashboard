@@ -12,7 +12,7 @@
 		</div>
 		<div class="controller__play-pause">
 			<v-btn large icon @click="toggle">
-				<v-icon>mdi-{{timelinePlaying ? 'pause' : 'play'}}</v-icon>
+				<v-icon>mdi-{{ timelinePlaying ? 'pause' : 'play' }}</v-icon>
 			</v-btn>
 		</div>
 	</div>

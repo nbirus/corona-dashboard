@@ -1,18 +1,7 @@
 <template>
 	<v-app ref="app">
-		<div class="nav" ref="nav">
-			<div class="nav__title">
-				<h1>Covid-19 Dashboard</h1>
-				<p>A collection of analytics about the recent Covid-19 outbreak</p>
-			</div>
-			<div class="nav__controllers">
-				<!-- country -->
-				<country-controller class="nav__country" />
-
-				<!-- timleine -->
-				<timeline-controller ref="timeline" class="nav__timeline" />
-			</div>
-		</div>
+		<!-- nav bar -->
+		<app-nav-bar />
 
 		<!-- page view -->
 		<transition name="page" mode="out-in">
@@ -21,47 +10,35 @@
 			</v-content>
 		</transition>
 
-		<!-- <div class="loader" v-if="loading">
+		<div class="loader" v-if="loading">
 			<spinner></spinner>
-		</div>-->
+		</div>
 	</v-app>
 </template>
 
 <script>
 import { requestResource } from '@/services/RequestService'
-import TimelineController from '@/components/timeline/TimelineController'
-import CountryController from '@/components/country/CountryController'
+import AppNavBar from '@/views/navbar/NavBarBase'
+// import TimelineController from '@/components/timeline/TimelineController'
+// import CountryController from '@/components/country/CountryController'
 
 export default {
 	name: 'App',
 	components: {
-		TimelineController,
-		CountryController,
+		AppNavBar,
 	},
 	async created() {
 		// let totals = await requestResource('totals')
-		// let countries = await requestResource('countries')
-		// let history = await requestResource('history')
-		// // format response
-		// let response = await new Promise(resolve => {
-		// 	const dataWorker = new Worker('./workers/data.js', { type: 'module' })
-		// 	dataWorker.postMessage({ totals, countries, history })
-		// 	dataWorker.onmessage = e => resolve(e.data)
-		// })
-		// this.$store.dispatch('data/set', response)
+		let countries = await requestResource('countries')
+		let history = await requestResource('history')
+		// format response
+		let response = await new Promise(resolve => {
+			const dataWorker = new Worker('./workers/data.js', { type: 'module' })
+			dataWorker.postMessage({ countries, history })
+			dataWorker.onmessage = e => resolve(e.data)
+		})
+		this.$store.dispatch('data/set', response)
 		this.loading = false
-	},
-	mounted() {
-		let app = this.$refs.app.$el
-		let header = this.$refs.timeline.$el
-		let sticky = header.offsetTop
-		window.onscroll = () => {
-			if (window.pageYOffset > sticky) {
-				app.classList.add('sticky')
-			} else {
-				app.classList.remove('sticky')
-			}
-		}
 	},
 	data() {
 		return {
@@ -102,7 +79,6 @@ export default {
 		padding: 0;
 	}
 }
-
 @media screen and (min-width: 480px) {
 	.sticky {
 		.nav__controllers {

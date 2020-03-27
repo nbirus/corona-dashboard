@@ -2,24 +2,132 @@ import get from 'lodash/get'
 import set from 'lodash/set'
 import dayjs from 'dayjs'
 
+let startDate = '1/22/20'
+let dates = getDates()
+function getDates() {
+	var dateArray = []
+	var currentDate = dayjs(startDate)
+	while (currentDate <= dayjs().subtract(1, 'days')) {
+		dateArray.push(dayjs(currentDate).format('MMM D'))
+		currentDate = dayjs(currentDate).add(1, 'days')
+	}
+	return dateArray
+}
+
 /* istanbul ignore next */
 addEventListener('message',  e => {
   const {
-    totals, 
     countries, 
     history, 
   } = e.data
-  postMessage(format(totals.data,  countries.data,  history.data))
+  // postMessage(format(countries.data.splice(0, 1),  history.data))
+  postMessage(format(countries.data,  history.data))
 })
 
-export function format(totalsData,  countries,  history) {
-  let updated = dayjs(new Date(totalsData.updated))
-  let dates = Object.keys(get(history,  '0.timeline.cases',  {})).map(date => {
-    return dayjs(date).format('MMM D')
+
+export function format(countryData, historyData) {
+  let data = {}
+  let totals = {
+    cases: 0,
+    todayCases: 0,
+    deaths: 0,
+    todayDeaths: 0,
+    recovered: 0,
+    active: 0,
+    critical: 0,
+    casesPerOneMillion: 0,
+    deathsPerOneMillion: 0,
+  }
+  let timeline = {
+    cases: [],
+    deaths: [],
+    dates,
+  }
+
+  // loop over country data and create country map
+  countryData.forEach(countryDataPoint => {
+    totals = {
+      cases: totals.cases + countryDataPoint.cases,
+      todayCases: totals.todayCases + countryDataPoint.todayCases,
+      deaths: totals.deaths + countryDataPoint.deaths,
+      todayDeaths: totals.todayDeaths + countryDataPoint.todayDeaths,
+      recovered: totals.recovered + countryDataPoint.recovered,
+      active: totals.active + countryDataPoint.active,
+      critical: totals.critical + countryDataPoint.critical,
+      casesPerOneMillion: totals.casesPerOneMillion + countryDataPoint.casesPerOneMillion,
+      deathsPerOneMillion: totals.deathsPerOneMillion + countryDataPoint.deathsPerOneMillion,
+    }
+    data[countryDataPoint.countryInfo.iso2] = {
+      info: {
+        name: countryDataPoint.country,
+        ...countryDataPoint.countryInfo
+      },
+      totals: {
+        cases: countryDataPoint.cases,
+        todayCases: countryDataPoint.todayCases,
+        deaths: countryDataPoint.deaths,
+        todayDeaths: countryDataPoint.todayDeaths,
+        recovered: countryDataPoint.recovered,
+        active: countryDataPoint.active,
+        critical: countryDataPoint.critical,
+        casesPerOneMillion: countryDataPoint.casesPerOneMillion,
+        deathsPerOneMillion: countryDataPoint.deathsPerOneMillion,
+      },
+      timeline: {
+        cases: [],
+        deaths: [],
+        dates,
+      }
+    }
   })
 
+  // loop over history
+  historyData.forEach(dataPoint => {
+    let cases = Object.values(dataPoint.timeline.cases)
+    let deaths = Object.values(dataPoint.timeline.deaths)
+
+    timeline.cases = mergeTimeline(timeline.cases, cases)
+    timeline.deaths = mergeTimeline(timeline.deaths, deaths)
+
+    let iso2 = getIso(dataPoint)
+    set(data, `${iso2}.timeline.cases`, mergeTimeline(get(data, `${iso2}.timeline.cases`), cases))
+    set(data, `${iso2}.timeline.deaths`, mergeTimeline(get(data, `${iso2}.timeline.deaths`), deaths))
+  })
+
+  // set world
+  data['world'] = {
+    totals,
+    timeline,
+  }
+
+  return data
+
+  function getIso(dataPoint) {
+    let name = dataPoint.country
+    let countryInfo = countryData.find(country => name === country.country.toLowerCase())
+    let iso = get(countryInfo, 'iso2')
+
+    if (iso == undefined) {
+      iso = getCountryId(name)
+    }
+
+    return iso
+  }
+  function mergeTimeline(array1, array2) {
+    dates.forEach((d, index) => {
+      set(array1, index, get(array1, index, 0) + get(array2, index, 0))
+    }) 
+    return array1
+  }
+  function getCountryId(label) {
+    return { "cote d'ivoire":'CI', 'mali': 'ML', 'libya': 'LY', 'thailand':'TH','japan':'JP','singapore':'SG','belize': 'BZ', 'nepal':'NP','malaysia':'MY','canada':'CA','australia':'AU','cambodia':'KH','sri lanka':'LK','germany':'DE','finland':'FI','uae':'AE','philippines':'PH','india':'IN','italy':'IT','sweden':'SE','spain':'ES','belgium':'BE','egypt':'EG','lebanon':'LB','iraq':'IQ','oman':'OM','afghanistan':'AF','bahrain':'BH','kuwait':'KW','algeria':'DZ','croatia':'HR','switzerland':'CH','austria':'AT','israel':'IL','pakistan':'PK','brazil':'BR','georgia':'GE','greece':'GR','north macedonia':'MK','norway':'NO','romania':'RO','estonia':'EE','san marino':'SM','belarus':'BY','iceland':'IS','lithuania':'LT','mexico':'MX','new zealand':'NZ','nigeria':'NG','ireland':'IE','luxembourg':'LU','monaco':'MC','qatar':'QA','ecuador':'EC','azerbaijan':'AZ','armenia':'AM','dominican republic':'DO','indonesia':'ID','portugal':'PT','andorra':'AD','latvia':'LV','morocco':'MA','saudi arabia':'SA','senegal':'SN','argentina':'AR','chile':'CL','jordan':'JO','ukraine':'UA','hungary':'HU','liechtenstein':'LI','poland':'PL','tunisia':'TN','bosnia':'BA','slovenia':'SI','south africa':'ZA','bhutan':'BT','cameroon':'CM','colombia':'CO','costa rica':'CR','peru':'PE','serbia':'RS','slovakia':'SK','togo':'TG','malta':'MT','martinique':'MQ','bulgaria':'BG','maldives':'MV','bangladesh':'BD','paraguay':'PY','albania':'AL','cyprus':'CY','brunei':'BN','usa':'US','burkina faso':'BF','holy see':'VA','mongolia':'MN','panama':'PA','china':'CN','iran':'IR','s. korea':'KR','france':'FR','cruise ship':'','denmark':'DK','czech republic':'CZ','taiwan*':'TW','vietnam':'VN','russia':'RU','moldova':'MD','bolivia':'BO','honduras':'HN','uk':'GB','congo (kinshasa)':'', 'jamaica':'JM','turkey':'TR','cuba':'CU','guyana':'GY','kazakhstan':'KZ','ethiopia':'ET','sudan':'SD','guinea':'GN','kenya':'KE','antigua and barbuda':'AG','uruguay':'UY','ghana':'GH','namibia':'NA','seychelles':'SC','trinidad and tobago':'TT','venezuela':'VE','eswatini':'','gabon':'GA','guatemala':'GT','mauritania':'MR','rwanda':'RW','saint lucia':'LC','saint vincent and the grenadines':'VC','suriname':'SR','kosovo':'','central african republic':'CF','congo (brazzaville)':'CG','equatorial guinea':'GQ','uzbekistan':'UZ','netherlands':'NL','benin':'BJ','liberia':'LR','somalia':'SO','tanzania':'TZ','barbados':'BB','montenegro':'ME','kyrgyzstan':'KG','mauritius':'MU','zambia':'ZM','djibouti':'DJ','gambia':'GM','bahamas':'BS','chad':'TD','el salvador':'SV','fiji':'FJ','nicaragua':'NI','madagascar':'MG','haiti':'HT','angola':'AO','cabo verde':'CV','niger':'NE','papua new guinea':'PG','zimbabwe':'ZW','cape verde':'CV','east timor':'TL','eritrea':'ER','uganda':'UG','dominica':'DM','grenada':'GD','mozambique':'MZ','syria':'SY','timor-leste':'TL'}[label]
+  }
+}
+
+
+export function format2(totalsData,  countries,  history) {
+  let updated = dayjs(new Date(totalsData.updated))
   let countryMap = {}
-  let usMap = {}
   let totals = {
     ...totalsData, 
     active: 0, 
@@ -85,7 +193,6 @@ export function format(totalsData,  countries,  history) {
     // get timeline
     let casesTimeline = Object.values(get(country,  'timeline.cases',  [])).map(n => Number.parseInt(n))
     let deathsTimeline = Object.values(get(country,  'timeline.deaths',  [])).map(n => Number.parseInt(n))
-    // let recoveredTimeline = Object.values(get(country,  'timeline.recovered',  [])).map(n => Number.parseInt(n))
 
     if (!isNaN(casesTimeline[casesTimeline.length - 1])) {
       today.cases += casesTimeline[casesTimeline.length - 1]
@@ -93,10 +200,7 @@ export function format(totalsData,  countries,  history) {
     if (!isNaN(deathsTimeline[deathsTimeline.length - 1])) {
       today.deaths += deathsTimeline[deathsTimeline.length - 1]
     }
-    // if (!isNaN(recoveredTimeline[recoveredTimeline.length - 1])) {
-    //   today.recovered += recoveredTimeline[recoveredTimeline.length - 1]
-    // }
-    
+
     
     let id = getCountryId(country.country)
     if (countryMap.hasOwnProperty(id)) {           
@@ -113,9 +217,6 @@ export function format(totalsData,  countries,  history) {
       if (!isNaN(get(timeline.deaths, index, 0)) && !isNaN(deathsTimeline[index])) {
         set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
       }
-      // if (!isNaN(get(timeline.recovered, index, 0)) && !isNaN(recoveredTimeline[index])) {
-      //   set(timeline.recovered, index, get(timeline.recovered, index, 0) + recoveredTimeline[index])
-      // }
     })
   })
   
@@ -124,6 +225,17 @@ export function format(totalsData,  countries,  history) {
   today.cases = totalsData.cases - today.cases
   today.deaths = totalsData.deaths - today.deaths
   today.recovered = totalsData.recovered - today.recovered
+
+  console.log({
+    updated, 
+    totals, 
+    today, 
+    timeline, 
+    highestDeathsPerCases, 
+    lowestDeathsPerCases, 
+    countries: countryMap,
+  });
+  
 
   return {
     updated, 
@@ -135,22 +247,4 @@ export function format(totalsData,  countries,  history) {
     countries: countryMap, 
     us: usMap, 
   }
-}
-
-function mergeTimeline(array1, array2) {
-  let createdArray = []
-  array1.forEach((array1Number, index) => {
-    if (!isNaN(array1[index]) && !isNaN(array2[index]) ) {
-      createdArray.push(array1Number + array2[index])
-    }
-    else {
-      createdArray.push(array1Number)
-    }
-  })
-  return createdArray
-}
-
-
-function getCountryId(label) {
-  return { "cote d'ivoire":'CI', 'thailand':'TH','japan':'JP','singapore':'SG','nepal':'NP','malaysia':'MY','canada':'CA','australia':'AU','cambodia':'KH','sri lanka':'LK','germany':'DE','finland':'FI','uae':'AE','philippines':'PH','india':'IN','italy':'IT','sweden':'SE','spain':'ES','belgium':'BE','egypt':'EG','lebanon':'LB','iraq':'IQ','oman':'OM','afghanistan':'AF','bahrain':'BH','kuwait':'KW','algeria':'DZ','croatia':'HR','switzerland':'CH','austria':'AT','israel':'IL','pakistan':'PK','brazil':'BR','georgia':'GE','greece':'GR','north macedonia':'MK','norway':'NO','romania':'RO','estonia':'EE','san marino':'SM','belarus':'BY','iceland':'IS','lithuania':'LT','mexico':'MX','new zealand':'NZ','nigeria':'NG','ireland':'IE','luxembourg':'LU','monaco':'MC','qatar':'QA','ecuador':'EC','azerbaijan':'AZ','armenia':'AM','dominican republic':'DO','indonesia':'ID','portugal':'PT','andorra':'AD','latvia':'LV','morocco':'MA','saudi arabia':'SA','senegal':'SN','argentina':'AR','chile':'CL','jordan':'JO','ukraine':'UA','hungary':'HU','liechtenstein':'LI','poland':'PL','tunisia':'TN','bosnia':'','slovenia':'SI','south africa':'ZA','bhutan':'BT','cameroon':'CM','colombia':'CO','costa rica':'CR','peru':'PE','serbia':'RS','slovakia':'SK','togo':'TG','malta':'MT','martinique':'MQ','bulgaria':'BG','maldives':'MV','bangladesh':'BD','paraguay':'PY','albania':'AL','cyprus':'CY','brunei':'BN','usa':'US','burkina faso':'BF','holy see':'VA','mongolia':'MN','panama':'PA','china':'CN','iran':'IR','s. korea':'KR','france':'FR','cruise ship':'','denmark':'DK','czech republic':'CZ','taiwan*':'TW','vietnam':'VN','russia':'RU','moldova':'MD','bolivia':'BO','honduras':'HN','uk':'GB','congo (kinshasa)':'', 'jamaica':'JM','turkey':'TR','cuba':'CU','guyana':'GY','kazakhstan':'KZ','ethiopia':'ET','sudan':'SD','guinea':'GN','kenya':'KE','antigua and barbuda':'AG','uruguay':'UY','ghana':'GH','namibia':'NA','seychelles':'SC','trinidad and tobago':'TT','venezuela':'VE','eswatini':'','gabon':'GA','guatemala':'GT','mauritania':'MR','rwanda':'RW','saint lucia':'LC','saint vincent and the grenadines':'VC','suriname':'SR','kosovo':'','central african republic':'CF','congo (brazzaville)':'CG','equatorial guinea':'GQ','uzbekistan':'UZ','netherlands':'NL','benin':'BJ','liberia':'LR','somalia':'SO','tanzania':'TZ','barbados':'BB','montenegro':'ME','kyrgyzstan':'KG','mauritius':'MU','zambia':'ZM','djibouti':'DJ','gambia, the':'GM','bahamas, the':'BS','chad':'TD','el salvador':'SV','fiji':'FJ','nicaragua':'NI','madagascar':'MG','haiti':'HT','angola':'AO','cabo verde':'','niger':'NE','papua new guinea':'PG','zimbabwe':'ZW','cape verde':'CV','east timor':'TL','eritrea':'ER','uganda':'UG','dominica':'DM','grenada':'GD','mozambique':'MZ','syria':'SY','timor-leste':'TL'}[label]
 }
