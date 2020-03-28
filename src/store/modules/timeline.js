@@ -81,7 +81,7 @@ export default {
 			if (getters.timelineSlider === getters.timelineMax) {
 				dispatch('restartAfterPause')
 			} else {
-				commit('SET_SLIDER', getters.timelineSlider + 1)
+				commit('SET_SLIDER', getters.timelineSlider + 5)
 			}
 		},
 		restartAfterPause({ dispatch, commit, getters }) {

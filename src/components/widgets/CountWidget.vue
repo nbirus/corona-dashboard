@@ -96,7 +96,7 @@ div.count-widget {
 		bottom: 0;
 		background: rgb(255, 255, 255);
 		background: radial-gradient(circle, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
-		opacity: 1;
+		opacity: 0;
 	}
 	&__data {
 		z-index: 2;

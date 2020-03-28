@@ -69,7 +69,8 @@ export default {
 		_request(params) {
 			this.loading = true
 			this.error = undefined
-			search(this.activeData, params)
+
+			search(this.$h.cloneDeep(this.activeData), params)
 				.then(result => sort(result, this.sort))
 				.then(result => paginate(result, this.pagination))
 				.then(this.onResolve)

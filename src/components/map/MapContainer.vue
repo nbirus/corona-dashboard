@@ -2,7 +2,14 @@
 	<div class="map-container">
 		<!-- map -->
 		<div class="map-container__map">
-			<spread-map :date-index="timelineIndex" :value="$h.get(data, 'map')" :type="type" />
+			<spread-map class="map" :date-index="timelineIndex" :value="$h.get(data, 'map')" :type="type" />
+			<map-table
+				class="table"
+				:key="timelineIndex"
+				:date-index="timelineIndex"
+				:value="$h.get(data, 'map')"
+				:type="type"
+			/>
 		</div>
 
 		<!-- info -->
@@ -28,11 +35,12 @@
 
 <script>
 import SpreadMap from '@/components/map/SpreadMap'
+import MapTable from '@/components/map/MapTable'
 import TimelineController from '@/components/timeline/TimelineController'
 
 export default {
 	name: 'map-container',
-	components: { SpreadMap, TimelineController },
+	components: { SpreadMap, TimelineController, MapTable },
 	data() {
 		return {
 			type: 'cases',
@@ -68,6 +76,18 @@ export default {
 	&__map {
 		height: 100%;
 		flex: 0 1 100%;
+		max-height: calc(90vh - 65px);
+		position: relative;
+		display: flex;
+
+		.map {
+			flex: 0 1 100%;
+		}
+		.table {
+			flex: 0 0 300px;
+			overflow-x: hidden;
+			overflow-y: scroll;
+		}
 	}
 	&__timeline {
 		flex: 0 0 auto;

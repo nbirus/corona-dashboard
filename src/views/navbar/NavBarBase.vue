@@ -12,44 +12,55 @@
 				</p>
 			</div>
 			<div class="nav__buttons">
-				<v-btn-toggle v-model="dataSet" mandatory color="primary" dense>
+				<v-select
+					style="min-width: 300px"
+					color="white"
+					large
+					outlined
+					:items="CountryItems"
+					v-model="key"
+				></v-select>
+				<!-- <v-btn-toggle v-model="dataKey" mandatory color="primary" dense>
 					<v-btn
 						id="world-btn"
-						:class="{ active: dataSet === 'world' }"
+						:class="{ active: dataKey === 'world' }"
 						large
 						min-width="200"
 						value="world"
 					>World</v-btn>
 					<v-btn
 						id="us-btn"
-						:class="{ active: dataSet === 'us' }"
+						:class="{ active: dataKey === 'us' }"
 						large
 						min-width="200"
 						value="US"
 					>United States</v-btn>
-				</v-btn-toggle>
+				</v-btn-toggle>-->
 			</div>
 		</div>
 	</v-app-bar>
 </template>
 
 <script>
+import CountryItems from '@/assets/CountryItems.js'
+console.log(CountryItems)
+
 export default {
 	name: 'nav-bar-base',
 	computed: {
-		key() {
-			return this.$store.getters['data/key']
+		key: {
+			get() {
+				return this.$store.getters['data/key']
+			},
+			set(key) {
+				this.$store.dispatch('data/setKey', key)
+			},
 		},
 	},
 	data() {
 		return {
-			dataSet: this.key,
+			CountryItems,
 		}
-	},
-	watch: {
-		dataSet(key) {
-			this.$store.dispatch('data/setKey', key)
-		},
 	},
 }
 </script>
@@ -78,6 +89,9 @@ export default {
 		align-items: center;
 		margin-bottom: 0.25rem;
 
+		h1 {
+			font-size: 2.25rem;
+		}
 		p {
 			font-size: 1.2rem;
 			margin: 0;

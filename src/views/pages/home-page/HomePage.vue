@@ -45,7 +45,11 @@
 		<!-- extra stats -->
 		<div class="home-page__stats" v-if="false">
 			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
-			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
+			<stat-widget
+				:value="$h.get(data, 'totals.critical')"
+				id="critical"
+				label="Critical Condition"
+			/>
 			<!-- <stat-widget
 				:value="`${$h.get(data, 'totals.deathsPerCases')}%`"
 				id="deathsPerCases"
