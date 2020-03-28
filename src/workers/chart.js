@@ -6,8 +6,9 @@ const formatMap = {
   line,
   country,
   linedeaths,
-  linerecovered,
+  linedeathsmap,
   linecases,
+  linecasesmap,
 }
 
 const blue = 'rgba(218,235,249, 1)'
@@ -65,7 +66,7 @@ function country(data) {
     ...deathsDataSet,
     data: data.data.deaths,
   }
-  
+
   return {
     datasets: [cases, deaths],
     labels: data.dates,
@@ -73,6 +74,22 @@ function country(data) {
 }
 
 let daysAgo = 40
+
+function linecasesmap(data) {
+  return formatLineData(data, casesDataSet, 380, {
+    pointRadius: 0,
+    borderWidth: 0,
+    borderColor: [blue],
+  })
+}
+
+function linedeathsmap(data) {
+  return formatLineData(data, deathsDataSet, 380, {
+    pointRadius: 0,
+    borderWidth: 0,
+    borderColor: [red],
+  })
+}
 
 function linecases(data) {
   return formatLineData(data, casesDataSet)
@@ -124,17 +141,18 @@ const recoveredDataSet = {
   order: 2,
 }
 
-function formatLineData(data, dataset) {
+function formatLineData(data, dataset, ago = daysAgo, extra = {}) {
   let length = data.dates.length
   let modifiedDataset = {
     ...dataset,
     pointRadius: 3,
     borderWidth: 1,
-    data: data.data.splice(length - daysAgo, length - 1).filter((d, i) => i % 3 === 0),
+    ...extra,
+    data: data.data.splice(length - ago, length - 1).filter((d, i) => i % 3 === 0),
   }
   return {
     datasets: [modifiedDataset],
-    labels: data.dates.splice(length - daysAgo, length - 1).filter((d, i) => i % 3 === 0),
+    labels: data.dates.splice(length - ago, length - 1).filter((d, i) => i % 3 === 0),
   }
 }
 
@@ -170,7 +188,7 @@ function bar(response) {
     borderColor: blueBorder,
     borderWidth: 1,
   }
-  
+
   return {
     datasets: [deathDataSet, caseDataSet],
     labels: countries,

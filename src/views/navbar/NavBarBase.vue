@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar color="transparent" height="250">
+	<v-app-bar color="transparent" height="175">
 		<div class="nav-bar-container">
 			<div class="nav__title">
 				<h1>Covid-19 Dashboard</h1>
@@ -11,7 +11,7 @@
 					>here</a>.
 				</p>
 			</div>
-			<div class="nav__buttons">
+			<div class="nav__buttons" v-if="false">
 				<v-select
 					style="min-width: 300px"
 					color="white"
@@ -43,7 +43,6 @@
 
 <script>
 import CountryItems from '@/assets/CountryItems.js'
-console.log(CountryItems)
 
 export default {
 	name: 'nav-bar-base',
@@ -90,10 +89,10 @@ export default {
 		margin-bottom: 0.25rem;
 
 		h1 {
-			font-size: 2.25rem;
+			font-size: 2.5rem;
 		}
 		p {
-			font-size: 1.2rem;
+			font-size: 1.3rem;
 			margin: 0;
 			text-align: center;
 

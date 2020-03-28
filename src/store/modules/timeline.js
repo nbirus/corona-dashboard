@@ -28,6 +28,7 @@ export default {
 			timelineDates: dates,
 			timelineSlider: dateLength * 10,
 			timelineMax: dateLength * 10,
+			timelineType: 'cases',
 		}
 	},
 	getters: {
@@ -37,6 +38,7 @@ export default {
 		timelineMax: state => state.timelineMax,
 		timelineIndex: state => Math.round(Number.parseInt(state.timelineSlider) / 10) - 1,
 		timelineLength: state => state.timelineLength,
+		timelineType: state => state.timelineType,
 		timelineActiveDate: state => state.timelineDates[state.timelineIndex],
 	},
 	mutations: {
@@ -49,7 +51,11 @@ export default {
 	},
 	actions: {
 		// controls
-		start({ commit, dispatch, getters }) {
+		start({
+			commit,
+			dispatch,
+			getters
+		}) {
 			// pause if the timeline is not already stoped
 			let skipPause = getters.timelineSlider === getters.timelineMax && !getters.timelinePlaying
 			timelinePauseInterval = skipPause ? 0 : 2000
@@ -61,30 +67,45 @@ export default {
 				dispatch('onInterval')
 			}, timelineIntervalSpeed)
 		},
-		pause({ commit }) {
+		pause({
+			commit
+		}) {
 			clear()
 			commit('SET_PLAY', false)
 		},
-		toggle({ getters, dispatch }) {
+		toggle({
+			getters,
+			dispatch
+		}) {
 			if (getters.timelinePlaying) {
 				dispatch('pause')
 			} else {
 				dispatch('start')
 			}
 		},
-		set({ commit }, value) {
+		set({
+			commit
+		}, value) {
 			commit('SET_SLIDER', value)
 		},
 
 		// methods
-		onInterval({ commit, getters, dispatch }) {
-			if (getters.timelineSlider === getters.timelineMax) {
+		onInterval({
+			commit,
+			getters,
+			dispatch
+		}) {
+			if (getters.timelineSlider >= getters.timelineMax) {
 				dispatch('restartAfterPause')
 			} else {
 				commit('SET_SLIDER', getters.timelineSlider + 5)
 			}
 		},
-		restartAfterPause({ dispatch, commit, getters }) {
+		restartAfterPause({
+			dispatch,
+			commit,
+			getters
+		}) {
 			clear()
 			timelinePauseTimeout = setTimeout(() => {
 				if (getters.timelinePlaying) {
@@ -93,6 +114,11 @@ export default {
 				}
 			}, timelinePauseInterval)
 		},
+		setType({
+			state
+		}, type) {
+			state.timelineType = type
+		}
 	},
 }
 

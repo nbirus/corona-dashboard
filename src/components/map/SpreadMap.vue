@@ -12,7 +12,7 @@
 				:geojson="countryGeojson"
 				:optionsStyle="geoStyle"
 				:options="geoOptions"
-				:key="`${dateIndex}-${type}`"
+				:key="`${dDateIndex}-${type}`"
 			/>
 		</l-map>
 
@@ -20,9 +20,10 @@
 		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<span class="body-2" v-text="hoverCountry.name"></span>
 			&nbsp;
-			<strong :key="`${dateIndex}-${type}`" class="bold">
-				{{ $h.get(hoverCountry, `timeline.${type}.${dateIndex}`, 0) | localeString }}
-			</strong>
+			<strong
+				:key="`${dDateIndex}-${type}`"
+				class="bold"
+			>{{ $h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString }}</strong>
 		</v-card>
 	</div>
 </template>
@@ -31,6 +32,7 @@
 import 'leaflet/dist/leaflet.css'
 import { LMap, LTileLayer, LGeoJson } from 'vue2-leaflet'
 import Countries from '@/assets/Countries.json'
+import debounce from 'lodash/debounce'
 
 export default {
 	name: 'spread-map',
@@ -45,6 +47,7 @@ export default {
 	},
 	data() {
 		return {
+			dDateIndex: this.dateIndex,
 			options: {
 				trackResize: false,
 				zoom: 1.15,
@@ -74,7 +77,11 @@ export default {
 				left: 0,
 			},
 			hoverCountry: {},
+			dSet: null,
 		}
+	},
+	mounted() {
+		this.dSet = debounce(this.setIndex, 10)
 	},
 	computed: {
 		countryGeojson() {
@@ -97,7 +104,7 @@ export default {
 		// style country overlay
 		geoStyle(feature) {
 			let fillColor = getColor(
-				this.$h.get(feature, `properties.timeline.${this.type}.${this.dateIndex}`, 0),
+				this.$h.get(feature, `properties.timeline.${this.type}.${this.dDateIndex}`, 0),
 				this.type
 			)
 			return {
@@ -128,6 +135,14 @@ export default {
 		setBox(e) {
 			this.hoverStyle.left = `${e.originalEvent.x + 16}px`
 			this.hoverStyle.top = `${e.originalEvent.y + 16}px`
+		},
+		setIndex(index) {
+			this.dDateIndex = index
+		},
+	},
+	watch: {
+		dateIndex(index) {
+			this.dSet(index)
 		},
 	},
 }
@@ -235,7 +250,7 @@ function getColor(d = 0, type) {
 <style lang="scss" scoped>
 .spread-map {
 	&__map {
-		height: calc(90vh - 65px);
+		height: 650px;
 	}
 	&__popover {
 		position: fixed;

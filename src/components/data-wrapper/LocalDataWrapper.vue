@@ -16,6 +16,7 @@ export default {
 		sort: Object,
 		pagination: Object,
 		disabled: Boolean,
+		keepAlive: Boolean,
 		noCallOnMount: Boolean,
 		updateKey: [String, Boolean, Number],
 		debounce: {
@@ -26,7 +27,7 @@ export default {
 	data() {
 		return {
 			request: undefined,
-			returnData: this.data, // default to passed in data
+			returnData: null, // default to passed in data
 			total: this.data.length, // default to passed in data
 			loading: true,
 			error: undefined,
@@ -52,6 +53,7 @@ export default {
 		this.createRequest()
 	},
 	mounted() {
+		this.returnData = this.$h.cloneDeep(this.data)
 		if (!this.noCallOnMount) {
 			this.makeRequest()
 		}
@@ -66,15 +68,19 @@ export default {
 				this.$emit('request')
 			}
 		},
-		_request(params) {
+		async _request(params) {
 			this.loading = true
-			this.error = undefined
+			this.error = null
 
-			search(this.$h.cloneDeep(this.activeData), params)
-				.then(result => sort(result, this.sort))
-				.then(result => paginate(result, this.pagination))
-				.then(this.onResolve)
-				.catch(this.onError)
+			try {
+				let result = await search(this.$h.cloneDeep(this.activeData), params)
+				result = await sort(result, this.sort)
+				result = await paginate(result, this.pagination)
+				this.onResolve(result)
+			} catch (e) {
+				console.log(e)
+				this.onError(e)
+			}
 		},
 
 		onResolve({ data, total }) {

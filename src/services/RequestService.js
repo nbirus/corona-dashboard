@@ -6,7 +6,9 @@ import {
 	getResourceErrorFormatter,
 } from '@/services/ResourceService'
 import HttpService from '@/services/HttpService'
-import { exists } from '@/services/UtilsService'
+import {
+	exists
+} from '@/services/UtilsService'
 import get from 'lodash/get'
 
 /**
@@ -26,8 +28,11 @@ export function request(
 	errorFormatter = e => e
 ) {
 	return new Promise((resolve, reject) => {
+
 		// mock url
-		// config.baseURL = 'http://localhost:3004/'
+		if (process.env.NODE_ENV !== 'production') {
+			config.baseURL = 'http://localhost:3003/'
+		}
 
 		HttpService(config.endpoint, config)
 			.then(handleValidation)

@@ -1,5 +1,5 @@
 <template>
-	<div class="home-page page" :key="key">
+	<div class="home-page page limit-width" :key="key">
 		<div class="home-page__totals">
 			<count-widget
 				class="home-page__totals-cases"
@@ -38,6 +38,7 @@
 		</v-card>
 
 		<!-- map -->
+		<!-- <h1 class="mt-5">Geolocation</h1> -->
 		<v-card class="home-page__geolocation" v-if="key === 'world'">
 			<map-container />
 		</v-card>
@@ -45,11 +46,7 @@
 		<!-- extra stats -->
 		<div class="home-page__stats" v-if="false">
 			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
-			<stat-widget
-				:value="$h.get(data, 'totals.critical')"
-				id="critical"
-				label="Critical Condition"
-			/>
+			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
 			<!-- <stat-widget
 				:value="`${$h.get(data, 'totals.deathsPerCases')}%`"
 				id="deathsPerCases"
@@ -121,7 +118,7 @@ export default {
 
 	&__totals {
 		display: grid;
-		grid-template-rows: 2fr 2fr 1.25fr;
+		grid-template-rows: 2fr 2fr 1.1fr;
 		grid-gap: 1.5rem;
 	}
 	&__recovered {

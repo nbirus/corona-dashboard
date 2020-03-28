@@ -37,6 +37,7 @@ export function sortObject(data, sort = {}) {
       const aType = t(aValue)
       const bType = t(bValue)
 
+
       // check for existance
       if (aType.isNullOrUndefined || bType.isNullOrUndefined) {
         return false

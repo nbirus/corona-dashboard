@@ -10,7 +10,7 @@
 			</v-content>
 		</transition>
 
-		<div class="loader" v-if="loading">
+		<div class="loader" v-show="loading">
 			<spinner></spinner>
 		</div>
 	</v-app>
@@ -21,6 +21,8 @@ import { requestResource } from '@/services/RequestService'
 import AppNavBar from '@/views/navbar/NavBarBase'
 // import TimelineController from '@/components/timeline/TimelineController'
 // import CountryController from '@/components/country/CountryController'
+
+let dataWorker
 
 export default {
 	name: 'App',
@@ -33,10 +35,12 @@ export default {
 		let history = await requestResource('history')
 		// format response
 		let response = await new Promise(resolve => {
-			const dataWorker = new Worker('./workers/data.js', { type: 'module' })
+			dataWorker = new Worker('./workers/data.js', { type: 'module' })
 			dataWorker.postMessage({ countries, history })
 			dataWorker.onmessage = e => resolve(e.data)
 		})
+		dataWorker.terminate()
+
 		this.$store.dispatch('data/set', response)
 		this.loading = false
 	},

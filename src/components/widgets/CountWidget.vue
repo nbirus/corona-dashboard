@@ -81,27 +81,18 @@ div.count-widget {
 	transition: transform 0.2s ease;
 	overflow: hidden;
 	display: flex !important;
-	align-items: center;
+	// align-items: center;
 	position: relative;
+	padding-top: 1.5rem;
 	padding-left: 2rem;
 
 	.default-loading {
 		display: none;
 	}
-	&__gradient {
-		position: absolute;
-		top: 0;
-		left: -30rem;
-		right: -16rem;
-		bottom: 0;
-		background: rgb(255, 255, 255);
-		background: radial-gradient(circle, rgba(255, 255, 255, 1) 10%, rgba(255, 255, 255, 0) 100%);
-		opacity: 0;
-	}
 	&__data {
 		z-index: 2;
 		font-size: 1.3rem;
-		transform: translateY(-1.25rem);
+		// transform: translateY(-2.5rem);
 
 		label {
 			display: block;
@@ -110,10 +101,10 @@ div.count-widget {
 		}
 
 		&.cases .text {
-			color: #2e495f;
+			color: darken(#2e495f, 10);
 		}
 		&.deaths .text {
-			color: #530505;
+			color: darken(#9f0010, 20);
 		}
 		&.recovered .text {
 			color: #2e495f;
@@ -131,7 +122,7 @@ div.count-widget {
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 28px;
+		height: 30px;
 		background-color: fade-out(black, 0.975);
 		color: var(--v-secondary-lighten1);
 		display: flex;
@@ -145,18 +136,18 @@ div.count-widget {
 
 		&.cases {
 			background-color: rgba(218, 235, 249, 1);
-			color: var(--v-primary-darken3);
+			color: darken(#2e495f, 10);
 
 			.text {
 				color: #2e495f;
 			}
 			label {
-				color: var(--v-primary-darken3);
+				color: darken(#2e495f, 10);
 			}
 		}
 		&.deaths {
 			background-color: rgba(252, 198, 194, 1);
-			color: var(--v-error-darken3);
+			color: darken(#9f0010, 20);
 		}
 		&.recovered {
 			background-color: rgba(219, 239, 220, 1);

@@ -25,6 +25,9 @@
 				<strong class="value">{{ activeDate.deaths | localeString }}</strong>
 			</div>
 		</div>
+		<div class="map-container__date">
+			<span>{{activeDate.date | date('MMMM D')}}</span>
+		</div>
 
 		<!-- timeline -->
 		<div class="map-container__timeline">
@@ -58,9 +61,15 @@ export default {
 		},
 		activeDate() {
 			return {
-				cases: this.$h.get(this.data, `timeline.cases.${this.timelineIndex}`),
-				deaths: this.$h.get(this.data, `timeline.deaths.${this.timelineIndex}`),
+				cases: this.$h.get(this.data, `timeline.cases.${this.timelineIndex}`, 0),
+				deaths: this.$h.get(this.data, `timeline.deaths.${this.timelineIndex}`, 0),
+				date: this.$h.get(this.data, `timeline.dates.${this.timelineIndex}`, 'Jan 21'),
 			}
+		},
+	},
+	watch: {
+		type(type) {
+			this.$store.dispatch('timeline/setType', type)
 		},
 	},
 }
@@ -71,12 +80,15 @@ export default {
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	height: 90vh;
+
+	.default-loading {
+		display: none;
+	}
 
 	&__map {
 		height: 100%;
 		flex: 0 1 100%;
-		max-height: calc(90vh - 65px);
+		max-height: 650px;
 		position: relative;
 		display: flex;
 
@@ -87,6 +99,9 @@ export default {
 			flex: 0 0 300px;
 			overflow-x: hidden;
 			overflow-y: scroll;
+			// border-left: solid thin $border-color;
+			box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+			z-index: 999;
 		}
 	}
 	&__timeline {
@@ -94,9 +109,10 @@ export default {
 		display: flex;
 		align-items: center;
 		padding: 0;
-		z-index: 9999;
+		z-index: 99999;
 		overflow: visible;
-		height: 65px;
+		height: 75px;
+		box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
@@ -146,8 +162,8 @@ export default {
 	}
 	&__info {
 		position: absolute;
-		top: 0.75rem;
-		right: 0.75rem;
+		top: 1rem;
+		left: 1rem;
 		z-index: 9999;
 		background-color: fade-out(black, 0.2);
 		color: white;
@@ -182,6 +198,19 @@ export default {
 				opacity: 0.5;
 			}
 		}
+	}
+	&__date {
+		position: absolute;
+		top: 1rem;
+		right: calc(1rem + 300px);
+		z-index: 9999;
+		background-color: fade-out(black, 0.2);
+		color: white;
+		padding: 0.35rem 0.75rem 0.25rem;
+		border-radius: 0.75rem;
+		min-width: 108px;
+		text-align: center;
+		font-size: 0.9rem;
 	}
 	&__info-item {
 		display: flex;
