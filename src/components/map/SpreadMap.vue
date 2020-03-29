@@ -32,7 +32,6 @@
 import 'leaflet/dist/leaflet.css'
 import { LMap, LTileLayer, LGeoJson } from 'vue2-leaflet'
 import Countries from '@/assets/Countries.json'
-import debounce from 'lodash/debounce'
 
 export default {
 	name: 'spread-map',
@@ -54,8 +53,8 @@ export default {
 				maxZoom: 5,
 				minZoom: 2,
 				maxBounds: [
-					[90, -250],
-					[-90, 250],
+					[120, -250],
+					[-80, 250],
 				],
 			},
 			labelOptions: {
@@ -77,11 +76,7 @@ export default {
 				left: 0,
 			},
 			hoverCountry: {},
-			dSet: null,
 		}
-	},
-	mounted() {
-		this.dSet = debounce(this.setIndex, 10)
 	},
 	computed: {
 		countryGeojson() {
@@ -141,9 +136,7 @@ export default {
 		},
 	},
 	watch: {
-		dateIndex(index) {
-			this.dSet(index)
-		},
+		dateIndex: 'setIndex',
 	},
 }
 

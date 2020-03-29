@@ -49,6 +49,9 @@ export default {
 		return {
 			chartLoading: true,
 			chartOptions: {
+				tooltips: {
+					display: false,
+				},
 				scales: {
 					xAxes: [
 						{

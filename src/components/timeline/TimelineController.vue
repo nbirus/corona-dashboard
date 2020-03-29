@@ -1,60 +1,67 @@
 <template>
-	<div class="controller">
+	<div class="controller" v-resize="onResize" :class="type">
 		<div class="controller__timeline">
 			<!-- date tracker -->
 			<div class="controller__tracker" :style="trackerStyle">
-				<span>{{ timelineDates[timelineIndex + 1] | date('MMM D') }}</span>
+				<span>{{ $h.get(data, `timeline.dates.${index}`) | date('MMM D') }}</span>
 			</div>
 			<chart-wrapper
-				:key="timelineType"
+				:key="type"
 				class="controller__chart"
-				:id="`timeline-chart-${timelineType}`"
+				:id="`timeline-chart-${type}`"
 				type="line"
 				ignore-loading
-				:formatter="`line${timelineType}map`"
-				:data="{ data: $h.get(data, `timeline.${timelineType}`), dates: $h.get(data, 'timeline.dates') }"
+				:formatter="`line${type}map`"
+				:data="{ data: $h.get(data, `timeline.${type}`), dates: $h.get(data, 'timeline.dates') }"
 				:extra-options="chartOptions"
 			/>
 			<ul class="controller__dates">
 				<li
 					class="controller__date"
-					v-for="(date, i) in timelineDates"
+					v-for="(date, i) in $h.get(data, 'timeline.dates')"
 					:key="date"
 					v-html="date"
-					:class="i < timelineIndex || 'under'"
+					:class="i < index || 'under'"
 				></li>
 			</ul>
-			<input
+
+			<div
+				tabindex="0"
+				class="controller__slider"
 				ref="slider"
-				v-model="sliderValue"
-				class="slider"
-				type="range"
-				min="0"
-				step="1"
-				:max="timelineMax"
-				@click="pause"
-			/>
+				@click="setPos"
+				@mousedown="mouseDown"
+				@mouseup="mouseUp"
+				@mouseleave="mouseUp"
+			>
+				<div ref="handle" :style="sliderStyle" class="controller__slider-handle"></div>
+			</div>
 		</div>
 		<div class="controller__play-pause">
 			<v-btn x-large icon @click="toggle">
-				<v-icon color="black">mdi-{{ timelinePlaying ? 'pause' : 'play' }}</v-icon>
+				<v-icon color="black">mdi-{{ state.playing ? 'pause' : 'play' }}</v-icon>
 			</v-btn>
 		</div>
 	</div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
 import ChartWrapper from '@/components/charts/ChartWrapper'
 
 export default {
 	name: 'timeline-controller',
 	components: { ChartWrapper },
+	props: ['type'],
 	data() {
 		return {
-			localIndex: 0,
-			trackerStyle: '',
-			showDate: false,
+			state: {
+				sliding: false,
+				playing: false,
+			},
+			width: undefined,
+			max: 0,
+			interval: null,
+			timeout: null,
 			chartOptions: {
 				scales: {
 					xAxes: [
@@ -75,36 +82,110 @@ export default {
 		}
 	},
 	computed: {
-		...mapGetters('timeline', [
-			'timelinePlaying',
-			'timelineIndex',
-			'timelineSlider',
-			'timelineDates',
-			'timelineLength',
-			'timelineMax',
-			'timelineType',
-		]),
-		sliderValue: {
-			get() {
-				return this.timelineSlider
-			},
-			set(value) {
-				this.set(Number.parseInt(value))
-			},
-		},
 		data() {
 			return this.$store.getters['data/get']
 		},
+		length() {
+			return this.$h.get(this.data, 'timeline.dates', []).length - 1
+		},
+		sliderStyle() {
+			return {
+				width: `${this.width}px`,
+				maxWidth: `${this.max}px`,
+			}
+		},
+		trackerStyle() {
+			return {
+				left: `${this.width - 30}px`,
+			}
+		},
+		index() {
+			let ratio = this.width / this.max
+			return Math.round(this.length * ratio)
+		},
+	},
+	mounted() {
+		document.addEventListener('mousemove', this.mouseMove)
 	},
 	methods: {
-		...mapActions('timeline', ['toggle', 'set', 'pause']),
+		// actions
+		toggle() {
+			if (this.state.playing) {
+				this.pause()
+			} else {
+				this.play()
+			}
+		},
+		play() {
+			this.clear()
+			this.state.playing = true
+			this.interval = setInterval(this.onInterval, 16)
+		},
+		pause() {
+			this.clear()
+			this.state.playing = false
+		},
+		restart() {
+			// this.timeout = setTimeout(() => {
+			// 	if (this.state.playing) {
+			// 		this.width = 0
+			// 	}
+			// }, 2000)
+		},
+		onInterval() {
+			if (this.width >= this.max) {
+				this.width = 0
+			} else {
+				this.width += 1
+			}
+		},
+		clear() {
+			clearInterval(this.interval)
+			this.interval = null
+			clearTimeout(this.timeout)
+			this.timeout = null
+		},
+
+		// events
+		mouseMove(e) {
+			if (this.state.sliding) {
+				this.setPos(e)
+			}
+		},
+		setPos(e) {
+			let mousePos = e.pageX
+			let sliderEl = this.$refs.slider
+			let sliderElBox = sliderEl.getBoundingClientRect()
+			this.width = mousePos - sliderElBox.left
+			this.pause()
+		},
+		mouseDown() {
+			this.state.sliding = true
+		},
+		mouseUp() {
+			this.state.sliding = false
+			this.updateIndex()
+		},
+		onResize() {
+			this.max = this.$refs.slider.offsetWidth
+			if (this.width === undefined) {
+				this.width = this.max
+			}
+		},
+		updateIndex() {
+			this.$store.dispatch('timeline/set', this.index)
+		},
 	},
 	watch: {
-		sliderValue(value) {
-			this.trackerStyle = `left: calc(${Math.round(
-				(Number.parseInt(value) / this.timelineMax) * 100
-			)}% - 32px)`
+		index() {
+			if (!this.state.sliding) {
+				this.updateIndex()
+			}
 		},
+	},
+	beforeDestroy() {
+		this.clear()
+		document.removeEventListener('mousemove', this.mouseMove, true)
 	},
 }
 </script>
@@ -116,6 +197,23 @@ export default {
 	width: 100%;
 	height: 100%;
 
+	&__slider {
+		z-index: 999;
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		cursor: col-resize;
+
+		&:focus {
+			outline: none;
+		}
+	}
+	&__slider-handle {
+		width: 0px;
+		height: 100%;
+	}
 	&__timeline {
 		flex: 0 1 100%;
 		height: 100%;
@@ -123,38 +221,10 @@ export default {
 		align-items: center;
 		position: relative;
 		z-index: 999;
-		border-right: solid thin $border-color;
+		border-right: solid thin $border-color-light;
 
 		&:hover .controller__tracker {
 			opacity: 1;
-		}
-
-		input[type='range'] {
-			-webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-			width: 100%; /* Specific width is required for Firefox. */
-			background: transparent; /* Otherwise white in Chrome */
-			cursor: pointer;
-		}
-		input[type='range']::-webkit-slider-thumb {
-			-webkit-appearance: none;
-			border: 1px solid fade-out(black, 0.75);
-			height: 75px;
-			width: 1px;
-			cursor: pointer;
-			margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-		}
-		input[type='range']:focus {
-			outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
-		}
-		input[type='range']::-webkit-slider-runnable-track {
-			width: 100%;
-			height: 100%;
-		}
-		input[type='range']:focus::-webkit-slider-thumb {
-			border: 1px solid var(--v-primary-lighten2);
-		}
-		input[type='range']:focus::-webkit-slider-runnable-track {
-			background: fade-out(black, 0.95);
 		}
 	}
 	&__play-pause {
@@ -173,10 +243,7 @@ export default {
 
 		border-radius: 8px;
 		padding: 0.25rem 0.5rem 0.1rem;
-		transition: left 200ms ease, opacity 200ms;
-	}
-	.slider {
-		z-index: 999;
+		transition: opacity 200ms;
 	}
 	&__dates {
 		position: absolute;
@@ -195,15 +262,16 @@ export default {
 		flex: 0 0 auto;
 		padding: 0.3rem 0.75rem 0.15rem;
 		width: auto;
-		font-size: 0.9rem;
-		color: var(--v-secondary-base);
-		background-color: darken(white, 10);
-		border-radius: 0.75rem;
-		font-weight: $bold;
-		z-index: 999;
+		font-size: 0.8rem;
+		color: white;
+		background-color: fade-out(black, 0.75);
+		border-radius: 25px;
+		font-weight: $thin;
+		z-index: 9999;
 
 		&.under {
-			opacity: 0.5;
+			color: white;
+			background-color: fade-out(black, 0.75);
 		}
 	}
 	&__chart {
@@ -213,7 +281,17 @@ export default {
 		right: 0;
 		bottom: 0;
 		pointer-events: none;
-		// opacity: 0.75;
+	}
+
+	&.cases {
+		.controller__slider-handle {
+			background-color: fade-out(#1976d2, 0.25);
+		}
+	}
+	&.deaths {
+		.controller__slider-handle {
+			background-color: fade-out(#ff5252, 0.25);
+		}
 	}
 }
 
@@ -229,7 +307,7 @@ export default {
 @media screen and (min-width: 950px) {
 	.controller__date {
 		&:first-child,
-		&:nth-child(7n) {
+		&:nth-child(12n) {
 			display: block;
 		}
 	}

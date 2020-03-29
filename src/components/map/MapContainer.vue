@@ -3,6 +3,10 @@
 		<!-- map -->
 		<div class="map-container__map">
 			<spread-map class="map" :date-index="timelineIndex" :value="$h.get(data, 'map')" :type="type" />
+		</div>
+
+		<!-- table -->
+		<div class="map-container__table">
 			<map-table
 				class="table"
 				:key="timelineIndex"
@@ -10,6 +14,11 @@
 				:value="$h.get(data, 'map')"
 				:type="type"
 			/>
+		</div>
+
+		<!-- timeline -->
+		<div class="map-container__timeline">
+			<timeline-controller :type="type" />
 		</div>
 
 		<!-- info -->
@@ -26,12 +35,7 @@
 			</div>
 		</div>
 		<div class="map-container__date">
-			<span>{{activeDate.date | date('MMMM D')}}</span>
-		</div>
-
-		<!-- timeline -->
-		<div class="map-container__timeline">
-			<timeline-controller />
+			<strong>{{activeDate.date | date('MMMM D')}}</strong>
 		</div>
 	</div>
 </template>
@@ -67,19 +71,15 @@ export default {
 			}
 		},
 	},
-	watch: {
-		type(type) {
-			this.$store.dispatch('timeline/setType', type)
-		},
-	},
 }
 </script>
 
 <style lang="scss">
 .map-container {
 	position: relative;
-	display: flex;
-	flex-direction: column;
+	display: grid;
+	grid-template-columns: auto 300px;
+	height: 725px;
 
 	.default-loading {
 		display: none;
@@ -87,7 +87,8 @@ export default {
 
 	&__map {
 		height: 100%;
-		flex: 0 1 100%;
+		grid-row: 1;
+		grid-column: 1;
 		max-height: 650px;
 		position: relative;
 		display: flex;
@@ -108,11 +109,21 @@ export default {
 		flex: 0 0 auto;
 		display: flex;
 		align-items: center;
+		grid-row: 2;
+		grid-column: 1;
 		padding: 0;
 		z-index: 99999;
 		overflow: visible;
 		height: 75px;
-		box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+		border-top: solid thin $border-color-light;
+
+		// box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
+	}
+	&__table {
+		grid-row: span 2;
+		grid-column: 2;
+		max-height: 725px;
+		border-left: solid thin $border-color-light;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
@@ -206,7 +217,7 @@ export default {
 		z-index: 9999;
 		background-color: fade-out(black, 0.2);
 		color: white;
-		padding: 0.35rem 0.75rem 0.25rem;
+		padding: 0.4rem 0.75rem 0.2rem;
 		border-radius: 0.75rem;
 		min-width: 108px;
 		text-align: center;

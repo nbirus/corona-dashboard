@@ -78,6 +78,8 @@ export default {
 .map-table {
 	margin: 0;
 	padding: 0;
+	height: 725px;
+	overflow-y: auto;
 
 	&.loading {
 		.map-table__row {
@@ -92,24 +94,25 @@ export default {
 		align-items: center;
 		transition: opacity 0.2s ease;
 		position: relative;
+		// border-top: solid thin $border-color-light;
 
 		span {
 			display: block;
 		}
 		.index {
-			flex: 0 0 auto;
+			flex: 0 0 1rem;
 			font-size: 1rem !important;
 			margin-right: 0.75rem;
 			z-index: 2;
 		}
 		.name {
 			flex: 0 1 100%;
-			font-size: 1.1rem !important;
-			font-weight: $bold;
+			font-size: 1rem !important;
 			z-index: 2;
 		}
 		.cases {
 			flex: 0 0 auto;
+			font-weight: $bold;
 			z-index: 2;
 		}
 		.deaths {
@@ -119,10 +122,6 @@ export default {
 
 		&:hover {
 			background-color: fade-out(black, 0.95);
-		}
-
-		&:not(:last-child) {
-			border-bottom: solid thin $border-color;
 		}
 	}
 	&__header {

@@ -15,6 +15,9 @@ export default {
 	data() {
 		return {
 			options: {
+				tooltips: {
+					mode: 'index',
+				},
 				scales: {
 					xAxes: [
 						{
