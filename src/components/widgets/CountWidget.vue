@@ -94,7 +94,7 @@ div.count-widget {
 	}
 	&__data {
 		z-index: 2;
-		font-size: 1.3rem;
+		font-size: 1.25rem;
 		z-index: 3;
 
 		label {

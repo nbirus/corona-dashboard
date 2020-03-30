@@ -118,7 +118,7 @@ export default {
 
 	&__totals {
 		display: grid;
-		grid-template-rows: 2fr 2fr 1.1fr;
+		grid-template-rows: 2fr 2fr 1.3fr;
 		grid-gap: 1.5rem;
 	}
 	&__recovered {
