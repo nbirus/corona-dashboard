@@ -23,21 +23,6 @@ import CountryItems from '@/assets/CountryItems.js'
 
 export default {
 	name: 'nav-bar-base',
-	// mounted() {
-	// 	setTimeout(() => {
-	// 		console.log(
-	// 			JSON.stringify(
-	// 				Object.keys(this.data.map).map(countryKey => {
-	// 					return {
-	// 						text: this.$h.get(this.data, `map.${countryKey}.info.name`),
-	// 						flag: this.$h.get(this.data, `map.${countryKey}.info.flag`),
-	// 						value: countryKey,
-	// 					}
-	// 				})
-	// 			)
-	// 		)
-	// 	}, 2000)
-	// },
 	computed: {
 		data() {
 			return this.$store.getters['data/get']
@@ -104,7 +89,8 @@ export default {
 		padding: 1rem 0;
 	}
 	&__select {
-		min-width: 300px;
+		width: 250px;
+		font-size: 1.2rem !important;
 	}
 }
 #us-btn.active,

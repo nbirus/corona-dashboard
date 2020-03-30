@@ -1,5 +1,5 @@
 export default [{
-  "text": "World",
+  "text": "All Countries",
   "flag": "https://raw.githubusercontent.com/NovelCOVID/API/master/assets/flags/us.png",
   "value": "world"
 }, {
