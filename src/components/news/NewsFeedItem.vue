@@ -5,11 +5,9 @@
 				<img class="news-feed-item__img" :src="data.thumbnail" />
 			</div>
 			<span class="news-feed-item__info">
-				<span class="news-feed-item__title body-1">{{data.title | abbreviate(90)}}</span>
+				<span class="news-feed-item__title body-1">{{ data.title | abbreviate(90) }}</span>
 				<span class="news-feed-item__date body-2 text-secondary">
-					{{
-					data.date | date('MMMM D, YYYY')
-					}}
+					{{ data.date | date('MMMM D, YYYY') }}
 				</span>
 			</span>
 		</a>

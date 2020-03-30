@@ -8,23 +8,23 @@
 		<div class="legend">
 			<div class="key-group body-1">
 				<div class="bullet critical"></div>
-				<div class="value">{{totals.critical | localeString}}</div>
+				<div class="value">{{ totals.critical | localeString }}</div>
 				<div class="key">critical</div>
-				<div class="percent">({{criticalPercent}}%)</div>
+				<div class="percent">({{ criticalPercent }}%)</div>
 			</div>
 			<div class="key-group body-1">
 				<div class="bullet recovered"></div>
 
-				<div class="value">{{totals.recovered | localeString}}</div>
+				<div class="value">{{ totals.recovered | localeString }}</div>
 				<div class="key">recovered</div>
-				<div class="percent">({{recoveredPercent}}%)</div>
+				<div class="percent">({{ recoveredPercent }}%)</div>
 			</div>
 			<div class="key-group body-1">
 				<div class="bullet active"></div>
 
-				<div class="value">{{totals.active | localeString}}</div>
+				<div class="value">{{ totals.active | localeString }}</div>
 				<div class="key">active</div>
-				<div class="percent">({{activePercent}}%)</div>
+				<div class="percent">({{ activePercent }}%)</div>
 			</div>
 		</div>
 	</div>

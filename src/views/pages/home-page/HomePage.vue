@@ -35,15 +35,15 @@
 				<spinner v-if="loading" />
 				<div v-else>
 					<div class="key-value">
-						<div class="value">{{data.totals.casesPerOneMillion | localeString}}</div>
+						<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
 						<div class="key">cases per million</div>
 					</div>
 					<div class="key-value">
-						<div class="value">{{data.totals.deathsPerOneMillion | localeString}}</div>
+						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
 						<div class="key">deaths per million</div>
 					</div>
 					<div class="key-value">
-						<div class="value">{{data.totals.deathRate | localeString}}%</div>
+						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
 						<div class="key">Death Rate</div>
 					</div>
 				</div>
@@ -185,12 +185,14 @@ export default {
 		grid-row: 6;
 		grid-column: span 2;
 		display: grid;
-		grid-template-columns: 2.5fr 1fr;
+		grid-template-columns: 1fr 2.5fr;
 		grid-gap: 2rem;
 	}
 	&__per-million {
+		order: 2;
 	}
 	&__news {
+		order: 1;
 		.max {
 			max-height: 600px;
 			overflow-y: auto;

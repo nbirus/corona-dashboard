@@ -4,9 +4,6 @@ export default [
 	{
 		text: 'Country',
 		value: 'info.name',
-		filter(value) {
-			return `<b>${value}</b>`
-		},
 	},
 	{
 		text: 'Cases',

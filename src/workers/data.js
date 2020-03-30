@@ -108,7 +108,8 @@ export function format(countryData, historyData) {
   })
 
   // set world
-  let map = JSON.parse(JSON.stringify(data))  
+  let map = JSON.parse(JSON.stringify(data))
+  delete map['undefined']
   data['world'] = {
     totals,
     timeline,
