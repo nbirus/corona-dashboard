@@ -78,6 +78,9 @@ export function format(countryData, historyData) {
         cases: [],
         deaths: [],
         dates,
+      },
+      map: {
+
       }
     }
   })
@@ -92,13 +95,19 @@ export function format(countryData, historyData) {
     timeline.deaths = mergeTimeline(timeline.deaths, deaths)
 
     let iso2 = getIso(dataPoint)
+    // let province = dataPoint.province === null ? dataPoint.country : dataPoint.province
 
     set(data, `${iso2}.timeline.cases`, mergeTimeline(get(data, `${iso2}.timeline.cases`), cases))
     set(data, `${iso2}.timeline.deaths`, mergeTimeline(get(data, `${iso2}.timeline.deaths`), deaths))
+    // set(data, `${iso2}.map.${province}`, {
+    //   cases,
+    //   deaths,
+    // })
+
   })
 
   // set world
-  let map = JSON.parse(JSON.stringify(data))
+  let map = JSON.parse(JSON.stringify(data))  
   data['world'] = {
     totals,
     timeline,
@@ -108,12 +117,8 @@ export function format(countryData, historyData) {
   return data
 
   function getIso(dataPoint) {
-
     let name = dataPoint.country
-    // console.log(name.toLowerCase(), countryData[0].country.toLowerCase());
-    let countryInfo = countryData.find(country => {
-      return name.toLowerCase() === country.country.toLowerCase()
-    })
+    let countryInfo = countryData.find(country => name.toLowerCase() === country.country.toLowerCase())
     let iso = get(countryInfo, 'countryInfo.iso2')
 
     if (iso == undefined) {

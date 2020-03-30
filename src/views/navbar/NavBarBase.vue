@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar color="transparent" height="275">
+	<v-app-bar color="transparent" height="250">
 		<div class="nav-bar-container">
 			<div class="nav__title">
 				<h1>Covid-19 Dashboard</h1>
@@ -54,14 +54,11 @@ export default {
 		justify-content: space-between;
 	}
 	.v-toolbar__content {
-		padding: 0;
+		padding-top: 3rem;
+		padding-bottom: 0;
 	}
 }
 .nav {
-	.v-toolbar__content {
-		padding-top: 4rem;
-		padding-bottom: 0;
-	}
 	&__title {
 		display: flex;
 		flex-direction: column;

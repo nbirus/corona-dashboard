@@ -208,11 +208,28 @@ export default {
 
 		&:focus {
 			outline: none;
+
+			.controller__slider-handle:after {
+				opacity: 1;
+				z-index: 999999;
+			}
 		}
 	}
 	&__slider-handle {
 		width: 0px;
 		height: 100%;
+		position: relative;
+
+		&:after {
+			content: '';
+			position: absolute;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			width: 2px;
+			opacity: 0;
+			transition: opacity 0.2s ease;
+		}
 	}
 	&__timeline {
 		flex: 0 1 100%;
@@ -224,6 +241,9 @@ export default {
 		border-right: solid thin $border-color-light;
 
 		&:hover .controller__tracker {
+			opacity: 1;
+		}
+		&:hover .controller__date {
 			opacity: 1;
 		}
 	}
@@ -260,18 +280,20 @@ export default {
 	&__date {
 		display: none;
 		flex: 0 0 auto;
-		padding: 0.3rem 0.75rem 0.15rem;
+		padding: 0.25rem 0.65rem 0.1rem;
 		width: auto;
 		font-size: 0.8rem;
 		color: white;
-		background-color: fade-out(#1976d2, 0.25);
 		border-radius: 0.75rem;
 		font-weight: $thin;
 		z-index: 9999;
+		// opacity: 0.75;
+		transition: opacity 0.2s ease, box-shadow 0.3s ease;
 
 		&.under {
-			color: white;
-			background-color: fade-out(black, 0.5) !important;
+			box-shadow: none !important;
+			color: black;
+			background-color: lighten(black, 85) !important;
 		}
 	}
 	&__chart {
@@ -284,19 +306,27 @@ export default {
 	}
 
 	&.cases {
+		.controller__slider-handle::after {
+			background-color: darken(#1976d2, 5);
+		}
 		.controller__date {
-			background-color: fade-out(#1976d2, 0.25);
+			background-color: darken(#1976d2, 1);
+			box-shadow: 0 0 0 2px darken(#1976d2, 5);
 		}
 		.controller__slider-handle {
-			background-color: fade-out(#1976d2, 0.45);
+			background-color: fade-out(#1976d2, 0.65);
 		}
 	}
 	&.deaths {
+		.controller__slider-handle::after {
+			background-color: darken(#ff5252, 10);
+		}
 		.controller__date {
-			background-color: fade-out(#ff5252, 0.15);
+			background-color: darken(#ff5252, 10);
+			box-shadow: 0 0 0 2px darken(#ff5252, 19);
 		}
 		.controller__slider-handle {
-			background-color: fade-out(#ff5252, 0.45);
+			background-color: fade-out(#ff5252, 0.75);
 		}
 	}
 }
