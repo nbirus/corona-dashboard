@@ -95,7 +95,7 @@ div.count-widget {
 	&__data {
 		z-index: 2;
 		font-size: 1.3rem;
-		// transform: translateY(-2.5rem);
+		z-index: 3;
 
 		label {
 			display: block;
@@ -119,6 +119,7 @@ div.count-widget {
 		right: 0;
 		bottom: 28px;
 		height: calc(100% - 28px);
+		z-index: 2;
 	}
 	&__banner {
 		position: absolute;
@@ -131,6 +132,7 @@ div.count-widget {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		z-index: 1;
 
 		.icon {
 			position: absolute;

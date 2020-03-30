@@ -1,5 +1,5 @@
 <template>
-	<v-app-bar color="transparent" height="175">
+	<v-app-bar color="transparent" height="275">
 		<div class="nav-bar-container">
 			<div class="nav__title">
 				<h1>Covid-19 Dashboard</h1>
@@ -11,31 +11,8 @@
 					>here</a>.
 				</p>
 			</div>
-			<div class="nav__buttons" v-if="false">
-				<v-select
-					style="min-width: 300px"
-					color="white"
-					large
-					outlined
-					:items="CountryItems"
-					v-model="key"
-				></v-select>
-				<!-- <v-btn-toggle v-model="dataKey" mandatory color="primary" dense>
-					<v-btn
-						id="world-btn"
-						:class="{ active: dataKey === 'world' }"
-						large
-						min-width="200"
-						value="world"
-					>World</v-btn>
-					<v-btn
-						id="us-btn"
-						:class="{ active: dataKey === 'us' }"
-						large
-						min-width="200"
-						value="US"
-					>United States</v-btn>
-				</v-btn-toggle>-->
+			<div class="nav__buttons">
+				<v-select class="nav__select" large solo :items="CountryItems" v-model="key"></v-select>
 			</div>
 		</div>
 	</v-app-bar>
@@ -46,7 +23,25 @@ import CountryItems from '@/assets/CountryItems.js'
 
 export default {
 	name: 'nav-bar-base',
+	// mounted() {
+	// 	setTimeout(() => {
+	// 		console.log(
+	// 			JSON.stringify(
+	// 				Object.keys(this.data.map).map(countryKey => {
+	// 					return {
+	// 						text: this.$h.get(this.data, `map.${countryKey}.info.name`),
+	// 						flag: this.$h.get(this.data, `map.${countryKey}.info.flag`),
+	// 						value: countryKey,
+	// 					}
+	// 				})
+	// 			)
+	// 		)
+	// 	}, 2000)
+	// },
 	computed: {
+		data() {
+			return this.$store.getters['data/get']
+		},
 		key: {
 			get() {
 				return this.$store.getters['data/key']
@@ -66,10 +61,6 @@ export default {
 
 <style lang="scss">
 .v-app-bar {
-	padding-left: 4rem;
-	padding-right: 4rem;
-	border-top: solid thin $border-color !important;
-
 	.nav-bar-container {
 		margin: 0 auto;
 		display: flex;
@@ -82,6 +73,10 @@ export default {
 	}
 }
 .nav {
+	.v-toolbar__content {
+		padding-top: 4rem;
+		padding-bottom: 0;
+	}
 	&__title {
 		display: flex;
 		flex-direction: column;
@@ -107,6 +102,9 @@ export default {
 	}
 	&__buttons {
 		padding: 1rem 0;
+	}
+	&__select {
+		min-width: 300px;
 	}
 }
 #us-btn.active,

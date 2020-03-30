@@ -264,14 +264,14 @@ export default {
 		width: auto;
 		font-size: 0.8rem;
 		color: white;
-		background-color: fade-out(black, 0.75);
-		border-radius: 25px;
+		background-color: fade-out(#1976d2, 0.25);
+		border-radius: 0.75rem;
 		font-weight: $thin;
 		z-index: 9999;
 
 		&.under {
 			color: white;
-			background-color: fade-out(black, 0.75);
+			background-color: fade-out(black, 0.5) !important;
 		}
 	}
 	&__chart {
@@ -284,13 +284,19 @@ export default {
 	}
 
 	&.cases {
-		.controller__slider-handle {
+		.controller__date {
 			background-color: fade-out(#1976d2, 0.25);
+		}
+		.controller__slider-handle {
+			background-color: fade-out(#1976d2, 0.45);
 		}
 	}
 	&.deaths {
+		.controller__date {
+			background-color: fade-out(#ff5252, 0.15);
+		}
 		.controller__slider-handle {
-			background-color: fade-out(#ff5252, 0.25);
+			background-color: fade-out(#ff5252, 0.45);
 		}
 	}
 }

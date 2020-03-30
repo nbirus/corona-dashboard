@@ -79,7 +79,6 @@ function linecasesmap(data) {
   return formatLineData(data, casesDataSet, 380, {
     pointRadius: 0,
     borderWidth: 0,
-    borderColor: [blue],
   })
 }
 
@@ -87,7 +86,6 @@ function linedeathsmap(data) {
   return formatLineData(data, deathsDataSet, 380, {
     pointRadius: 0,
     borderWidth: 0,
-    borderColor: [red],
   })
 }
 
