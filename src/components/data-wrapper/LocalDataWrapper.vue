@@ -28,7 +28,7 @@ export default {
 		return {
 			request: undefined,
 			returnData: null, // default to passed in data
-			total: this.data.length, // default to passed in data
+			total: this.data !== undefined ? this.data.length : 0, // default to passed in data
 			loading: true,
 			error: undefined,
 		}

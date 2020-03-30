@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep'
+import get from 'lodash/get'
 
 const formatMap = {
   pie,
@@ -159,16 +160,17 @@ function formatLineData(data, dataset, ago = daysAgo, extra = {}) {
  */
 function bar(response) {
   const limit = 2000
-  const data = Object.values(response)
+  const data = Object.values(response.map)
   const countries = []
   const casesPerOneMillion = []
   const deathsPerOneMillion = []
 
-  data.sort((a, b) => b.casesPerOneMillion - a.casesPerOneMillion).forEach(country => {
-    if (country.cases > limit) {
-      countries.push(country.country)
-      casesPerOneMillion.push(country.casesPerOneMillion)
-      deathsPerOneMillion.push(country.deathsPerOneMillion)
+
+  data.sort((a, b) => get(b, 'totals.casesPerOneMillion', 0) - get(a, 'totals.casesPerOneMillion', 0)).forEach(country => {
+    if (get(country, 'totals.cases', 0) > limit) {
+      countries.push(country.info.name)
+      casesPerOneMillion.push(country.totals.casesPerOneMillion)
+      deathsPerOneMillion.push(country.totals.deathsPerOneMillion)
     }
   })
 

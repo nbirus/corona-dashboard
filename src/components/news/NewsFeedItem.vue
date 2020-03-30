@@ -5,10 +5,12 @@
 				<img class="news-feed-item__img" :src="data.thumbnail" />
 			</div>
 			<span class="news-feed-item__info">
-				<span class="news-feed-item__title body-1" v-html="data.title"></span>
-				<span class="news-feed-item__date body-2 text-secondary">{{
+				<span class="news-feed-item__title body-1">{{data.title | abbreviate(90)}}</span>
+				<span class="news-feed-item__date body-2 text-secondary">
+					{{
 					data.date | date('MMMM D, YYYY')
-				}}</span>
+					}}
+				</span>
 			</span>
 		</a>
 	</li>
@@ -36,35 +38,35 @@ export default {
 <style lang="scss" scoped>
 .news-feed-item {
 	display: block;
-	margin: 0 0 0 -1rem;
-	padding: 0.5rem 1.5rem 0.5rem 1rem;
+	margin: 0;
+	padding: 0.5rem;
 
 	a {
 		display: flex;
 		align-items: flex-start;
 		text-decoration: none !important;
 
-		border-radius: 4px;
+		border-radius: 0.75rem;
 		transition: box-shadow 0.25s ease;
-		padding: 0.5rem 1rem;
+		padding: 0.25rem 0.75rem;
 
 		&:hover {
-			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
 			background-color: #fff;
 		}
 		&:active {
-			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
 		}
 	}
 
 	&__thumbnail {
 		position: relative;
-		width: 70px;
-		height: 70px;
-		min-width: 70px;
-		height: 70px;
+		width: 45px;
+		height: 45px;
+		min-width: 45px;
+		height: 45px;
 		overflow: hidden;
-		margin-right: 1.25rem;
+		margin-right: 1rem;
 		border-radius: 0.75rem;
 		border: solid thin fade-out(black, 0.9);
 		background-color: fade-out(black, 0.95);
@@ -82,10 +84,9 @@ export default {
 	&__info {
 		display: flex;
 		flex-direction: column;
-		padding-top: 0.25rem;
 	}
 	&__title {
-		margin-bottom: 0.25rem;
+		margin-bottom: 0.2rem;
 		font-weight: $bold;
 		line-height: 1.3;
 	}

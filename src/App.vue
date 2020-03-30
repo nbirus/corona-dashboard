@@ -5,23 +5,16 @@
 
 		<!-- page view -->
 		<transition name="page" mode="out-in">
-			<v-content v-if="!loading">
+			<v-content>
 				<router-view :key="$route.name" />
 			</v-content>
 		</transition>
-
-		<div class="loader" v-show="loading">
-			<spinner></spinner>
-		</div>
 	</v-app>
 </template>
 
 <script>
 import { requestResource } from '@/services/RequestService'
 import AppNavBar from '@/views/navbar/NavBarBase'
-// import TimelineController from '@/components/timeline/TimelineController'
-// import CountryController from '@/components/country/CountryController'
-
 let dataWorker
 
 export default {
@@ -30,7 +23,6 @@ export default {
 		AppNavBar,
 	},
 	async created() {
-		// let totals = await requestResource('totals')
 		let countries = await requestResource('countries')
 		let history = await requestResource('history')
 		// format response
@@ -42,17 +34,15 @@ export default {
 		dataWorker.terminate()
 
 		this.$store.dispatch('data/set', response)
-		this.loading = false
-	},
-	data() {
-		return {
-			loading: true,
-		}
+		this.$store.dispatch('data/setLoading', false)
 	},
 }
 </script>
 
 <style lang="scss" scoped>
+.loader {
+	z-index: 3;
+}
 .nav {
 	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
 	background-color: #fff;

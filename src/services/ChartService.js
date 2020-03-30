@@ -4,11 +4,11 @@
 export function formatChartData(data, type) {
 	return new Promise(resolve => {
 		const chartWorker = new Worker('../workers/chart.js', {
-			type: 'module'
+			type: 'module',
 		})
 		chartWorker.postMessage({
 			data,
-			type
+			type,
 		})
 		chartWorker.onmessage = e => {
 			chartWorker.terminate()
@@ -66,9 +66,9 @@ const colors = []
 
 // generate color step range
 export function getColors(colorName, numberOfSteps) {
-	let colorScale = !Object.keys(chartColors).includes(colorName) ?
-		getDefaultColors(colorName, numberOfSteps) :
-		getSpecialColors(colorName, numberOfSteps)
+	let colorScale = !Object.keys(chartColors).includes(colorName)
+		? getDefaultColors(colorName, numberOfSteps)
+		: getSpecialColors(colorName, numberOfSteps)
 
 	return colorScale.colors(numberOfSteps)
 }

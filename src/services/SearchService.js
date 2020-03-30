@@ -1,11 +1,11 @@
 export function search(data, params) {
 	return new Promise(resolve => {
 		const searchWorker = new Worker('../workers/search.js', {
-			type: 'module'
+			type: 'module',
 		})
 		searchWorker.postMessage({
 			data,
-			params
+			params,
 		})
 		searchWorker.onmessage = e => {
 			resolve(e.data)
@@ -17,11 +17,11 @@ export function search(data, params) {
 export function sort(data, params) {
 	return new Promise(resolve => {
 		const sortWorker = new Worker('../workers/sort.js', {
-			type: 'module'
+			type: 'module',
 		})
 		sortWorker.postMessage({
 			data,
-			params
+			params,
 		})
 		sortWorker.onmessage = e => {
 			resolve(e.data)
@@ -33,11 +33,11 @@ export function sort(data, params) {
 export function paginate(data, params) {
 	return new Promise(resolve => {
 		const paginateWorker = new Worker('../workers/paginate.js', {
-			type: 'module'
+			type: 'module',
 		})
 		paginateWorker.postMessage({
 			data,
-			params
+			params,
 		})
 		paginateWorker.onmessage = e => {
 			resolve(e.data)

@@ -8,17 +8,18 @@
 	>
 		<state-handler
 			v-bind="_state"
-			:loading="_state.loading"
+			:loading="_state.loading || $attrs.loading"
 			ignore-loading
 			@change="update(_state)"
 		>
 			<div key="error" slot="error">{{ _state.error }}</div>
-			<div>
+			<div v-if="!$attrs.loading">
 				<data-table
 					v-bind="$attrs"
 					:key="`${updateKey} ${manualKey}`"
 					:data="_state.data"
 					:loading="_state.loading"
+					:itemsPerPage="10000"
 					:server-items-length="_state.total"
 					disable-pagination
 					disable-sort
@@ -77,7 +78,7 @@ export default {
 		return {
 			manualKey: 0,
 			wrapperPagination: this.pagination || {
-				size: this.noPagination ? 100000 : 20,
+				size: this.noPagination ? 100000 : 10,
 				from: 0,
 			},
 			wrapperSort: this.sort || {

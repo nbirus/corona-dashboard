@@ -9,7 +9,7 @@
 	<ul class="map-table">
 		<li class="map-table__header">
 			<div class="bold">country</div>
-			<div class="bold">{{type}}</div>
+			<div class="bold">{{ type }}</div>
 		</li>
 		<li class="map-table__row" v-for="(data, i) in activeData" :key="i">
 			<div
@@ -18,9 +18,9 @@
 				:class="type"
 				:style="`width: ${(data[type] / max) * 100}%`"
 			></div>
-			<span class="index">{{i + 1}}.</span>
-			<span class="name">{{data.name}}</span>
-			<span class="cases body-2">{{data[type] | localeString}}</span>
+			<span class="index">{{ i + 1 }}.</span>
+			<span class="name">{{ data.name }}</span>
+			<span class="cases body-2">{{ data[type] | localeString }}</span>
 		</li>
 	</ul>
 	<!-- </data-wrapper> -->

@@ -20,10 +20,11 @@
 		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<span class="body-2" v-text="hoverCountry.name"></span>
 			&nbsp;
-			<strong
-				:key="`${dDateIndex}-${type}`"
-				class="bold"
-			>{{ $h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString }}</strong>
+			<strong :key="`${dDateIndex}-${type}`" class="bold">
+				{{
+				$h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString
+				}}
+			</strong>
 		</v-card>
 	</div>
 </template>
@@ -39,6 +40,7 @@ export default {
 	props: {
 		value: Object,
 		dateIndex: Number,
+		loading: Boolean,
 		type: {
 			type: String,
 			default: 'cases',
@@ -80,6 +82,9 @@ export default {
 	},
 	computed: {
 		countryGeojson() {
+			if (this.loading) {
+				return {}
+			}
 			return {
 				type: 'FeatureCollection',
 				features: Countries.features.map(feature => {
@@ -125,7 +130,7 @@ export default {
 			this.hoverCountry = {}
 		},
 		zoomToFeature(e) {
-			this.$refs.map.mapObject.fitBounds(e.target.getBounds())
+			// this.$refs.map.mapObject.fitBounds(e.target.getBounds())
 		},
 		setBox(e) {
 			this.hoverStyle.left = `${e.originalEvent.x + 16}px`

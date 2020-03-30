@@ -15,7 +15,7 @@
 				<!-- copy -->
 				<v-list-item dense @click="copy">
 					<v-list-item-icon>
-						<v-icon size="20">fa-copy</v-icon>
+						<v-icon size="20">mdi-content-copy</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
 						<v-list-item-title>Copy</v-list-item-title>
@@ -23,14 +23,14 @@
 				</v-list-item>
 
 				<!-- copy row -->
-				<v-list-item dense @click="copyRow">
+				<!-- <v-list-item dense @click="copyRow">
 					<v-list-item-icon>
 						<v-icon size="20">fa-clipboard</v-icon>
 					</v-list-item-icon>
 					<v-list-item-content>
 						<v-list-item-title>Copy Row</v-list-item-title>
 					</v-list-item-content>
-				</v-list-item>
+				</v-list-item>-->
 
 				<!-- go to -->
 				<v-list-item v-if="linkTo" dense @click="goTo">

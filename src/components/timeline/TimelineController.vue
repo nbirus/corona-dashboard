@@ -6,6 +6,7 @@
 				<span>{{ $h.get(data, `timeline.dates.${index}`) | date('MMM D') }}</span>
 			</div>
 			<chart-wrapper
+				v-if="$h.exists(data.timeline)"
 				:key="type"
 				class="controller__chart"
 				:id="`timeline-chart-${type}`"
@@ -51,7 +52,7 @@ import ChartWrapper from '@/components/charts/ChartWrapper'
 export default {
 	name: 'timeline-controller',
 	components: { ChartWrapper },
-	props: ['type'],
+	props: ['type', 'loading'],
 	data() {
 		return {
 			state: {
@@ -210,8 +211,11 @@ export default {
 			outline: none;
 
 			.controller__slider-handle:after {
-				opacity: 1;
+				opacity: 1 !important;
 				z-index: 999999;
+			}
+			.controller__slider-handle {
+				opacity: 0.75 !important;
 			}
 		}
 	}
@@ -219,6 +223,7 @@ export default {
 		width: 0px;
 		height: 100%;
 		position: relative;
+		opacity: 0.25;
 
 		&:after {
 			content: '';
@@ -314,7 +319,7 @@ export default {
 			box-shadow: 0 0 0 2px darken(#1976d2, 5);
 		}
 		.controller__slider-handle {
-			background-color: fade-out(#1976d2, 0.65);
+			background-color: fade-out(#1976d2, 0.5);
 		}
 	}
 	&.deaths {
@@ -326,7 +331,7 @@ export default {
 			box-shadow: 0 0 0 2px darken(#ff5252, 19);
 		}
 		.controller__slider-handle {
-			background-color: fade-out(#ff5252, 0.75);
+			background-color: fade-out(#ff5252, 0.5);
 		}
 	}
 }

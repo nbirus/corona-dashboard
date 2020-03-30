@@ -29,7 +29,8 @@ export default {
 	computed: {
 		// use cell value's `filter` function if available
 		cellValue() {
-			return this.column.hasOwnProperty('filter') ? this.column.filter(this.value) : this.value
+			let filter = this.$h.get(this.column, 'filter', v => v)
+			return filter(this.value)
 		},
 	},
 	methods: {
@@ -38,14 +39,14 @@ export default {
 			event.preventDefault()
 
 			// emit row data to the context-menu
-			this.$emit('context', {
-				event,
-				column: this.column,
-				columns: this.columns,
-				row: this.item,
-				value: this.cellValue,
-				element: this.$el.parentElement,
-			})
+			// this.$emit('context', {
+			// 	event,
+			// 	column: this.column,
+			// 	columns: this.columns,
+			// 	row: this.item,
+			// 	value: this.cellValue,
+			// 	element: this.$el.parentElement,
+			// })
 		},
 	},
 	beforeDestroy() {

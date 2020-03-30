@@ -4,11 +4,13 @@ export default {
 	namespaced: true,
 	state() {
 		return {
+			loading: true,
 			key: 'world',
 			data: {},
 		}
 	},
 	getters: {
+		loading: state => state.loading,
 		key: state => state.key,
 		get: state => ({
 			...state.data[state.key],
@@ -28,6 +30,9 @@ export default {
 		},
 		setKey({ commit }, key) {
 			commit('SET_KEY', key)
+		},
+		setLoading({ state }, loading) {
+			state.loading = loading
 		},
 	},
 }

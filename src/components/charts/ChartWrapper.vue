@@ -16,6 +16,7 @@
 					:is="`${type}-chart`"
 					ref="chart"
 					:type="type"
+					v-if="$h.exists(_chartState.data)"
 					:data="_chartState.data"
 					v-bind="$attrs"
 				/>

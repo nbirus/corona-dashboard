@@ -2,23 +2,33 @@
 	<div class="map-container">
 		<!-- map -->
 		<div class="map-container__map">
-			<spread-map class="map" :date-index="timelineIndex" :value="$h.get(data, 'map')" :type="type" />
-		</div>
-
-		<!-- table -->
-		<div class="map-container__table">
-			<map-table
-				class="table"
-				:key="timelineIndex"
+			<spread-map
+				:loading="loading"
+				class="map"
 				:date-index="timelineIndex"
 				:value="$h.get(data, 'map')"
 				:type="type"
 			/>
 		</div>
 
+		<!-- table -->
+		<div class="map-container__table">
+			<map-table
+				v-if="!loading"
+				class="table"
+				:key="timelineIndex"
+				:date-index="timelineIndex"
+				:value="$h.get(data, 'map')"
+				:type="type"
+			/>
+			<div class="center" v-else>
+				<spinner :size="90" />
+			</div>
+		</div>
+
 		<!-- timeline -->
 		<div class="map-container__timeline">
-			<timeline-controller :type="type" />
+			<timeline-controller :loading="loading" :type="type" />
 		</div>
 
 		<!-- info -->
@@ -35,7 +45,7 @@
 			</div>
 		</div>
 		<div class="map-container__date">
-			<strong>{{activeDate.date | date('MMMM D')}}</strong>
+			<strong>{{ activeDate.date | date('MMMM D') }}</strong>
 		</div>
 	</div>
 </template>
@@ -48,6 +58,7 @@ import TimelineController from '@/components/timeline/TimelineController'
 export default {
 	name: 'map-container',
 	components: { SpreadMap, TimelineController, MapTable },
+	props: ['loading'],
 	data() {
 		return {
 			type: 'cases',
@@ -75,6 +86,12 @@ export default {
 </script>
 
 <style lang="scss">
+.center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
 .map-container {
 	position: relative;
 	display: grid;
@@ -89,6 +106,7 @@ export default {
 		height: 100%;
 		grid-row: 1;
 		grid-column: 1;
+		min-height: 650px;
 		max-height: 650px;
 		position: relative;
 		display: flex;
@@ -246,31 +264,6 @@ export default {
 		}
 		&.recovered .bullet {
 			border: solid 2px var(--v-success-base);
-		}
-	}
-	&__choice {
-		position: absolute;
-		top: 0.75rem;
-		right: calc(1.75rem + 155px);
-		z-index: 9999;
-		background-color: fade-out(black, 0.2);
-		color: white;
-		padding: 0.25rem 0.25rem 0.25rem 0.75rem;
-		border-radius: 0.75rem;
-
-		.v-input--radio-group__input {
-			flex-direction: row;
-		}
-		.v-input {
-			height: 30px;
-			margin: 0;
-		}
-		.v-label {
-			color: white;
-			font-size: 0.9rem;
-		}
-		.v-radio {
-			margin-bottom: 0 !important;
 		}
 	}
 

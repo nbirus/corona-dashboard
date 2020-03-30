@@ -1,81 +1,102 @@
 <template>
-	<div class="home-page page limit-width" :key="key">
-		<div class="home-page__totals">
-			<count-widget
-				class="home-page__totals-cases"
-				id="cases"
-				color="blue"
-				label="total cases"
-				:value="$h.get(data, 'totals.cases')"
-				:value-today="$h.get(data, 'totals.todayCases')"
-				:chart-data="$h.get(data, 'timeline.cases')"
-				:dates="$h.get(data, 'timeline.dates')"
-			/>
-			<count-widget
-				class="home-page__totals-deaths"
-				id="deaths"
-				color="red"
-				label="deaths"
-				:value="$h.get(data, 'totals.deaths')"
-				:value-today="$h.get(data, 'totals.todayDeaths')"
-				:chart-data="$h.get(data, 'timeline.deaths')"
-				:dates="$h.get(data, 'timeline.dates')"
-			/>
-			<v-card class="home-page__recovered">
-				<h1 class="mr-2">{{ $h.get(data, 'totals.recovered') | localeString }}</h1>
-				<span>recovered</span>
+	<div class="home-page page limit-width" :key="key" :class="{ loading }">
+		<div class="home-page__total-cases">
+			<v-card class="max">
+				<count-widget
+					class="home-page__totals-cases"
+					id="cases"
+					color="blue"
+					label="total cases"
+					:loading="loading"
+					:value="$h.get(data, 'totals.cases')"
+					:value-today="$h.get(data, 'totals.todayCases')"
+					:chart-data="$h.get(data, 'timeline.cases')"
+					:dates="$h.get(data, 'timeline.dates')"
+				/>
 			</v-card>
 		</div>
-
-		<v-card class="home-page__timeline">
-			<h2 class="text-center">Timeline</h2>
-			<chart-wrapper
-				v-if="$h.exists(data.timeline)"
-				type="line"
-				id="timeline"
-				:data="$h.get(data, 'timeline')"
-			/>
-		</v-card>
-
-		<!-- map -->
-		<!-- <h1 class="mt-5">Geolocation</h1> -->
-		<v-card class="home-page__geolocation" v-if="key === 'world'">
-			<map-container />
-		</v-card>
-
-		<!-- extra stats -->
-		<div class="home-page__stats" v-if="false">
-			<stat-widget :value="$h.get(data, 'totals.active')" id="active" label="Active Cases" />
-			<stat-widget :value="$h.get(data, 'totals.critical')" id="critical" label="Critical Condition" />
-			<!-- <stat-widget
-				:value="`${$h.get(data, 'totals.deathsPerCases')}%`"
-				id="deathsPerCases"
-				label="Average Deaths Per Cases"
-			/>
-			<stat-widget
-				:value="$h.get(data, 'totals.casesPerOneMillion')"
-				id="casesPerOneMillion"
-				label="Cases Per Million"
-			/>
-			<country-widget label="Highest Death Rate" :value="$h.get(data, 'highestDeathsPerCases')" />
-			<country-widget label="Lowest Death Rate" :value="$h.get(data, 'lowestDeathsPerCases')" />-->
+		<div class="home-page__total-deaths">
+			<v-card class="max">
+				<count-widget
+					class="home-page__totals-deaths"
+					id="deaths"
+					color="red"
+					label="deaths"
+					:loading="loading"
+					:value="$h.get(data, 'totals.deaths')"
+					:value-today="$h.get(data, 'totals.todayDeaths')"
+					:chart-data="$h.get(data, 'timeline.deaths')"
+					:dates="$h.get(data, 'timeline.dates')"
+				/>
+			</v-card>
 		</div>
-
-		<!-- timeline -->
-		<v-card class="home-page__per-million" v-if="false">
-			<h2 class="text-center">Per Million</h2>
-			<chart-wrapper type="bar" id="million" :data="$h.get(data, 'countries')" />
-		</v-card>
-
-		<!-- map -->
-		<v-card class="home-page__news" v-if="false">
-			<h2 class="text-center mb-2">Top Stories</h2>
-			<news-feed />
-		</v-card>
-
-		<!-- map -->
-		<v-card class="home-page__countries" v-if="false">
-			<country-list :data="$h.get(data, 'countries')" />
+		<div class="home-page__total-info">
+			<v-card class="max">
+				<spinner v-if="loading" />
+				<div v-else>
+					<div class="key-value">
+						<div class="value">{{data.totals.casesPerOneMillion | localeString}}</div>
+						<div class="key">cases per million</div>
+					</div>
+					<div class="key-value">
+						<div class="value">{{data.totals.deathsPerOneMillion | localeString}}</div>
+						<div class="key">deaths per million</div>
+					</div>
+					<div class="key-value">
+						<div class="value">{{data.totals.deathRate | localeString}}%</div>
+						<div class="key">Death Rate</div>
+					</div>
+				</div>
+			</v-card>
+		</div>
+		<div class="home-page__timeline chart">
+			<v-card class="max">
+				<div class="header">
+					<h2 class="text-center">Timeline</h2>
+				</div>
+				<div class="body">
+					<chart-wrapper
+						type="line"
+						id="timeline"
+						:loading="loading"
+						:data="$h.get(data, 'timeline', [])"
+					/>
+				</div>
+			</v-card>
+		</div>
+		<div class="home-page__bar">
+			<v-card class="max">
+				<spinner :size="90" v-if="loading" />
+				<stat-widget v-else :totals="data.totals" />
+			</v-card>
+		</div>
+		<div class="home-page__map" v-if="key === 'world'">
+			<v-card class="max">
+				<map-container :loading="loading" />
+			</v-card>
+		</div>
+		<div class="home-page__world" v-if="key === 'world'">
+			<div class="home-page__per-million chart">
+				<v-card class="max">
+					<div class="header">
+						<h2 class="text-center">Per million</h2>
+					</div>
+					<div class="body">
+						<chart-wrapper :loading="!loading" type="bar" id="million" :data="data" />
+					</div>
+				</v-card>
+			</div>
+			<div class="home-page__news">
+				<v-card class="max">
+					<div class="header">
+						<h2>Top Stories</h2>
+					</div>
+					<news-feed />
+				</v-card>
+			</div>
+		</div>
+		<v-card class="home-page__countries" v-if="key === 'world'">
+			<country-list :loading="loading" :data="data" />
 		</v-card>
 	</div>
 </template>
@@ -105,6 +126,9 @@ export default {
 		key() {
 			return this.$store.getters['data/key']
 		},
+		loading() {
+			return this.$store.getters['data/loading']
+		},
 	},
 }
 </script>
@@ -113,49 +137,116 @@ export default {
 .home-page {
 	display: grid;
 	grid-gap: 2rem;
-	grid-template-rows: min-content;
-	grid-template-columns: 1fr 3.5fr;
+	grid-template-columns: 1fr 3.75fr;
+	grid-template-rows: 175px 175px 100px 100px 725px 600px auto;
 
-	&__totals {
-		display: grid;
-		grid-template-rows: 2fr 2fr 1.3fr;
-		grid-gap: 1.5rem;
+	&__total-cases {
+		grid-row: 1;
+		grid-column: 1;
 	}
-	&__recovered {
-		display: flex;
-		align-items: center;
-		justify-content: center;
+	&__total-deaths {
+		grid-row: 2;
+		grid-column: 1;
+	}
+	&__total-info {
+		grid-row: 3 / 5;
+		grid-column: 1;
 
-		span {
-			font-size: 1.2rem;
+		.max {
+			padding: 1.5rem;
+		}
+		.key-value {
+			margin-bottom: 0.65rem;
+			.value {
+				font-size: 1.4rem;
+			}
+			.key {
+				transform: translateY(-0.25rem);
+			}
 		}
 	}
 	&__timeline {
-		padding: 0.5rem 1rem 1rem;
-		min-height: 500px;
+		grid-row: 1 / 4;
+		grid-column: 2;
+	}
+	&__bar {
+		grid-row: 4;
+		grid-column: 2;
+	}
+	&__map {
+		grid-row: 5;
+		grid-column: span 2;
 
-		h2 {
-			transform: translateY(0.75rem);
-		}
-		#timeline {
-			min-height: 475px;
+		.max {
+			display: block !important;
 		}
 	}
-	&__geolocation {
+	&__world {
+		grid-row: 6;
+		grid-column: span 2;
+		display: grid;
+		grid-template-columns: 2.5fr 1fr;
+		grid-gap: 2rem;
+	}
+	&__per-million {
+	}
+	&__news {
+		.max {
+			max-height: 600px;
+			overflow-y: auto;
+			display: block !important;
+		}
+		.header {
+			padding: 1.5rem 1.5rem 0.5rem;
+			text-align: center;
+		}
+	}
+	&__countries {
+		grid-row: 7;
 		grid-column: span 2;
 	}
-}
 
-@media screen and (max-width: 480px) {
-	.home-page {
-		&__totals {
-			grid-template-columns: 1fr;
-			grid-template-rows: 175px 175px 175px;
-			grid-gap: 1rem;
+	.chart {
+		.max {
+			display: block !important;
+			padding: 0 1rem 1rem;
 		}
-		&__timeline {
-			min-height: 300px;
+		.header {
+			padding-top: 1.25rem;
+		}
+		.body {
+			transform: translateY(-1rem);
+			height: 100%;
+		}
+
+		#timeline {
+			min-height: calc(514px - 4rem);
+		}
+		#million {
+			min-height: calc(600px - 4.3rem);
 		}
 	}
 }
+.max {
+	height: 100%;
+	width: 100%;
+}
+.loading .max {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+// @media screen and (max-width: 480px) {
+// 	.home-page {
+// 		&__totals {
+// 			grid-template-columns: 1fr;
+// 			grid-template-rows: 175px 175px 175px;
+// 			grid-gap: 1rem;
+// 		}
+// 		&__timeline {
+// 			min-height: 300px;
+// 		}
+// 	}
+// }
 </style>

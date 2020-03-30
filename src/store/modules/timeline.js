@@ -9,10 +9,8 @@ export default {
 		timelineIndex: state => state.timelineIndex,
 	},
 	actions: {
-		set({
-			state
-		}, index) {
+		set({ state }, index) {
 			state.timelineIndex = index
-		}
+		},
 	},
 }

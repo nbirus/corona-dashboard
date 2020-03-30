@@ -1,8 +1,7 @@
 <template>
 	<div class="country-list">
-		<v-layout class="country-list__header">
+		<!-- <v-layout class="country-list__header">
 			<v-text-field
-				class="mr-5"
 				style="max-width: 350px"
 				placeholder="Search for a country"
 				prepend-inner-icon="mdi-magnify"
@@ -12,24 +11,18 @@
 				large
 				v-model="keyword"
 			/>
-			<v-select
-				outlined
-				style="max-width: 225px"
-				placeholder="Sort countries"
-				hide-details
-				clearable
-				:items="selectItems"
-				v-model="sortKey"
-			/>
-		</v-layout>
-		<data-wrapper
+		</v-layout>-->
+		<data-table-wrapper
+			class="row-pad"
 			:data="countryData"
-			:pagination="pagination"
+			:loading="loading"
+			:columns="CountryHeaders"
+		/>
+
+		<!-- :pagination="pagination"
 			:params="{ country: keyword }"
-			:sort="sort"
-			v-slot="{ _state }"
-		>
-			<v-expansion-panels flat class="country-list__list" :class="{ loading: _state.loading }">
+		:sort="sort"-->
+		<!-- <v-expansion-panels flat class="country-list__list" :class="{ loading: _state.loading }">
 				<country-list-item
 					v-for="(item, i) in _state.data"
 					:key="i"
@@ -45,25 +38,24 @@
 					See more
 					<v-icon>mdi-chevron-down</v-icon>
 				</li>
-			</v-expansion-panels>
-		</data-wrapper>
+		</v-expansion-panels>-->
+		<!-- </data-wrapper> -->
 	</div>
 </template>
 
 <script>
-import CountryListItem from '@/components/country-list/CountryListItem'
+// import CountryListItem from '@/components/country-list/CountryListItem'
+import DataTableWrapper from '@/components/table/wrappers/DataTableWrapper'
+import CountryHeaders from '@/data/columns/CountryHeaders.js'
 
 export default {
 	name: 'country-list',
-	components: { CountryListItem },
+	components: { DataTableWrapper },
 	props: ['data', 'loading'],
 	data() {
 		return {
+			CountryHeaders,
 			keyword: '',
-			pagination: {
-				from: 0,
-				size: 5,
-			},
 			sortKey: 'active',
 			selectItems: [
 				{ text: 'Most Active Cases', value: 'active' },
@@ -85,17 +77,11 @@ export default {
 			}
 		},
 		countryData() {
-			return Object.values(this.data)
-		},
-		countries() {
-			if (!this.$h.exists(this.items)) {
+			if (this.data.map) {
+				return Object.values(this.data.map)
+			} else {
 				return []
 			}
-			return Object.keys(this.items).map(name => ({
-				history: this.items[name],
-				counts: this.getCounts(name),
-				name,
-			}))
 		},
 	},
 	methods: {
@@ -115,8 +101,9 @@ export default {
 	min-height: 300px;
 
 	&__header {
-		margin-bottom: 1.5rem;
-		padding-left: 2rem;
+		padding: 1rem;
+		display: flex;
+		justify-content: flex-end;
 	}
 	&__list {
 		margin: 0 !important;

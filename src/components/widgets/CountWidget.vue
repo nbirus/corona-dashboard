@@ -1,6 +1,11 @@
 <template>
-	<v-card class="count-widget" :class="{ loading: chartLoading }">
+	<div class="count-widget" :class="{ loading, chartLoading }">
+		<div class="loader" v-if="loading">
+			<spinner />
+		</div>
+
 		<chart-wrapper
+			v-if="!loading"
 			class="count-widget__chart"
 			:id="`timeline-chart-${id}`"
 			type="line"
@@ -26,7 +31,7 @@
 				today (+{{ percent }}%)
 			</span>
 		</div>
-	</v-card>
+	</div>
 </template>
 
 <script>
@@ -44,6 +49,7 @@ export default {
 		color: String,
 		chartData: Array,
 		dates: Array,
+		loading: Boolean,
 	},
 	data() {
 		return {
@@ -80,14 +86,39 @@ export default {
 
 <style lang="scss">
 div.count-widget {
-	min-height: 150px;
+	min-height: 178px;
 	transition: transform 0.2s ease;
 	overflow: hidden;
 	display: flex !important;
-	// align-items: center;
 	position: relative;
 	padding-top: 1.5rem;
 	padding-left: 2rem;
+
+	&.loading {
+		padding-top: 0;
+		padding-left: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.count-widget {
+			&__data,
+			&__chart,
+			&__banner {
+				display: none;
+			}
+		}
+	}
+	&.chartLoading {
+		.count-widget__banner {
+			&.cases {
+				border-top: solid thin var(--v-primary-base);
+			}
+			&.deaths {
+				border-top: solid thin var(--v-error-base);
+			}
+		}
+	}
 
 	.default-loading {
 		display: none;

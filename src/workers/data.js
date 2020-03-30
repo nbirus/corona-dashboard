@@ -36,14 +36,14 @@ export function format(countryData, historyData) {
     recovered: 0,
     active: 0,
     critical: 0,
-    casesPerOneMillion: 0,
-    deathsPerOneMillion: 0,
   }
   let timeline = {
     cases: [],
     deaths: [],
     dates,
   }
+  let casesPerOneMillion = []
+  let deathsPerOneMillion = []
 
   // loop over country data and create country map
   countryData.forEach(countryDataPoint => {
@@ -55,9 +55,9 @@ export function format(countryData, historyData) {
       recovered: totals.recovered + countryDataPoint.recovered,
       active: totals.active + countryDataPoint.active,
       critical: totals.critical + countryDataPoint.critical,
-      casesPerOneMillion: totals.casesPerOneMillion + countryDataPoint.casesPerOneMillion,
-      deathsPerOneMillion: totals.deathsPerOneMillion + countryDataPoint.deathsPerOneMillion,
     }
+    casesPerOneMillion.push(countryDataPoint.casesPerOneMillion)
+    deathsPerOneMillion.push(countryDataPoint.deathsPerOneMillion)
     data[countryDataPoint.countryInfo.iso2] = {
       info: {
         name: countryDataPoint.country,
@@ -73,6 +73,7 @@ export function format(countryData, historyData) {
         critical: countryDataPoint.critical,
         casesPerOneMillion: countryDataPoint.casesPerOneMillion,
         deathsPerOneMillion: countryDataPoint.deathsPerOneMillion,
+        deathRate: (countryDataPoint.deaths / countryDataPoint.cases * 100).toFixed(1),
       },
       timeline: {
         cases: [],
@@ -81,7 +82,7 @@ export function format(countryData, historyData) {
       },
       map: {
 
-      }
+      },
     }
   })
 
@@ -114,6 +115,11 @@ export function format(countryData, historyData) {
     map,
   }
 
+  // average totals
+  totals.casesPerOneMillion = averageArray(casesPerOneMillion)
+  totals.deathsPerOneMillion = averageArray(deathsPerOneMillion)
+  totals.deathRate = (totals.deaths / totals.cases * 100).toFixed(1) 
+  
   return data
 
   function getIso(dataPoint) {
@@ -135,7 +141,6 @@ export function format(countryData, historyData) {
     })
     return array
   }
-
   function getCountryId(label) {
     return {
       "cote d'ivoire": 'CI',
@@ -313,6 +318,10 @@ export function format(countryData, historyData) {
       'syria': 'SY',
       'timor-leste': 'TL'
     } [label]
+  }
+  function averageArray(array) {
+    let sum = array.reduce((previous, current) => current += previous)
+    return (sum / array.length).toFixed(1)
   }
 }
 
