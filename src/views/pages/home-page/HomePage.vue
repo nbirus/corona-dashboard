@@ -35,14 +35,23 @@
 				<spinner v-if="loading" />
 				<div v-else>
 					<div class="key-value">
+						<v-avatar color="grey lighten-4" class="icon">
+							<v-icon>mdi-account-group</v-icon>
+						</v-avatar>
 						<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
 						<div class="key">cases per million</div>
 					</div>
 					<div class="key-value">
+						<v-avatar color="grey lighten-4" class="icon">
+							<v-icon>mdi-account-group</v-icon>
+						</v-avatar>
 						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
 						<div class="key">deaths per million</div>
 					</div>
 					<div class="key-value">
+						<v-avatar color="grey lighten-4" class="icon">
+							<v-icon>mdi-account-multiple-remove-outline</v-icon>
+						</v-avatar>
 						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
 						<div class="key">Death Rate</div>
 					</div>
@@ -138,7 +147,7 @@ export default {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 100px 100px 725px 600px auto;
+	grid-template-rows: 175px 175px 110px 90px 725px 600px auto;
 
 	&__total-cases {
 		grid-row: 1;
@@ -156,11 +165,23 @@ export default {
 			padding: 1.5rem;
 		}
 		.key-value {
-			margin-bottom: 0.65rem;
+			margin-bottom: 1rem;
+			display: grid;
+			grid-template-columns: 4rem auto;
+			grid-template-rows: 2rem 1rem;
+
+			.icon {
+				grid-row: 1 / 2;
+				grid-column: 1;
+			}
 			.value {
+				grid-row: 1;
+				grid-column: 2;
 				font-size: 1.4rem;
 			}
 			.key {
+				grid-row: 2;
+				grid-column: 2;
 				transform: translateY(-0.25rem);
 			}
 		}

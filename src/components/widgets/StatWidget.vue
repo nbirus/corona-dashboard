@@ -7,24 +7,24 @@
 		</div>
 		<div class="legend">
 			<div class="key-group body-1">
-				<div class="bullet critical"></div>
-				<div class="value">{{ totals.critical | localeString }}</div>
-				<div class="key">critical</div>
-				<div class="percent">({{ criticalPercent }}%)</div>
+				<div class="bullet active"></div>
+				<div class="value">{{ totals.active | localeString }}</div>
+				<div class="key">active</div>
+				<div class="percent">({{ activePercent }}%)</div>
 			</div>
+
 			<div class="key-group body-1">
 				<div class="bullet recovered"></div>
-
 				<div class="value">{{ totals.recovered | localeString }}</div>
 				<div class="key">recovered</div>
 				<div class="percent">({{ recoveredPercent }}%)</div>
 			</div>
-			<div class="key-group body-1">
-				<div class="bullet active"></div>
 
-				<div class="value">{{ totals.active | localeString }}</div>
-				<div class="key">active</div>
-				<div class="percent">({{ activePercent }}%)</div>
+			<div class="key-group body-1">
+				<div class="bullet critical"></div>
+				<div class="value">{{ totals.critical | localeString }}</div>
+				<div class="key">critical</div>
+				<div class="percent">({{ criticalPercent }}%)</div>
 			</div>
 		</div>
 	</div>
@@ -58,11 +58,10 @@ export default {
 <style lang="scss" scoped>
 .stat-widget {
 	width: 100%;
-	padding: 1.75rem 2rem 0.5rem;
+	padding: 1.5rem 1.5rem 0.5rem;
 
 	.bar {
-		height: 12px;
-		background-color: fade-out(black, 0.9);
+		height: 10px;
 		width: 100%;
 		position: relative;
 		border-radius: 0.75rem;
@@ -73,24 +72,29 @@ export default {
 	.critical {
 		position: relative;
 		height: 100%;
-		background-color: var(--v-warning-base);
+		background-color: fade-out(#4caf50, 0.75);
+		border: solid thin var(--v-success-base);
+		border-radius: 25px 0 0 25px;
 	}
 	.recovered {
 		position: relative;
 		height: 100%;
-		background-color: var(--v-success-base);
+		background-color: fade-out(#1976d2, 0.75);
+		border: solid thin var(--v-primary-base);
 	}
 	.active {
 		position: relative;
 		height: 100%;
-		background-color: var(--v-primary-base);
+		background-color: fade-out(#fb8c00, 0.75);
+		border: solid thin var(--v-warning-base);
 		z-index: 2;
+		border-radius: 0 25px 25px 0;
 	}
 	.legend {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		max-width: 650px;
+		max-width: 675px;
 		margin: 0 auto;
 	}
 	.key-group {
@@ -106,19 +110,23 @@ export default {
 		}
 	}
 	.bullet {
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
+		width: 36px;
+		height: 14px;
+		border-radius: 0px;
 		margin-right: 0.5rem;
+		transform: translateY(-1px);
 
 		&.critical {
-			background-color: var(--v-warning-base);
+			border: solid thin var(--v-warning-base);
+			background-color: fade-out(#fb8c00, 0.75);
 		}
 		&.recovered {
-			background-color: var(--v-success-base);
+			border: solid thin var(--v-primary-base);
+			background-color: fade-out(#1976d2, 0.75);
 		}
 		&.active {
-			background-color: var(--v-primary-base);
+			border: solid thin var(--v-success-base);
+			background-color: fade-out(#4caf50, 0.75);
 		}
 	}
 }
