@@ -104,10 +104,10 @@ div.count-widget {
 		}
 
 		&.cases .text {
-			color: darken(#2e495f, 10);
+			// color: darken(#2e495f, 10);
 		}
 		&.deaths .text {
-			color: darken(#9f0010, 20);
+			// color: darken(#9f0010, 20);
 		}
 		&.recovered .text {
 			color: #2e495f;
