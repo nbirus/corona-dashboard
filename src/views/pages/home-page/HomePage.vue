@@ -39,14 +39,14 @@
 							<v-icon>mdi-account-group</v-icon>
 						</v-avatar>
 						<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
-						<div class="key">cases per million</div>
+						<div class="key">Cases Per Million</div>
 					</div>
 					<div class="key-value">
 						<v-avatar color="grey lighten-4" class="icon">
 							<v-icon>mdi-account-group</v-icon>
 						</v-avatar>
 						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
-						<div class="key">deaths per million</div>
+						<div class="key">Deaths Per Million</div>
 					</div>
 					<div class="key-value">
 						<v-avatar color="grey lighten-4" class="icon">
@@ -167,12 +167,13 @@ export default {
 		.key-value {
 			margin-bottom: 1rem;
 			display: grid;
-			grid-template-columns: 4rem auto;
+			grid-template-columns: 0px auto;
 			grid-template-rows: 2rem 1rem;
 
 			.icon {
 				grid-row: 1 / 2;
 				grid-column: 1;
+				display: none;
 			}
 			.value {
 				grid-row: 1;

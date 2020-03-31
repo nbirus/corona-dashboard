@@ -7,10 +7,10 @@
 		</div>
 		<div class="legend">
 			<div class="key-group body-1">
-				<div class="bullet active"></div>
-				<div class="value">{{ totals.active | localeString }}</div>
-				<div class="key">active</div>
-				<div class="percent">({{ activePercent }}%)</div>
+				<div class="bullet critical"></div>
+				<div class="value">{{ totals.critical | localeString }}</div>
+				<div class="key">critical</div>
+				<div class="percent">({{ criticalPercent }}%)</div>
 			</div>
 
 			<div class="key-group body-1">
@@ -21,10 +21,10 @@
 			</div>
 
 			<div class="key-group body-1">
-				<div class="bullet critical"></div>
-				<div class="value">{{ totals.critical | localeString }}</div>
-				<div class="key">critical</div>
-				<div class="percent">({{ criticalPercent }}%)</div>
+				<div class="bullet active"></div>
+				<div class="value">{{ totals.active | localeString }}</div>
+				<div class="key">active</div>
+				<div class="percent">({{ activePercent }}%)</div>
 			</div>
 		</div>
 	</div>
@@ -61,7 +61,7 @@ export default {
 	padding: 1.5rem 1.5rem 0.5rem;
 
 	.bar {
-		height: 10px;
+		height: 12px;
 		width: 100%;
 		position: relative;
 		border-radius: 0.75rem;
@@ -69,12 +69,13 @@ export default {
 		margin-bottom: 1rem;
 		display: flex;
 	}
-	.critical {
+	.active {
 		position: relative;
 		height: 100%;
 		background-color: fade-out(#4caf50, 0.75);
 		border: solid thin var(--v-success-base);
-		border-radius: 25px 0 0 25px;
+		border-radius: 0 25px 25px 0;
+		border-left: none;
 	}
 	.recovered {
 		position: relative;
@@ -82,13 +83,14 @@ export default {
 		background-color: fade-out(#1976d2, 0.75);
 		border: solid thin var(--v-primary-base);
 	}
-	.active {
+	.critical {
 		position: relative;
 		height: 100%;
 		background-color: fade-out(#fb8c00, 0.75);
 		border: solid thin var(--v-warning-base);
 		z-index: 2;
-		border-radius: 0 25px 25px 0;
+		border-radius: 25px 0 0 25px;
+		border-right: none;
 	}
 	.legend {
 		display: flex;
