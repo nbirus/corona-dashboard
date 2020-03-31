@@ -159,9 +159,8 @@ export default {
 		align-items: center;
 
 		.value {
-			font-weight: $bold;
 			margin-right: 0.25rem;
-			font-size: 0.9rem;
+			font-size: 1rem;
 		}
 		.key {
 			margin-right: 0.25rem;
