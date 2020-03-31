@@ -39,21 +39,21 @@
 							<v-icon>mdi-account-group</v-icon>
 						</v-avatar>
 						<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
-						<div class="key">Cases Per Million</div>
+						<div class="key">cases per million</div>
 					</div>
 					<div class="key-value">
 						<v-avatar color="grey lighten-4" class="icon">
 							<v-icon>mdi-account-group</v-icon>
 						</v-avatar>
 						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
-						<div class="key">Deaths Per Million</div>
+						<div class="key">deaths per million</div>
 					</div>
 					<div class="key-value">
 						<v-avatar color="grey lighten-4" class="icon">
 							<v-icon>mdi-account-multiple-remove-outline</v-icon>
 						</v-avatar>
 						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
-						<div class="key">Death Rate</div>
+						<div class="key">death rate</div>
 					</div>
 				</div>
 			</v-card>
@@ -152,7 +152,7 @@ export default {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 125px 90px 725px 600px auto;
+	grid-template-rows: 175px 175px 125px 100px 725px 600px auto;
 
 	&__total-cases {
 		grid-row: 1;
@@ -167,26 +167,30 @@ export default {
 		grid-column: 1;
 
 		.max {
-			padding: 1.5rem;
+			padding: 1.25rem 2.25rem;
 		}
 		.key-value {
 			margin-bottom: 1rem;
 			display: grid;
 			grid-template-columns: 0px auto;
-			grid-template-rows: 2.5rem 1rem;
+			grid-template-rows: 2.75rem 1rem;
+			z-index: 3;
 
 			.icon {
 				grid-row: 1 / 2;
 				grid-column: 1;
 				display: none;
+				text-align: center;
 			}
 			.value {
 				grid-row: 1;
 				grid-column: 2;
-				font-size: 1.75rem;
+				font-size: 2rem;
+				text-align: center;
 			}
 			.key {
 				grid-row: 2;
+				text-align: center;
 				grid-column: 2;
 				transform: translateY(-0.25rem);
 			}
@@ -234,7 +238,6 @@ export default {
 		grid-row: 7;
 		grid-column: span 2;
 	}
-
 	.chart {
 		.max {
 			display: block !important;
@@ -249,7 +252,7 @@ export default {
 		}
 
 		#timeline {
-			min-height: calc(514px - 4rem);
+			min-height: calc(514px - 3rem);
 		}
 		#million {
 			min-height: calc(600px - 4.3rem);
