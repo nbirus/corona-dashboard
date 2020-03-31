@@ -152,7 +152,7 @@ export default {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 125px 100px 725px 600px auto;
+	grid-template-rows: 175px 175px 125px 110px 725px 600px auto;
 
 	&__total-cases {
 		grid-row: 1;
@@ -167,7 +167,7 @@ export default {
 		grid-column: 1;
 
 		.max {
-			padding: 1.25rem 2.25rem;
+			padding: 1.5rem 2.25rem;
 		}
 		.key-value {
 			margin-bottom: 1rem;
@@ -186,11 +186,9 @@ export default {
 				grid-row: 1;
 				grid-column: 2;
 				font-size: 2rem;
-				text-align: center;
 			}
 			.key {
 				grid-row: 2;
-				text-align: center;
 				grid-column: 2;
 				transform: translateY(-0.25rem);
 			}

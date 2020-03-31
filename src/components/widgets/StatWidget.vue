@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 .stat-widget {
 	width: 100%;
-	padding: 0.25rem 1.5rem 0;
+	padding: 0.25rem 2rem 0;
 	height: 100%;
 
 	display: flex;
@@ -97,7 +97,7 @@ export default {
 	justify-content: center;
 
 	.bar {
-		height: 20px;
+		height: 22px;
 		width: 100%;
 		position: relative;
 		border-radius: 0.75rem;
@@ -107,7 +107,7 @@ export default {
 	}
 	.bar-item {
 		padding-left: 0.5rem;
-		line-height: 1.65;
+		line-height: 1.75;
 		font-size: 0.8rem;
 	}
 	.active {

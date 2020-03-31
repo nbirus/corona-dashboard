@@ -39,9 +39,17 @@
 			</div>
 		</div>
 		<div class="controller__play-pause">
-			<v-btn x-large icon @click="toggle">
-				<v-icon color="black">mdi-{{ state.playing ? 'pause' : 'play' }}</v-icon>
-			</v-btn>
+			<div class="controller__play-pause-controller">
+				<v-btn class="mr-2" icon color="white" @click="restart">
+					<v-icon color="white">mdi-rewind</v-icon>
+				</v-btn>
+				<v-btn large icon @click="toggle" color="white">
+					<v-icon color="white">mdi-{{ state.playing ? 'pause' : 'play' }}</v-icon>
+				</v-btn>
+				<v-btn class="ml-2" icon @click="incSpeed" color="white">
+					<strong>{{speed}}x</strong>
+				</v-btn>
+			</div>
 		</div>
 	</div>
 </template>
@@ -60,6 +68,7 @@ export default {
 				playing: false,
 			},
 			width: undefined,
+			speed: 1,
 			max: 0,
 			interval: null,
 			timeout: null,
@@ -120,18 +129,15 @@ export default {
 		play() {
 			this.clear()
 			this.state.playing = true
-			this.interval = setInterval(this.onInterval, 16)
+			this.interval = setInterval(this.onInterval, 16 / this.speed)
 		},
 		pause() {
 			this.clear()
 			this.state.playing = false
 		},
 		restart() {
-			// this.timeout = setTimeout(() => {
-			// 	if (this.state.playing) {
-			// 		this.width = 0
-			// 	}
-			// }, 2000)
+			this.pause()
+			this.width = 0
 		},
 		onInterval() {
 			if (this.width >= this.max) {
@@ -145,6 +151,14 @@ export default {
 			this.interval = null
 			clearTimeout(this.timeout)
 			this.timeout = null
+		},
+		incSpeed() {
+			if (this.speed < 3) {
+				this.speed++
+			} else {
+				this.speed = 1
+			}
+			this.play()
 		},
 
 		// events
@@ -253,8 +267,27 @@ export default {
 		}
 	}
 	&__play-pause {
-		flex: 0 0 auto;
-		padding: 0 0.75rem;
+		position: absolute;
+		bottom: 75px;
+		top: 0;
+		width: calc(100% - 300px);
+		display: flex;
+		justify-content: center;
+		align-items: flex-end;
+		padding-bottom: 1.5rem;
+		opacity: 0;
+		transition: opacity 0.2s ease;
+
+		&:hover {
+			opacity: 1;
+		}
+	}
+	&__play-pause-controller {
+		background-color: fade-out(black, 0.15);
+		width: auto;
+		border-radius: 0.75rem;
+		padding: 0.25rem 1rem;
+		z-index: 99999;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
