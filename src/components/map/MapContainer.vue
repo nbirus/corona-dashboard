@@ -121,8 +121,6 @@ export default {
 		// border-right: solid thin $border-color;
 		height: 75px;
 		// border-top: solid thin $border-color-light;
-
-		// box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
 	}
 	&__table {
 		grid-row: span 2;

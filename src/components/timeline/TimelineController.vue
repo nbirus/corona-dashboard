@@ -231,7 +231,7 @@ export default {
 			right: 0;
 			top: 0;
 			bottom: 0;
-			width: 2px;
+			width: 3px;
 			opacity: 0;
 			transition: opacity 0.2s ease;
 		}
@@ -285,20 +285,18 @@ export default {
 	&__date {
 		display: none;
 		flex: 0 0 auto;
-		padding: 0.25rem 0.65rem 0.1rem;
+		padding: 0.2rem 0.5rem 0.1rem;
 		width: auto;
 		font-size: 0.8rem;
 		color: white;
-		border-radius: 0.75rem;
+		border-radius: 0.25rem;
 		font-weight: $thin;
 		z-index: 9999;
-		// opacity: 0.75;
 		transition: opacity 0.2s ease, box-shadow 0.3s ease;
 
 		&.under {
+			opacity: 0.5;
 			box-shadow: none !important;
-			color: black;
-			background-color: lighten(black, 85) !important;
 		}
 	}
 	&__chart {
@@ -312,14 +310,18 @@ export default {
 
 	&.cases {
 		.controller__slider-handle::after {
-			background-color: darken(#1976d2, 5);
+			background-color: darken(#1976d2, 10);
 		}
 		.controller__date {
-			background-color: darken(#1976d2, 1);
-			box-shadow: 0 0 0 2px darken(#1976d2, 5);
+			background-color: darken(#1976d2, 5);
+			box-shadow: 0 0 0 2px fade-out(#1976d2, 0.5);
+
+			&.under {
+				background-color: darken(#1976d2, 0);
+			}
 		}
 		.controller__slider-handle {
-			background-color: fade-out(#1976d2, 0.5);
+			background-color: fade-out(#1976d2, 0.45);
 		}
 	}
 	&.deaths {
@@ -350,6 +352,14 @@ export default {
 		&:first-child,
 		&:nth-child(12n) {
 			display: block;
+		}
+		&:nth-child(7n) {
+			content: '';
+			display: block;
+			height: 3px;
+			width: 3px;
+			overflow: hidden;
+			padding: 0;
 		}
 	}
 }
