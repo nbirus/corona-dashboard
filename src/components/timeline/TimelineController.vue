@@ -38,7 +38,7 @@
 				<div ref="handle" :style="sliderStyle" class="controller__slider-handle"></div>
 			</div>
 		</div>
-		<div class="controller__play-pause">
+		<div class="controller__play-pause" :class="{ hover }">
 			<div class="controller__play-pause-controller">
 				<v-btn class="mr-2" icon color="white" @click="restart">
 					<v-icon color="white">mdi-rewind</v-icon>
@@ -62,7 +62,7 @@ let otherTimeout = null
 export default {
 	name: 'timeline-controller',
 	components: { ChartWrapper },
-	props: ['type', 'loading'],
+	props: ['type', 'loading', 'hover'],
 	data() {
 		return {
 			state: {
@@ -172,8 +172,10 @@ export default {
 		setPos(e) {
 			let mousePos = e.pageX
 			let sliderEl = this.$refs.slider
-			let sliderElBox = sliderEl.getBoundingClientRect()
-			this.width = mousePos - sliderElBox.left
+			if (sliderEl) {
+				let sliderElBox = sliderEl.getBoundingClientRect()
+				this.width = mousePos - sliderElBox.left
+			}
 			this.pause()
 		},
 		mouseDown() {
@@ -287,10 +289,10 @@ export default {
 		justify-content: center;
 		align-items: flex-end;
 		padding-bottom: 1.5rem;
-		opacity: 0;
 		transition: opacity 0.2s ease;
+		pointer-events: none;
 
-		&:hover {
+		&.hover .controller__play-pause-controller {
 			opacity: 1;
 		}
 	}
@@ -300,6 +302,12 @@ export default {
 		border-radius: 0.75rem;
 		padding: 0.25rem 1rem;
 		z-index: 99999;
+		pointer-events: auto;
+		opacity: 0;
+
+		&:hover {
+			opacity: 1;
+		}
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);

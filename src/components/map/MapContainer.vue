@@ -1,7 +1,7 @@
 <template>
 	<div class="map-container">
 		<!-- map -->
-		<div class="map-container__map">
+		<div class="map-container__map" @mouseenter="hover=true" @mouseleave="hover=false">
 			<spread-map
 				:loading="loading"
 				class="map"
@@ -28,7 +28,7 @@
 
 		<!-- timeline -->
 		<div class="map-container__timeline">
-			<timeline-controller :loading="loading" :type="type" />
+			<timeline-controller :loading="loading" :type="type" :hover="hover" />
 		</div>
 
 		<!-- info -->
@@ -62,6 +62,7 @@ export default {
 	data() {
 		return {
 			type: 'cases',
+			hover: true,
 			trackerStyle: {
 				left: '16px',
 			},
