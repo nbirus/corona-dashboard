@@ -139,10 +139,10 @@ export default {
 		bottom: 0;
 
 		&.cases {
-			background-color: rgba(218, 235, 249, 1);
+			background-color: rgba(218, 235, 249, 0.75);
 		}
 		&.deaths {
-			background-color: rgba(252, 198, 194, 1);
+			background-color: rgba(252, 198, 194, 0.75);
 		}
 	}
 }

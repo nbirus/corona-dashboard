@@ -25,7 +25,7 @@ addEventListener('message', e => {
  * @param {boolean} sort.desc order in which it will be sorted
  */
 export function sortObject(data, sort = {}) {
-  if (data && sort && sort.key && sort.desc !== undefined) {
+  if (data && Array.isArray(data) && sort && sort.key && sort.desc !== undefined) {
 
     // create list of keys to format
     const specialKeys = Object.keys(specialFormat)
@@ -36,7 +36,6 @@ export function sortObject(data, sort = {}) {
       const bValue = specialKeys.includes(sort.key) ? specialFormat[sort.key](b[sort.key]) : get(b, sort.key)
       const aType = t(aValue)
       const bType = t(bValue)
-
 
       // check for existance
       if (aType.isNullOrUndefined || bType.isNullOrUndefined) {
@@ -54,11 +53,11 @@ export function sortObject(data, sort = {}) {
         sensitivity: 'base',
       })
     })
-  }
 
-  // reverse if desc
-  if (sort.desc === true) {
-    data.reverse()
+      // reverse if desc
+    if (sort.desc === true) {
+      data.reverse()
+    }
   }
 
   return data

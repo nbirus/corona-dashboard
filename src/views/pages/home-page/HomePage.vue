@@ -91,7 +91,12 @@
 						<h2 class="text-center">Per million</h2>
 					</div>
 					<div class="body">
-						<chart-wrapper :loading="!loading" type="bar" id="million" :data="data" />
+						<chart-wrapper
+							:loading="!loading"
+							type="bar"
+							id="million"
+							:data="$h.exists(data) ? data : []"
+						/>
 					</div>
 				</v-card>
 			</div>

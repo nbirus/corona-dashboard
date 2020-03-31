@@ -108,20 +108,6 @@ export default {
 		grid-column: 1;
 		min-height: 650px;
 		max-height: 650px;
-		position: relative;
-		display: flex;
-
-		.map {
-			flex: 0 1 100%;
-		}
-		.table {
-			flex: 0 0 300px;
-			overflow-x: hidden;
-			overflow-y: scroll;
-			// border-left: solid thin $border-color;
-			box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
-			z-index: 999;
-		}
 	}
 	&__timeline {
 		flex: 0 0 auto;
@@ -132,7 +118,7 @@ export default {
 		padding: 0;
 		z-index: 99999;
 		overflow: visible;
-		border-right: solid thin $border-color;
+		// border-right: solid thin $border-color;
 		height: 75px;
 		// border-top: solid thin $border-color-light;
 

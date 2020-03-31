@@ -12,13 +12,6 @@
 				v-model="keyword"
 			/>
 		</v-layout>-->
-		<data-table-wrapper
-			class="row-pad"
-			:data="countryData"
-			:loading="loading"
-			:columns="CountryHeaders"
-		/>
-
 		<!-- :pagination="pagination"
 			:params="{ country: keyword }"
 		:sort="sort"-->
@@ -40,6 +33,15 @@
 				</li>
 		</v-expansion-panels>-->
 		<!-- </data-wrapper> -->
+		<state-handler :loading="loading">
+			<data-table-wrapper
+				class="row-pad"
+				id="ok"
+				:data="countryData"
+				:loading="loading"
+				:columns="CountryHeaders"
+			/>
+		</state-handler>
 	</div>
 </template>
 
@@ -77,7 +79,7 @@ export default {
 			}
 		},
 		countryData() {
-			if (this.data.map) {
+			if (this.$h.exists(this.data.map)) {
 				return Object.values(this.data.map)
 			} else {
 				return []

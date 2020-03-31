@@ -59,7 +59,7 @@ export default {
 	padding: 1.5rem 1.5rem 0.5rem;
 
 	.bar {
-		height: 10px;
+		height: 8px;
 		width: 100%;
 		position: relative;
 		border-radius: 0.75rem;
@@ -70,16 +70,16 @@ export default {
 	.active {
 		position: relative;
 		height: 100%;
-		background-color: fade-out(#4caf50, 0.75);
-		border: solid thin var(--v-success-base);
+		background-color: fade-out(#1976d2, 0.75);
+		border: solid thin var(--v-primary-base);
 		border-radius: 0 25px 25px 0;
 		border-left: none;
 	}
 	.recovered {
 		position: relative;
 		height: 100%;
-		background-color: fade-out(#1976d2, 0.75);
-		border: solid thin var(--v-primary-base);
+		background-color: fade-out(#4caf50, 0.75);
+		border: solid thin var(--v-success-base);
 	}
 	.critical {
 		position: relative;
@@ -121,12 +121,12 @@ export default {
 			background-color: fade-out(#fb8c00, 0.75);
 		}
 		&.recovered {
-			border: solid thin var(--v-primary-base);
-			background-color: fade-out(#1976d2, 0.75);
-		}
-		&.active {
 			border: solid thin var(--v-success-base);
 			background-color: fade-out(#4caf50, 0.75);
+		}
+		&.active {
+			border: solid thin var(--v-primary-base);
+			background-color: fade-out(#1976d2, 0.75);
 		}
 	}
 }

@@ -27,7 +27,7 @@ export default {
 	data() {
 		return {
 			request: undefined,
-			returnData: null, // default to passed in data
+			returnData: [], // default to passed in data
 			total: this.data !== undefined ? this.data.length : 0, // default to passed in data
 			loading: true,
 			error: undefined,
@@ -71,9 +71,10 @@ export default {
 		async _request(params) {
 			this.loading = true
 			this.error = null
+			const data = this.$h.cloneDeep(this.activeData)
 
 			try {
-				let result = await search(this.$h.cloneDeep(this.activeData), params)
+				let result = await search(data, params)
 				result = await sort(result, this.sort)
 				result = await paginate(result, this.pagination)
 				this.onResolve(result)

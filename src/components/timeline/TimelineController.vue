@@ -243,7 +243,7 @@ export default {
 		align-items: center;
 		position: relative;
 		z-index: 999;
-		border-right: solid thin $border-color;
+		// border-right: solid thin $border-color;
 
 		&:hover .controller__tracker {
 			opacity: 1;
@@ -303,7 +303,7 @@ export default {
 	}
 	&__chart {
 		position: absolute;
-		top: 0;
+		top: -1rem;
 		left: 0;
 		right: 0;
 		bottom: 0;
