@@ -147,7 +147,7 @@ export default {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 110px 90px 725px 600px auto;
+	grid-template-rows: 175px 175px 125px 90px 725px 600px auto;
 
 	&__total-cases {
 		grid-row: 1;
@@ -168,7 +168,7 @@ export default {
 			margin-bottom: 1rem;
 			display: grid;
 			grid-template-columns: 0px auto;
-			grid-template-rows: 2rem 1rem;
+			grid-template-rows: 2.5rem 1rem;
 
 			.icon {
 				grid-row: 1 / 2;
@@ -178,7 +178,7 @@ export default {
 			.value {
 				grid-row: 1;
 				grid-column: 2;
-				font-size: 1.4rem;
+				font-size: 1.75rem;
 			}
 			.key {
 				grid-row: 2;

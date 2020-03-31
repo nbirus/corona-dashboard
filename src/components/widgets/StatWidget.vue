@@ -12,14 +12,12 @@
 				<div class="key">critical</div>
 				<div class="percent">({{ criticalPercent }}%)</div>
 			</div>
-
 			<div class="key-group body-1">
 				<div class="bullet recovered"></div>
 				<div class="value">{{ totals.recovered | localeString }}</div>
 				<div class="key">recovered</div>
 				<div class="percent">({{ recoveredPercent }}%)</div>
 			</div>
-
 			<div class="key-group body-1">
 				<div class="bullet active"></div>
 				<div class="value">{{ totals.active | localeString }}</div>
@@ -61,7 +59,7 @@ export default {
 	padding: 1.5rem 1.5rem 0.5rem;
 
 	.bar {
-		height: 12px;
+		height: 10px;
 		width: 100%;
 		position: relative;
 		border-radius: 0.75rem;

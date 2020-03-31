@@ -132,8 +132,9 @@ export default {
 		padding: 0;
 		z-index: 99999;
 		overflow: visible;
+		border-right: solid thin $border-color;
 		height: 75px;
-		border-top: solid thin $border-color-light;
+		// border-top: solid thin $border-color-light;
 
 		// box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.02) !important;
 	}
@@ -141,7 +142,7 @@ export default {
 		grid-row: span 2;
 		grid-column: 2;
 		max-height: 725px;
-		border-left: solid thin $border-color-light;
+		// border-left: solid thin $border-color-light;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);

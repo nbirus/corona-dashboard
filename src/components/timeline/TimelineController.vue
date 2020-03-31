@@ -243,7 +243,7 @@ export default {
 		align-items: center;
 		position: relative;
 		z-index: 999;
-		border-right: solid thin $border-color-light;
+		border-right: solid thin $border-color;
 
 		&:hover .controller__tracker {
 			opacity: 1;
