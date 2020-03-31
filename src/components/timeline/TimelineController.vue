@@ -47,7 +47,7 @@
 					<v-icon color="white">mdi-{{ state.playing ? 'pause' : 'play' }}</v-icon>
 				</v-btn>
 				<v-btn class="ml-2" icon @click="incSpeed" color="white">
-					<strong>{{speed}}x</strong>
+					<strong>{{ speed }}x</strong>
 				</v-btn>
 			</div>
 		</div>
@@ -56,6 +56,8 @@
 
 <script>
 import ChartWrapper from '@/components/charts/ChartWrapper'
+
+let otherTimeout = null
 
 export default {
 	name: 'timeline-controller',
@@ -195,6 +197,16 @@ export default {
 		index() {
 			if (!this.state.sliding) {
 				this.updateIndex()
+			} else {
+				if (otherTimeout) {
+					clearTimeout(otherTimeout)
+					otherTimeout = null
+				}
+				otherTimeout = setTimeout(() => {
+					if (this.state.sliding) {
+						this.updateIndex()
+					}
+				}, 100)
 			}
 		},
 	},

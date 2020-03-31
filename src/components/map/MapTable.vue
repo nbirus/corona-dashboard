@@ -19,6 +19,7 @@
 				:style="`width: ${(data[type] / max) * 100}%`"
 			></div>
 			<span class="index">{{ i + 1 }}.</span>
+			<img width="16" class="img mr-2" :src="data.flag" :alt="data.name" />
 			<span class="name">{{ data.name }}</span>
 			<span class="cases body-2">{{ data[type] | localeString }}</span>
 		</li>
@@ -53,6 +54,7 @@ export default {
 					let deaths = this.$h.get(this.value, `${key}.timeline.deaths.${this.dateIndex}`, 0)
 					return {
 						name: this.$h.get(this.value, `${key}.info.name`, 'Other'),
+						flag: this.$h.get(this.value, `${key}.info.flag`, 'Other'),
 						cases,
 						deaths,
 					}
@@ -105,6 +107,9 @@ export default {
 			margin-right: 0.75rem;
 			z-index: 2;
 		}
+		.img {
+			z-index: 2;
+		}
 		.name {
 			flex: 0 1 100%;
 			font-size: 1rem !important;
@@ -139,10 +144,16 @@ export default {
 		bottom: 0;
 
 		&.cases {
-			background-color: rgba(218, 235, 249, 0.75);
+			// background-color: rgba(218, 235, 249, 0.5);
+			background: rgb(255, 255, 255);
+			background: linear-gradient(
+				90deg,
+				rgba(218, 235, 249, 0.15) 0%,
+				rgba(218, 235, 249, 0.5) 100%
+			);
 		}
 		&.deaths {
-			background-color: rgba(252, 198, 194, 0.75);
+			background-color: rgba(252, 198, 194, 0.5);
 		}
 	}
 }
