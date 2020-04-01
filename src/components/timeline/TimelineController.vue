@@ -21,9 +21,10 @@
 					class="controller__date"
 					v-for="(date, i) in $h.get(data, 'timeline.dates')"
 					:key="date"
-					v-html="date"
 					:class="i < index || 'under'"
-				></li>
+				>
+					<span v-html="date"></span>
+				</li>
 			</ul>
 
 			<div
@@ -321,6 +322,7 @@ export default {
 
 		border-radius: 8px;
 		padding: 0.25rem 0.5rem 0.1rem;
+		user-select: none;
 		transition: opacity 200ms;
 	}
 	&__dates {
@@ -336,9 +338,10 @@ export default {
 		padding-right: 1rem;
 	}
 	&__date {
+		user-select: none;
 		display: none;
 		flex: 0 0 auto;
-		padding: 0.2rem 0.5rem 0.1rem;
+		padding: 0.2rem 0.35rem 0.05rem;
 		width: auto;
 		font-size: 0.8rem;
 		color: white;
@@ -367,10 +370,17 @@ export default {
 		}
 		.controller__date {
 			background-color: darken(#1976d2, 5);
-			box-shadow: 0 0 0 2px fade-out(#1976d2, 0.5);
+			// background-color: transparent;
+			// box-shadow: 0 0 0 2px fade-out(#1976d2, 0.5);
+
+			border: solid thin darken(#1976d2, 5);
+			color: darken(#1976d2, 5);
+			color: white;
 
 			&.under {
-				background-color: darken(#1976d2, 0);
+				color: darken(#1976d2, 5);
+				border: solid thin lighten(#1976d2, 15);
+				background-color: white;
 			}
 		}
 		.controller__slider-handle {
@@ -403,14 +413,16 @@ export default {
 @media screen and (min-width: 950px) {
 	.controller__date {
 		&:first-child,
-		&:nth-child(12n) {
+		&:nth-child(15n) {
 			display: block;
 		}
 		&:nth-child(7n) {
-			content: '';
+			span {
+				display: none !important;
+			}
 			display: block;
-			height: 3px;
-			width: 3px;
+			height: 4px;
+			width: 4px;
 			overflow: hidden;
 			padding: 0;
 		}

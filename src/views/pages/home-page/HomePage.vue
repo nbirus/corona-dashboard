@@ -31,6 +31,18 @@
 			</v-card>
 		</div>
 		<div class="home-page__total-info">
+			<v-card class="max death-rate">
+				<spinner v-if="loading" />
+				<div v-else>
+					<div class="key-value">
+						<v-avatar color="grey lighten-4" class="icon">
+							<v-icon>mdi-account-multiple-remove-outline</v-icon>
+						</v-avatar>
+						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
+						<div class="key">death rate</div>
+					</div>
+				</div>
+			</v-card>
 			<v-card class="max">
 				<spinner v-if="loading" />
 				<div v-else>
@@ -47,13 +59,6 @@
 						</v-avatar>
 						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
 						<div class="key">deaths per million</div>
-					</div>
-					<div class="key-value">
-						<v-avatar color="grey lighten-4" class="icon">
-							<v-icon>mdi-account-multiple-remove-outline</v-icon>
-						</v-avatar>
-						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
-						<div class="key">death rate</div>
 					</div>
 				</div>
 			</v-card>
@@ -152,7 +157,7 @@ export default {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 125px 110px 725px 600px auto;
+	grid-template-rows: 175px 175px 125px 100px 725px 600px auto;
 
 	&__total-cases {
 		grid-row: 1;
@@ -166,8 +171,15 @@ export default {
 		grid-row: 3 / 5;
 		grid-column: 1;
 
+		display: flex;
+		flex-direction: column;
+
+		.death-rate {
+			flex: 0 0 100px;
+			margin-bottom: 1rem;
+		}
 		.max {
-			padding: 1.5rem 2.25rem;
+			padding: 1.25rem 2rem;
 		}
 		.key-value {
 			margin-bottom: 1rem;
@@ -185,7 +197,8 @@ export default {
 			.value {
 				grid-row: 1;
 				grid-column: 2;
-				font-size: 2rem;
+				font-size: 2.2rem;
+				color: black;
 			}
 			.key {
 				grid-row: 2;

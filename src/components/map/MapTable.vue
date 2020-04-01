@@ -149,7 +149,7 @@ export default {
 			background: linear-gradient(
 				90deg,
 				rgba(218, 235, 249, 0.15) 0%,
-				rgba(218, 235, 249, 0.5) 100%
+				rgba(218, 235, 249, 0.85) 100%
 			);
 		}
 		&.deaths {

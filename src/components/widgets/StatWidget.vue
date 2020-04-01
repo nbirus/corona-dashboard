@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 .stat-widget {
 	width: 100%;
-	padding: 0.25rem 2rem 0;
+	padding: 0.75rem 2rem 0;
 	height: 100%;
 
 	display: flex;
@@ -97,17 +97,17 @@ export default {
 	justify-content: center;
 
 	.bar {
-		height: 22px;
+		height: 21px;
 		width: 100%;
 		position: relative;
 		border-radius: 0.75rem;
 		overflow: hidden;
 		display: flex;
-		margin-bottom: 1rem;
+		margin-bottom: 0.75rem;
 	}
 	.bar-item {
 		padding-left: 0.5rem;
-		line-height: 1.75;
+		line-height: 1.65;
 		font-size: 0.8rem;
 	}
 	.active {
@@ -157,6 +157,7 @@ export default {
 	.key-group {
 		display: flex;
 		align-items: center;
+		margin-right: 2rem;
 
 		.value {
 			margin-right: 0.25rem;
@@ -167,23 +168,24 @@ export default {
 		}
 	}
 	.bullet {
-		width: 36px;
-		height: 14px;
-		border-radius: 0px;
+		width: 12px;
+		height: 12px;
+		border-radius: 25px;
 		margin-right: 0.5rem;
 		transform: translateY(-1px);
+		// background-color: white;
 
 		&.critical {
-			border: solid thin var(--v-warning-base);
+			border: solid 1px var(--v-warning-base);
 		}
 		&.recovered {
-			border: solid thin var(--v-success-base);
+			border: solid 1px var(--v-success-base);
 		}
 		&.deaths {
-			border: solid thin var(--v-error-base);
+			border: solid 1px var(--v-error-base);
 		}
 		&.active {
-			border: solid thin var(--v-primary-base);
+			border: solid 1px var(--v-primary-base);
 		}
 	}
 }
