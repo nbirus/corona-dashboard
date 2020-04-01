@@ -289,7 +289,6 @@ export default {
 		justify-content: center;
 		align-items: flex-end;
 		padding-bottom: 1.5rem;
-		transition: opacity 0.2s ease;
 		pointer-events: none;
 
 		&.hover .controller__play-pause-controller {
@@ -304,6 +303,7 @@ export default {
 		z-index: 99999;
 		pointer-events: auto;
 		opacity: 0;
+		transition: opacity 0.2s ease;
 
 		&:hover {
 			opacity: 1;

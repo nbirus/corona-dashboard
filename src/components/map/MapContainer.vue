@@ -62,7 +62,7 @@ export default {
 	data() {
 		return {
 			type: 'cases',
-			hover: true,
+			hover: false,
 			trackerStyle: {
 				left: '16px',
 			},
