@@ -23,7 +23,7 @@ export default {
 	data() {
 		return {
 			params: {
-				size: 5,
+				size: 10,
 			},
 		}
 	},
@@ -34,6 +34,8 @@ export default {
 .news-feed-container {
 	min-height: 300px;
 	position: relative;
+
+	padding: 0.5rem 0;
 }
 .news-feed {
 	padding: 0 !important;

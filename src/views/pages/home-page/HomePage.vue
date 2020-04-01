@@ -43,23 +43,30 @@
 					</div>
 				</div>
 			</v-card>
-			<v-card class="max">
+			<v-card class="max per-million">
 				<spinner v-if="loading" />
 				<div v-else>
-					<div class="key-value">
-						<v-avatar color="grey lighten-4" class="icon">
-							<v-icon>mdi-account-group</v-icon>
-						</v-avatar>
+					<div class="header">Per One Million People</div>
+					<div class="body">
+						<div class="key-value-per">
+							<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
+							<div class="key">cases</div>
+						</div>
+						<div class="key-value-per">
+							<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
+							<div class="key">deaths</div>
+						</div>
+					</div>
+					<!-- <div class="key">per million</div>
+					<div class="key-value-per-million">
 						<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
-						<div class="key">cases per million</div>
+						<div class="key">cases</div>
 					</div>
-					<div class="key-value">
-						<v-avatar color="grey lighten-4" class="icon">
-							<v-icon>mdi-account-group</v-icon>
-						</v-avatar>
+					<div class="key-value-per-million">
 						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
-						<div class="key">deaths per million</div>
+						<div class="key">deaths</div>
 					</div>
+					</div>-->
 				</div>
 			</v-card>
 		</div>
@@ -157,7 +164,7 @@ export default {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 125px 100px 725px 600px auto;
+	grid-template-rows: 175px 175px 145px 80px 725px 600px auto;
 
 	&__total-cases {
 		grid-row: 1;
@@ -176,16 +183,35 @@ export default {
 
 		.death-rate {
 			flex: 0 0 100px;
-			margin-bottom: 1rem;
+			margin-bottom: 2rem;
+		}
+		.per-million {
+			.header {
+				margin-top: 0.25rem;
+				margin-bottom: 0.5rem;
+			}
+			.body {
+				display: flex;
+				align-items: center;
+
+				.value {
+					font-size: 2rem;
+					font-weight: $bold;
+					margin-right: 0.25rem;
+					line-height: 1;
+				}
+			}
+			.key-value-per:first-child {
+				margin-right: 2.5rem;
+			}
 		}
 		.max {
-			padding: 1.25rem 2rem;
+			padding: 1rem 2rem;
 		}
 		.key-value {
-			margin-bottom: 1rem;
 			display: grid;
 			grid-template-columns: 0px auto;
-			grid-template-rows: 2.75rem 1rem;
+			grid-template-rows: 3rem 1rem;
 			z-index: 3;
 
 			.icon {
@@ -241,7 +267,7 @@ export default {
 			display: block !important;
 		}
 		.header {
-			padding: 1.5rem 1.5rem 0.5rem;
+			padding: 1.5rem 1.5rem 0;
 			text-align: center;
 		}
 	}

@@ -89,26 +89,28 @@ export default {
 <style lang="scss" scoped>
 .stat-widget {
 	width: 100%;
-	padding: 0.75rem 2rem 0;
+	padding: 1rem 1rem 0;
+	// padding: 0 0 0;
 	height: 100%;
 
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	// justify-content: center;
 
 	.bar {
-		height: 21px;
+		height: 1.25rem;
 		width: 100%;
 		position: relative;
-		border-radius: 0.75rem;
+		// border-radius: 0.75rem 0.75rem 0;
 		overflow: hidden;
 		display: flex;
-		margin-bottom: 0.75rem;
+		margin-bottom: 0.65rem;
 	}
 	.bar-item {
 		padding-left: 0.5rem;
-		line-height: 1.65;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
+		display: flex;
+		align-items: center;
 	}
 	.active {
 		position: relative;
@@ -116,7 +118,7 @@ export default {
 		background-color: fade-out(#1976d2, 0.75);
 		border: solid thin var(--v-primary-base);
 		color: var(--v-primary-darken3);
-		border-radius: 0 25px 25px 0;
+		border-radius: 0 0.75rem 0.75rem 0;
 		border-left: none;
 	}
 	.recovered {
@@ -133,7 +135,7 @@ export default {
 		border: solid thin var(--v-warning-base);
 		color: var(--v-warning-darken3);
 		z-index: 2;
-		border-radius: 25px 0 0 25px;
+		border-radius: 0.75rem 0 0 0.75rem;
 		border-right: none;
 	}
 	.deaths {

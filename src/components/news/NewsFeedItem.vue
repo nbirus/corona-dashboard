@@ -1,16 +1,16 @@
 <template>
 	<li class="news-feed-item">
-		<a :href="data.url" target="_blank">
-			<div class="news-feed-item__thumbnail">
-				<img class="news-feed-item__img" :src="data.thumbnail" />
-			</div>
-			<span class="news-feed-item__info">
-				<span class="news-feed-item__title body-1">{{ data.title | abbreviate(90) }}</span>
-				<span class="news-feed-item__date body-2 text-secondary">
-					{{ data.date | date('MMMM D, YYYY') }}
+		<v-hover v-slot="{ hover }">
+			<a :href="data.url" target="_blank" :class="{ hover }">
+				<div class="news-feed-item__thumbnail">
+					<img class="news-feed-item__img" :src="data.thumbnail" />
+				</div>
+				<span class="news-feed-item__info">
+					<span class="news-feed-item__title body-1">{{ data.title | abbreviate(hover ? 1000 : 60) }}</span>
+					<span class="news-feed-item__date body-2 text-secondary">{{ data.date | date('MMMM D, YYYY') }}</span>
 				</span>
-			</span>
-		</a>
+			</a>
+		</v-hover>
 	</li>
 </template>
 
@@ -43,14 +43,16 @@ export default {
 		display: flex;
 		align-items: flex-start;
 		text-decoration: none !important;
+		min-height: 77px;
 
 		border-radius: 0.75rem;
-		transition: box-shadow 0.25s ease;
-		padding: 0.25rem 0.75rem;
+		transition: box-shadow 0.25s ease, min-height 0.5s ease;
+		padding: 0.5rem 0.5rem;
 
 		&:hover {
 			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
 			background-color: #fff;
+			min-height: 100%;
 		}
 		&:active {
 			box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
@@ -85,8 +87,8 @@ export default {
 	}
 	&__title {
 		margin-bottom: 0.2rem;
-		font-weight: $bold;
-		line-height: 1.3;
+		// font-weight: $bold;
+		line-height: 1.2;
 	}
 	&__date {
 	}
