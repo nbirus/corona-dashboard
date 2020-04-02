@@ -100,4 +100,29 @@ export default {
 #world-btn {
 	border-radius: 0.75rem 0 0 0.75rem;
 }
+
+@media screen and (max-width: 480px) {
+	.nav {
+		&__title {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			h1 {
+				font-size: 2rem;
+			}
+			p {
+				font-size: 1.2rem;
+				margin: 0;
+			}
+		}
+		&__buttons {
+			padding: 1rem 0;
+		}
+		&__select {
+			width: 100%;
+			font-size: 1.2rem !important;
+		}
+	}
+}
 </style>

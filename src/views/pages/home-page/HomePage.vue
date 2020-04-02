@@ -166,12 +166,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .home-page {
 	display: grid;
 	grid-gap: 2rem;
 	grid-template-columns: 1fr 3.75fr;
 	grid-template-rows: 175px 175px 145px 80px 725px 600px auto;
+	overflow: hidden;
+	max-width: 100vw;
 
 	&.country {
 		grid-template-rows: 175px 175px 145px 80px auto;
@@ -316,16 +318,86 @@ export default {
 	justify-content: center;
 }
 
-// @media screen and (max-width: 480px) {
-// 	.home-page {
-// 		&__totals {
-// 			grid-template-columns: 1fr;
-// 			grid-template-rows: 175px 175px 175px;
-// 			grid-gap: 1rem;
-// 		}
-// 		&__timeline {
-// 			min-height: 300px;
-// 		}
-// 	}
-// }
+@media screen and (max-width: 480px) {
+	.home-page {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto auto 440px auto auto;
+		padding: 2rem 1rem !important;
+		grid-gap: 1.5rem;
+
+		&__total-cases {
+			grid-row: 1;
+			grid-column: 1;
+		}
+		&__total-deaths {
+			grid-row: 2;
+			grid-column: 1;
+		}
+		&__timeline {
+			grid-row: 3;
+			grid-column: 1;
+		}
+		&__total-info {
+			grid-row: 4;
+			grid-column: 1;
+
+			.death-rate {
+				margin-bottom: 1.5rem;
+			}
+		}
+		&__bar {
+			grid-row: 5;
+			grid-column: 1;
+		}
+		&__map {
+			grid-row: 6;
+			grid-column: 1;
+			display: none;
+		}
+		&__world {
+			grid-row: 6;
+			grid-column: 1;
+			display: none;
+		}
+		&__per-million {
+			order: 2;
+			display: none;
+		}
+		&__news {
+			order: 1;
+			display: none;
+		}
+		&__countries {
+			grid-row: 7;
+			grid-column: 1;
+			display: none;
+		}
+
+		.chart {
+			.max {
+				display: block !important;
+				padding: 0 1rem 1rem;
+			}
+			.header {
+				padding-top: 1rem;
+			}
+			.body {
+				transform: translateY(-1.5rem);
+				height: 100%;
+			}
+
+			#timeline {
+				min-height: calc(200px - 5rem) !important;
+
+				.chartjs-render-monitor {
+					width: 100% !important;
+					height: 100% !important;
+				}
+			}
+			#million {
+				min-height: calc(600px - 4.3rem);
+			}
+		}
+	}
+}
 </style>

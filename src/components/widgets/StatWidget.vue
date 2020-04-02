@@ -90,7 +90,6 @@ export default {
 .stat-widget {
 	width: 100%;
 	padding: 1.25rem 1.25rem 0;
-	// padding: 0 0 0;
 	height: 100%;
 
 	display: flex;
@@ -154,7 +153,6 @@ export default {
 		align-items: center;
 		min-width: 750px;
 		margin: 0 auto;
-		// border: solid thin red;
 	}
 	.key-group {
 		display: flex;
@@ -188,6 +186,25 @@ export default {
 		}
 		&.active {
 			border: solid 1px var(--v-primary-base);
+		}
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.stat-widget {
+		padding: 1rem 1rem 1rem;
+		.bar {
+			height: 1.5rem;
+		}
+		.bar-item {
+			line-height: 1.7;
+		}
+		.legend {
+			flex-direction: column;
+			align-items: flex-start;
+			min-width: auto;
+			margin: 0;
+			padding: 0.5rem 0 0 0.5rem;
 		}
 	}
 }
