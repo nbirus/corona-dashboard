@@ -321,7 +321,7 @@ export default {
 @media screen and (max-width: 480px) {
 	.home-page {
 		grid-template-columns: 1fr;
-		grid-template-rows: auto auto 440px auto auto;
+		grid-template-rows: auto auto 370px auto auto auto;
 		padding: 2rem 1rem !important;
 		grid-gap: 1.5rem;
 
@@ -343,6 +343,10 @@ export default {
 
 			.death-rate {
 				margin-bottom: 1.5rem;
+				padding: 1rem 1.5rem;
+			}
+			.per-million {
+				padding: 1rem 1.5rem;
 			}
 		}
 		&__bar {
@@ -357,11 +361,11 @@ export default {
 		&__world {
 			grid-row: 6;
 			grid-column: 1;
-			display: none;
+			display: flex;
 		}
 		&__per-million {
-			order: 2;
-			display: none;
+			flex: 0 1 100%;
+			order: unset;
 		}
 		&__news {
 			order: 1;

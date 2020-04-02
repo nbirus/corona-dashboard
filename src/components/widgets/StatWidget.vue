@@ -94,14 +94,11 @@ export default {
 
 	display: flex;
 	flex-direction: column;
-	// justify-content: center;
 
 	.bar {
 		height: 1.1rem;
 		width: 100%;
 		position: relative;
-		// border-radius: 0.75rem 0.75rem 0;
-		// overflow: hidden;
 		display: flex;
 		margin-bottom: 0.5rem;
 	}
@@ -205,6 +202,9 @@ export default {
 			min-width: auto;
 			margin: 0;
 			padding: 0.5rem 0 0 0.5rem;
+		}
+		.value {
+			font-weight: $bold;
 		}
 	}
 }
