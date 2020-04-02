@@ -1,7 +1,7 @@
 <template>
 	<div class="map-container">
 		<!-- map -->
-		<div class="map-container__map" @mouseenter="hover=true" @mouseleave="hover=false">
+		<div class="map-container__map" @mouseenter="hover = true" @mouseleave="hover = false">
 			<spread-map
 				:loading="loading"
 				class="map"

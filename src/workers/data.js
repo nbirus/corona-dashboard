@@ -20,13 +20,14 @@ addEventListener('message', e => {
   const {
     countries,
     history,
+    jhucsse,
   } = e.data
   // postMessage(format(countries.data.splice(0, 1), history.data))
-  postMessage(format(countries.data, history.data))
+  postMessage(format(countries.data, history.data, jhucsse.data))
 })
 
 
-export function format(countryData, historyData) {
+export function format(countryData, historyData, jhucsseData) {
   let data = {}
   let totals = {
     cases: 0,
@@ -86,7 +87,6 @@ export function format(countryData, historyData) {
     }
   })
 
-
   // loop over history
   historyData.forEach(dataPoint => {
     let cases = Object.values(dataPoint.timeline.cases)
@@ -96,15 +96,19 @@ export function format(countryData, historyData) {
     timeline.deaths = mergeTimeline(timeline.deaths, deaths)
 
     let iso2 = getIso(dataPoint)
-    // let province = dataPoint.province === null ? dataPoint.country : dataPoint.province
-
     set(data, `${iso2}.timeline.cases`, mergeTimeline(get(data, `${iso2}.timeline.cases`), cases))
     set(data, `${iso2}.timeline.deaths`, mergeTimeline(get(data, `${iso2}.timeline.deaths`), deaths))
-    // set(data, `${iso2}.map.${province}`, {
-    //   cases,
-    //   deaths,
-    // })
+  })
 
+  jhucsseData.forEach(dataPoint => {
+    set(data, `${getIsojhucsse(dataPoint.country)}.map.${dataPoint.province}`, {
+      ...dataPoint,
+      stats: {
+        cases: dataPoint.stats.confirmed,
+        deaths: dataPoint.stats.deaths,
+        recovered: dataPoint.stats.recovered,
+      }
+    })
   })
 
   // set world
@@ -120,6 +124,7 @@ export function format(countryData, historyData) {
   totals.casesPerOneMillion = averageArray(casesPerOneMillion)
   totals.deathsPerOneMillion = averageArray(deathsPerOneMillion)
   totals.deathRate = (totals.deaths / totals.cases * 100).toFixed(1) 
+  totals.deathRateYesterday = ((totals.deaths - totals.todayDeaths) / (totals.cases - totals.todayCases) * 100).toFixed(1) 
   
   return data
 
@@ -130,6 +135,16 @@ export function format(countryData, historyData) {
 
     if (iso == undefined) {
       iso = getCountryId(name)
+    }
+
+    return iso
+  }
+  function getIsojhucsse(countryName) {
+    let countryInfo = countryData.find(country => countryName.toLowerCase() === country.country.toLowerCase())
+    let iso = get(countryInfo, 'countryInfo.iso2')
+
+    if (iso === undefined) {
+      iso = nameMap[countryName]
     }
 
     return iso
@@ -326,127 +341,4 @@ export function format(countryData, historyData) {
   }
 }
 
-
-export function format2(totalsData, countries, history) {
-  let updated = dayjs(new Date(totalsData.updated))
-  let countryMap = {}
-  let totals = {
-    ...totalsData,
-    active: 0,
-    critical: 0,
-    casesPerOneMillion: 0,
-    deathsPerCases: 0,
-    averageDeathsPerCases: 0,
-  }
-  let today = {
-    cases: 0,
-    deaths: 0,
-    recovered: 0,
-  }
-  let timeline = {
-    cases: [],
-    deaths: [],
-    recovered: [],
-    dates,
-  }
-  let highestDeathsPerCases = undefined
-  let lowestDeathsPerCases = undefined
-
-  let casesPerMillionArray = []
-  let deathsPerCases = []
-
-  // loop over countries
-  countries.forEach(country => {
-
-    let d = (country.deaths / country.cases) * 100
-
-    // deaths / cases
-    country.deathsPerCases = d.toFixed(1)
-    deathsPerCases.push(d)
-
-    // set totals
-    totals.active += country.active
-    totals.critical += country.critical
-    casesPerMillionArray.push(country.casesPerOneMillion)
-
-    let id = country.country === 'USA' ? 'US' : country.countryInfo.iso2
-    countryMap[id] = country
-    countryMap[id].timeline = {
-      cases: [],
-      deaths: [],
-      recovered: [],
-    }
-
-    if (country.cases > 3000 && get(highestDeathsPerCases, 'deathsPerCases', 0) < country.deathsPerCases) {
-      highestDeathsPerCases = country
-    }
-    if (lowestDeathsPerCases === undefined || country.cases > 3000 && get(lowestDeathsPerCases, 'deathsPerCases', 0) >= country.deathsPerCases) {
-      lowestDeathsPerCases = country
-    }
-
-  })
-
-  totals.casesPerOneMillion = casesPerMillionArray.reduce((a, b) => (a + b)) / casesPerMillionArray.length
-  totals.deathsPerCases = (deathsPerCases.reduce((a, b) => (a + b)) / deathsPerCases.length).toFixed(1)
-
-  // loop over each location
-  history.forEach(country => {
-
-    // get timeline
-    let casesTimeline = Object.values(get(country, 'timeline.cases', [])).map(n => Number.parseInt(n))
-    let deathsTimeline = Object.values(get(country, 'timeline.deaths', [])).map(n => Number.parseInt(n))
-
-    if (!isNaN(casesTimeline[casesTimeline.length - 1])) {
-      today.cases += casesTimeline[casesTimeline.length - 1]
-    }
-    if (!isNaN(deathsTimeline[deathsTimeline.length - 1])) {
-      today.deaths += deathsTimeline[deathsTimeline.length - 1]
-    }
-
-
-    let id = getCountryId(country.country)
-    if (countryMap.hasOwnProperty(id)) {
-      set(countryMap, `${id}.timeline.cases`, mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.cases`, [])))
-      set(countryMap, `${id}.timeline.deaths`, mergeTimeline(deathsTimeline, get(countryMap, `${id}.timeline.deaths`, [])))
-      // set(countryMap, `${id}.timeline.recovered`,  mergeTimeline(casesTimeline, get(countryMap, `${id}.timeline.recovered`, [])))
-    }
-
-    // loop over each day in a country and set timeline
-    timeline.dates.forEach((date, index) => {
-      if (!isNaN(get(timeline.cases, index, 0)) && !isNaN(casesTimeline[index])) {
-        set(timeline.cases, index, get(timeline.cases, index, 0) + casesTimeline[index])
-      }
-      if (!isNaN(get(timeline.deaths, index, 0)) && !isNaN(deathsTimeline[index])) {
-        set(timeline.deaths, index, get(timeline.deaths, index, 0) + deathsTimeline[index])
-      }
-    })
-  })
-
-
-  // set totals
-  today.cases = totalsData.cases - today.cases
-  today.deaths = totalsData.deaths - today.deaths
-  today.recovered = totalsData.recovered - today.recovered
-
-  console.log({
-    updated,
-    totals,
-    today,
-    timeline,
-    highestDeathsPerCases,
-    lowestDeathsPerCases,
-    countries: countryMap,
-  });
-
-
-  return {
-    updated,
-    totals,
-    today,
-    timeline,
-    highestDeathsPerCases,
-    lowestDeathsPerCases,
-    countries: countryMap,
-    us: usMap,
-  }
-}
+let nameMap = {"United Kingdom":"GB","US":"US","Botswana":"BW","Burma":"","Burundi":"BI","Central African Republic":"CF","Congo (Brazzaville)":"CG","Congo (Kinshasa)":"CD","Cote d'Ivoire":"CI","Holy See":"VA","Korea, South":"KR","Kosovo":"","Saint Vincent and the Grenadines":"VC","Sierra Leone":"SL","Taiwan*":"TW","United Arab Emirates":"AE","West Bank and Gaza":"EH"}

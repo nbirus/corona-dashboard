@@ -4,25 +4,25 @@
 			<div
 				v-if="!loading"
 				class="bar-item critical"
-				:style="`flex: 0 0 ${criticalPercent}%`"
+				:style="`flex: 0 1 ${criticalPercent}%`"
 				v-text="`${criticalPercent}%`"
 			></div>
 			<div
 				v-if="!loading"
 				class="bar-item deaths"
-				:style="`flex: 0 0 ${deathsPercent}%`"
+				:style="`flex: 0 1 ${deathsPercent}%`"
 				v-text="`${deathsPercent}%`"
 			></div>
 			<div
 				v-if="!loading"
 				class="bar-item recovered"
-				:style="`flex: 0 0 ${recoveredPercent}%`"
+				:style="`flex: 0 1 ${recoveredPercent}%`"
 				v-text="`${recoveredPercent}%`"
 			></div>
 			<div
 				v-if="!loading"
 				class="bar-item active"
-				:style="`flex: 0 0 ${activePercent}%`"
+				:style="`flex: 0 1 ${activePercent}%`"
 				v-text="`${activePercent}%`"
 			></div>
 		</div>
@@ -89,7 +89,7 @@ export default {
 <style lang="scss" scoped>
 .stat-widget {
 	width: 100%;
-	padding: 1rem 1rem 0;
+	padding: 1.25rem 1.25rem 0;
 	// padding: 0 0 0;
 	height: 100%;
 
@@ -98,19 +98,19 @@ export default {
 	// justify-content: center;
 
 	.bar {
-		height: 1.25rem;
+		height: 1.1rem;
 		width: 100%;
 		position: relative;
 		// border-radius: 0.75rem 0.75rem 0;
-		overflow: hidden;
+		// overflow: hidden;
 		display: flex;
-		margin-bottom: 0.65rem;
+		margin-bottom: 0.5rem;
 	}
 	.bar-item {
-		padding-left: 0.5rem;
-		font-size: 0.9rem;
-		display: flex;
-		align-items: center;
+		padding-left: 0.35rem;
+		font-size: 0.85rem;
+		line-height: 1.3;
+		min-width: 28px;
 	}
 	.active {
 		position: relative;

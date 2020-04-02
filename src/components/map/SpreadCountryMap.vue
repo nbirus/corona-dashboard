@@ -1,43 +1,59 @@
 <template>
-	<div class="spread-map">
-		<l-map ref="map" class="spread-map__map" :options="options" :center="[20, 16]">
+	<div class="spread-country-map">
+		<l-map ref="map" class="spread-country-map__map" :options="options">
 			<!-- world map -->
 			<l-tile-layer url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png" />
-			<!-- <l-tile-layer url="https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}.png" /> -->
 
 			<!-- overlay -->
-			<l-geo-json
+			<!-- <l-geo-json
 				v-if="$h.exists(countryGeojson)"
 				ref="geo"
 				:geojson="countryGeojson"
 				:optionsStyle="geoStyle"
 				:options="geoOptions"
 				:key="`${dDateIndex}-${type}`"
+			/>-->
+
+			<l-marker
+				v-for="(marker, i) in markers"
+				:key="i"
+				:name="marker.name"
+				:attribution="marker.attribution"
+				:options="marker.options"
+				:lat-lng="marker.latLng"
+				@mouseenter="mouseEnter"
+				@mouseleave="mouseLeave"
 			/>
 		</l-map>
 
 		<!-- popover -->
-		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
-			<span class="body-2" v-text="hoverCountry.name"></span>
+		<v-card class="spread-country-map__popover" :style="hoverStyle" v-if="$h.exists(hoverProps)">
+			<span class="body-2" v-text="hoverProps.name"></span>
 			&nbsp;
-			<strong :key="`${dDateIndex}-${type}`" class="bold">
-				{{ $h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString }}
-			</strong>
+			<strong :key="`${type}`" class="bold">{{
+				$h.get(hoverProps, `totals.${type}`, 0) | localeString
+			}}</strong>
 		</v-card>
 	</div>
 </template>
 
 <script>
 import 'leaflet/dist/leaflet.css'
-import { LMap, LTileLayer, LGeoJson } from 'vue2-leaflet'
+import { LMap, LTileLayer, LGeoJson, LMarker } from 'vue2-leaflet'
 import Countries from '@/assets/Countries.json'
+import { Icon } from 'leaflet'
 
+delete Icon.Default.prototype._getIconUrl
+Icon.Default.mergeOptions({
+	iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+	iconUrl: require('leaflet/dist/images/marker-icon.png'),
+	shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+})
 export default {
-	name: 'spread-map',
-	components: { LMap, LTileLayer, LGeoJson },
+	name: 'spread-country-map',
+	components: { LMap, LTileLayer, LGeoJson, LMarker },
 	props: {
 		value: Object,
-		dateIndex: Number,
 		loading: Boolean,
 		type: {
 			type: String,
@@ -46,7 +62,6 @@ export default {
 	},
 	data() {
 		return {
-			dDateIndex: this.dateIndex,
 			options: {
 				trackResize: true,
 				zoom: 1.15,
@@ -61,48 +76,48 @@ export default {
 				zIndex: 650,
 				pointerEvents: 'none',
 			},
-			geoOptions: {
-				onEachFeature: (feature, layer) => {
-					layer.on({
-						mouseover: this.highlightFeature,
-						mouseout: this.resetHighlight,
-						mousemove: this.setBox,
-						click: this.zoomToFeature,
-					})
-				},
-			},
 			hoverStyle: {
 				top: 0,
 				left: 0,
 			},
-			hoverCountry: {},
+			hoverProps: {},
 		}
 	},
 	computed: {
-		countryGeojson() {
-			if (this.loading) {
-				return {}
+		key() {
+			return this.$store.getters['data/key']
+		},
+		markers() {
+			if (!this.$h.exists(this.value)) {
+				return []
 			}
-			return {
-				type: 'FeatureCollection',
-				features: Countries.features.map(feature => {
-					let country = this.value[feature.code]
-					if (country !== undefined) {
-						feature.properties = {
-							...country,
-							...feature.properties,
-						}
+			return Object.values(this.value)
+				.filter(country => {
+					return this.$h.get(country, 'coordinates.latitude') !== '0.0'
+				})
+				.map(country => {
+					return {
+						latLng: [
+							this.$h.get(country, 'coordinates.latitude'),
+							this.$h.get(country, 'coordinates.longitude'),
+						],
+						options: {
+							name: country.province,
+							totals: country.stats,
+						},
 					}
-					return feature
-				}),
-			}
+				})
 		},
 	},
 	methods: {
-		// style country overlay
+		setBounds() {
+			this.$nextTick(() => {
+				this.$refs.map.mapObject.fitBounds(this.markers.map(marker => marker.latLng))
+			})
+		},
 		geoStyle(feature) {
 			let fillColor = getColor(
-				this.$h.get(feature, `properties.timeline.${this.type}.${this.dDateIndex}`, 0),
+				this.$h.get(feature, `properties.timeline.${this.type}`, 0),
 				this.type
 			)
 			return {
@@ -112,34 +127,28 @@ export default {
 				fillColor,
 			}
 		},
-
-		// map events
-		highlightFeature(e) {
-			let country = e.target
-			this.hoverCountry = country.feature.properties
-			// country.setStyle({
-			// 	fillOpacity: 1,
-			// })
-		},
-		resetHighlight(e) {
-			// e.target.setStyle({
-			// 	fillOpacity: 0.9,
-			// })
-			this.hoverCountry = {}
-		},
-		zoomToFeature(e) {
-			// this.$refs.map.mapObject.fitBounds(e.target.getBounds())
-		},
-		setBox(e) {
+		mouseEnter(e) {
 			this.hoverStyle.left = `${e.originalEvent.x + 16}px`
 			this.hoverStyle.top = `${e.originalEvent.y + 16}px`
+			let totals = this.$h.get(e, 'target.options.totals', {})
+			this.hoverProps = {
+				totals,
+				name: this.$h.get(e, 'target.options.name', 'Other'),
+			}
 		},
-		setIndex(index) {
-			this.dDateIndex = index
+		mouseLeave() {
+			this.hoverProps = {}
 		},
 	},
 	watch: {
-		dateIndex: 'setIndex',
+		loading: {
+			handler(loading) {
+				if (!loading) {
+					this.setBounds()
+				}
+			},
+			immediate: true,
+		},
 	},
 }
 
@@ -222,9 +231,9 @@ function getColor(d = 0, type) {
 </script>
 
 <style lang="scss" scoped>
-.spread-map {
+.spread-country-map {
 	&__map {
-		height: 650px;
+		height: 725px;
 	}
 	&__popover {
 		position: fixed;

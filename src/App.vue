@@ -25,10 +25,12 @@ export default {
 	async created() {
 		let countries = await requestResource('countries')
 		let history = await requestResource('history')
+		let jhucsse = await requestResource('jhucsse')
+
 		// format response
 		let response = await new Promise(resolve => {
 			dataWorker = new Worker('./workers/data.js', { type: 'module' })
-			dataWorker.postMessage({ countries, history })
+			dataWorker.postMessage({ countries, history, jhucsse })
 			dataWorker.onmessage = e => resolve(e.data)
 		})
 		dataWorker.terminate()

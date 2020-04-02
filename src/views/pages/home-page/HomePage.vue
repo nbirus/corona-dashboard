@@ -1,5 +1,5 @@
 <template>
-	<div class="home-page page limit-width" :key="key" :class="{ loading }">
+	<div class="home-page page limit-width" :key="key" :class="{ loading, country: key !== 'world' }">
 		<div class="home-page__total-cases">
 			<v-card class="max">
 				<count-widget
@@ -33,20 +33,30 @@
 		<div class="home-page__total-info">
 			<v-card class="max death-rate">
 				<spinner v-if="loading" />
-				<div v-else>
+				<v-layout align-center space-between v-else>
 					<div class="key-value">
-						<v-avatar color="grey lighten-4" class="icon">
-							<v-icon>mdi-account-multiple-remove-outline</v-icon>
-						</v-avatar>
 						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
 						<div class="key">death rate</div>
 					</div>
-				</div>
+					<v-flex></v-flex>
+					<v-tooltip top>
+						<template v-slot:activator="{ on }">
+							<v-avatar color="grey lighten-4" v-on="on">
+								<v-icon
+									>mdi-arrow-{{
+										data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
+									}}</v-icon
+								>
+							</v-avatar>
+						</template>
+						<span>The death rate was {{ data.totals.deathRateYesterday }}% yesterday</span>
+					</v-tooltip>
+				</v-layout>
 			</v-card>
 			<v-card class="max per-million">
 				<spinner v-if="loading" />
 				<div v-else>
-					<div class="header">Per One Million People</div>
+					<div class="header">Per Million People</div>
 					<div class="body">
 						<div class="key-value-per">
 							<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
@@ -57,16 +67,6 @@
 							<div class="key">deaths</div>
 						</div>
 					</div>
-					<!-- <div class="key">per million</div>
-					<div class="key-value-per-million">
-						<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
-						<div class="key">cases</div>
-					</div>
-					<div class="key-value-per-million">
-						<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
-						<div class="key">deaths</div>
-					</div>
-					</div>-->
 				</div>
 			</v-card>
 		</div>
@@ -93,7 +93,12 @@
 		</div>
 		<div class="home-page__map" v-if="key === 'world'">
 			<v-card class="max">
-				<map-container :loading="loading" />
+				<map-container :key="key" :loading="loading" />
+			</v-card>
+		</div>
+		<div class="home-page__map" v-else>
+			<v-card class="max">
+				<map-country-container :loading="loading" />
 			</v-card>
 		</div>
 		<div class="home-page__world" v-if="key === 'world'">
@@ -132,6 +137,7 @@ import CountWidget from '@/components/widgets/CountWidget'
 import StatWidget from '@/components/widgets/StatWidget'
 import ChartWrapper from '@/components/charts/ChartWrapper'
 import MapContainer from '@/components/map/MapContainer'
+import MapCountryContainer from '@/components/map/MapCountryContainer'
 import NewsFeed from '@/components/news/NewsFeed'
 import CountryList from '@/components/country-list/CountryList'
 
@@ -142,6 +148,7 @@ export default {
 		CountWidget,
 		ChartWrapper,
 		MapContainer,
+		MapCountryContainer,
 		NewsFeed,
 		CountryList,
 	},
@@ -166,6 +173,10 @@ export default {
 	grid-template-columns: 1fr 3.75fr;
 	grid-template-rows: 175px 175px 145px 80px 725px 600px auto;
 
+	&.country {
+		grid-template-rows: 175px 175px 145px 80px auto;
+	}
+
 	&__total-cases {
 		grid-row: 1;
 		grid-column: 1;
@@ -187,8 +198,8 @@ export default {
 		}
 		.per-million {
 			.header {
-				margin-top: 0.25rem;
-				margin-bottom: 0.5rem;
+				margin-top: 0.15rem;
+				margin-bottom: 0.75rem;
 			}
 			.body {
 				display: flex;
@@ -197,12 +208,11 @@ export default {
 				.value {
 					font-size: 2rem;
 					font-weight: $bold;
-					margin-right: 0.25rem;
-					line-height: 1;
+					line-height: 0.9;
 				}
 			}
 			.key-value-per:first-child {
-				margin-right: 2.5rem;
+				margin-right: 4rem;
 			}
 		}
 		.max {
@@ -289,7 +299,7 @@ export default {
 		}
 
 		#timeline {
-			min-height: calc(514px - 3rem);
+			min-height: calc(514px - 1.5rem);
 		}
 		#million {
 			min-height: calc(600px - 4.3rem);

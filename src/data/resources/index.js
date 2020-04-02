@@ -19,10 +19,10 @@ export default {
 			return get(response, 'data', {})
 		},
 	},
-	states: {
+	jhucsse: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'states',
+			endpoint: 'v2/jhucsse',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})

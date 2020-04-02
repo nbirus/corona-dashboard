@@ -5,6 +5,9 @@ export default [
 		text: 'Country',
 		value: 'info',
 		filter(value) {
+			if (value === undefined) {
+				return ''
+			}
 			return ` <img width="16" class="mr-1 mt-1" src="${value.flag}" alt="${value.name}"> ${value.name}`
 		},
 	},

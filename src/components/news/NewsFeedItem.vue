@@ -6,8 +6,12 @@
 					<img class="news-feed-item__img" :src="data.thumbnail" />
 				</div>
 				<span class="news-feed-item__info">
-					<span class="news-feed-item__title body-1">{{ data.title | abbreviate(hover ? 1000 : 60) }}</span>
-					<span class="news-feed-item__date body-2 text-secondary">{{ data.date | date('MMMM D, YYYY') }}</span>
+					<span class="news-feed-item__title body-1">{{
+						data.title | abbreviate(hover ? 1000 : 60)
+					}}</span>
+					<span class="news-feed-item__date body-2 text-secondary">{{
+						data.date | date('MMMM D, YYYY')
+					}}</span>
 				</span>
 			</a>
 		</v-hover>

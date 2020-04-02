@@ -3,7 +3,7 @@ export default [{
   "flag": "https://raw.githubusercontent.com/NovelCOVID/API/master/assets/flags/us.png",
   "value": "world"
 }, {
-  "text": "USA",
+  "text": "United States",
   "flag": "https://raw.githubusercontent.com/NovelCOVID/API/master/assets/flags/us.png",
   "value": "US"
 }, {
