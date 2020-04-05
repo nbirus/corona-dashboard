@@ -22,7 +22,7 @@ addEventListener('message', e => {
     history,
     jhucsse,
   } = e.data
-  // postMessage(format(countries.data.splice(0, 1), history.data))
+  // postMessage(format(countries.data.splice(0, 1), history.data.splice(0, 1), jhucsse.data))
   postMessage(format(countries.data, history.data, jhucsse.data))
 })
 
@@ -92,6 +92,9 @@ export function format(countryData, historyData, jhucsseData) {
     let cases = Object.values(dataPoint.timeline.cases)
     let deaths = Object.values(dataPoint.timeline.deaths)
 
+    console.log(dataPoint.timeline.cases);
+    
+
     timeline.cases = mergeTimeline(timeline.cases, cases)
     timeline.deaths = mergeTimeline(timeline.deaths, deaths)
 
@@ -119,6 +122,9 @@ export function format(countryData, historyData, jhucsseData) {
     timeline,
     map,
   }
+
+  // console.log(timeline.cases);
+  
 
   // average totals
   totals.casesPerOneMillion = averageArray(casesPerOneMillion)
@@ -151,7 +157,7 @@ export function format(countryData, historyData, jhucsseData) {
   }
 
   function mergeTimeline(array1, array2) {
-    let array = []
+    let array = []    
     dates.forEach((d, index) => {
       set(array, index, get(array1, index, 0) + get(array2, index, 0))
     })

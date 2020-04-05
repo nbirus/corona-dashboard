@@ -144,13 +144,13 @@ export default {
 		bottom: 0;
 
 		&.cases {
-			// background-color: rgba(218, 235, 249, 0.5);
-			background: rgb(255, 255, 255);
-			background: linear-gradient(
-				90deg,
-				rgba(218, 235, 249, 0.15) 0%,
-				rgba(218, 235, 249, 0.85) 100%
-			);
+			background-color: rgba(218, 235, 249, 0.5);
+			// background: rgb(255, 255, 255);
+			// background: linear-gradient(
+			// 	90deg,
+			// 	rgba(218, 235, 249, 0.15) 0%,
+			// 	rgba(218, 235, 249, 0.85) 100%
+			// );
 		}
 		&.deaths {
 			background-color: rgba(252, 198, 194, 0.5);

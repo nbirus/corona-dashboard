@@ -28,7 +28,7 @@ export function request(
 	return new Promise((resolve, reject) => {
 		// mock url
 		if (process.env.NODE_ENV !== 'production') {
-			config.baseURL = 'http://localhost:3003/'
+			// config.baseURL = 'http://localhost:3003/'
 		}
 
 		HttpService(config.endpoint, config)
