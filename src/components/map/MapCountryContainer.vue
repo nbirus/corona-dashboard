@@ -2,7 +2,12 @@
 	<div class="map-country-container">
 		<!-- map -->
 		<div class="map-country-container__map">
-			<spread-country-map class="map" :loading="loading" :type="type" :value="$h.get(data, 'map')" />
+			<spread-country-map
+				class="map"
+				:loading="loading"
+				:type="type"
+				:value="$h.get(data, 'map')"
+			/>
 		</div>
 
 		<!-- table -->
