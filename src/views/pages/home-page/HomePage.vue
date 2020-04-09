@@ -42,11 +42,11 @@
 					<v-tooltip top>
 						<template v-slot:activator="{ on }">
 							<v-avatar color="grey lighten-4" v-on="on">
-								<v-icon
-									>mdi-arrow-{{
-										data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
-									}}</v-icon
-								>
+								<v-icon>
+									mdi-arrow-{{
+									data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
+									}}
+								</v-icon>
 							</v-avatar>
 						</template>
 						<span>The death rate was {{ data.totals.deathRateYesterday }}% yesterday</span>
@@ -101,8 +101,8 @@
 				<map-country-container :loading="loading" />
 			</v-card>
 		</div>
-		<div class="home-page__world" v-if="key === 'world'">
-			<div class="home-page__per-million chart">
+		<div class="home-page__world" v-if="key === 'world'" v-intersect="onIntersectSecond">
+			<div class="home-page__per-million chart" v-if="showNewsMillion">
 				<v-card class="max">
 					<div class="header">
 						<h2 class="text-center">Per million</h2>
@@ -117,17 +117,24 @@
 					</div>
 				</v-card>
 			</div>
+			<v-card class="max" v-else></v-card>
 			<div class="home-page__news">
-				<v-card class="max">
+				<v-card class="max" v-if="showNewsMillion">
 					<div class="header">
 						<h2>Top Stories</h2>
 					</div>
 					<news-feed />
 				</v-card>
+				<v-card class="max" v-else></v-card>
 			</div>
 		</div>
-		<v-card class="home-page__countries" v-if="key === 'world'">
-			<country-list :loading="loading" :data="data" />
+
+		<v-card class="home-page__countries" v-if="key === 'world'" v-intersect="onIntersect">
+			<country-list v-if="showList" :loading="loading" :data="data" />
+			<div v-else style="height: 400px"></div>
+		</v-card>
+		<v-card class="home-page__countries" v-else>
+			<state-list :loading="loading" :data="data" />
 		</v-card>
 	</div>
 </template>
@@ -140,6 +147,7 @@ import MapContainer from '@/components/map/MapContainer'
 import MapCountryContainer from '@/components/map/MapCountryContainer'
 import NewsFeed from '@/components/news/NewsFeed'
 import CountryList from '@/components/country-list/CountryList'
+import StateList from '@/components/country-list/StateList'
 
 export default {
 	name: 'home-page',
@@ -151,6 +159,7 @@ export default {
 		MapCountryContainer,
 		NewsFeed,
 		CountryList,
+		StateList,
 	},
 	computed: {
 		data() {
@@ -161,6 +170,31 @@ export default {
 		},
 		loading() {
 			return this.$store.getters['data/loading']
+		},
+		countryData() {
+			if (this.$h.exists(this.data.map)) {
+				return Object.values(this.data.map)
+			} else {
+				return []
+			}
+		},
+	},
+	data() {
+		return {
+			showList: false,
+			showNewsMillion: false,
+		}
+	},
+	methods: {
+		onIntersect(e) {
+			if (!this.showList) {
+				this.showList = this.$h.get(e, '0.isIntersecting', false)
+			}
+		},
+		onIntersectSecond(e) {
+			if (!this.showNewsMillion) {
+				this.showNewsMillion = this.$h.get(e, '0.isIntersecting', false)
+			}
 		},
 	},
 }

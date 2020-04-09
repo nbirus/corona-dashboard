@@ -90,10 +90,7 @@ export function format(countryData, historyData, jhucsseData) {
   // loop over history
   historyData.forEach(dataPoint => {
     let cases = Object.values(dataPoint.timeline.cases)
-    let deaths = Object.values(dataPoint.timeline.deaths)
-
-    console.log(dataPoint.timeline.cases);
-    
+    let deaths = Object.values(dataPoint.timeline.deaths)    
 
     timeline.cases = mergeTimeline(timeline.cases, cases)
     timeline.deaths = mergeTimeline(timeline.deaths, deaths)

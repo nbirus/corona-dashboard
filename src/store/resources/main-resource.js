@@ -85,8 +85,6 @@ export default {
 			state.data.today.deaths = deathTotal - deathTotalYesterday
 			state.data.today.recovered = recoveredTotal - recoveredTotalYesterday
 
-			console.log(critical)
-
 			state.data.today.critical = critical
 			state.data.today.active = active
 			state.data.today.casesPerOneMillion = casesPerOneMillion

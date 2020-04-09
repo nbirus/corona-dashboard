@@ -2,16 +2,11 @@
 	<div class="map-country-container">
 		<!-- map -->
 		<div class="map-country-container__map">
-			<spread-country-map
-				class="map"
-				:loading="loading"
-				:type="type"
-				:value="$h.get(data, 'map')"
-			/>
+			<spread-country-map class="map" :loading="loading" :type="type" :value="$h.get(data, 'map')" />
 		</div>
 
 		<!-- table -->
-		<div class="map-country-container__table">
+		<div class="map-country-container__table" v-if="Object.keys(countryData).length > 1">
 			<map-country-table v-if="!loading" class="table" :value="$h.get(data, 'map')" :type="type" />
 			<div class="center" v-else>
 				<spinner :size="90" />

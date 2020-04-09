@@ -5,11 +5,21 @@
 				<h1>Covid-19 Dashboard</h1>
 				<p>
 					The data used to generate this dashboard can be found
-					<a target="_blank" href="https://github.com/NovelCOVID/API">here</a>.
+					<a
+						target="_blank"
+						href="https://github.com/NovelCOVID/API"
+					>here</a>.
 				</p>
 			</div>
 			<div class="nav__buttons">
-				<v-select class="nav__select" large solo :items="CountryItems" v-model="key"></v-select>
+				<v-combobox
+					class="nav__select"
+					large
+					solo
+					:items="CountryItems"
+					:value="value"
+					@change="change"
+				></v-combobox>
 			</div>
 		</div>
 	</v-app-bar>
@@ -20,23 +30,18 @@ import CountryItems from '@/assets/CountryItems.js'
 
 export default {
 	name: 'nav-bar-base',
-	computed: {
-		data() {
-			return this.$store.getters['data/get']
-		},
-		key: {
-			get() {
-				return this.$store.getters['data/key']
-			},
-			set(key) {
-				this.$store.dispatch('data/setKey', key)
-			},
-		},
-	},
 	data() {
 		return {
 			CountryItems,
+			value: CountryItems[0],
 		}
+	},
+	methods: {
+		change(e) {
+			if (this.$h.exists(e)) {
+				this.$store.dispatch('data/setKey', e.value)
+			}
+		},
 	},
 }
 </script>

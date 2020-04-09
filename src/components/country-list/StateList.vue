@@ -1,45 +1,12 @@
 <template>
-	<div class="country-list">
-		<v-layout class="country-list__header" justify-start>
-			<v-text-field
-				style="max-width: 400px"
-				placeholder="Search for a country"
-				prepend-inner-icon="mdi-magnify"
-				hide-details
-				clearable
-				outlined
-				v-model="keyword"
-			/>
-		</v-layout>
-		<!-- :pagination="pagination"
-			:params="{ country: keyword }"
-		:sort="sort"-->
-		<!-- <v-expansion-panels flat class="country-list__list" :class="{ loading: _state.loading }">
-				<country-list-item
-					v-for="(item, i) in _state.data"
-					:key="i"
-					:data="item"
-					:sortKey="sortKey"
-				/>
-				<li
-					v-if="pagination.size < countries.length"
-					v-ripple
-					class="see-more"
-					@click="pagination.size += 15"
-				>
-					See more
-					<v-icon>mdi-chevron-down</v-icon>
-				</li>
-		</v-expansion-panels>-->
-		<!-- </data-wrapper> -->
+	<div class="country-list" v-if="countryData.length > 1">
 		<state-handler :loading="loading">
 			<data-table-wrapper
 				class="row-pad"
-				id="ok"
+				id="ok2"
 				:data="countryData"
 				:loading="loading"
-				:columns="CountryHeaders"
-				:params="{ _keyword: keyword }"
+				:columns="StateHeaders"
 			/>
 		</state-handler>
 	</div>
@@ -48,7 +15,7 @@
 <script>
 // import CountryListItem from '@/components/country-list/CountryListItem'
 import DataTableWrapper from '@/components/table/wrappers/DataTableWrapper'
-import CountryHeaders from '@/data/columns/CountryHeaders.js'
+import StateHeaders from '@/data/columns/StateHeaders.js'
 
 export default {
 	name: 'country-list',
@@ -56,7 +23,7 @@ export default {
 	props: ['data', 'loading'],
 	data() {
 		return {
-			CountryHeaders,
+			StateHeaders,
 			keyword: '',
 			sortKey: 'active',
 			selectItems: [

@@ -43,7 +43,7 @@ export default [{
   "flag": "https://raw.githubusercontent.com/NovelCOVID/API/master/assets/flags/be.png",
   "value": "BE"
 }, {
-  "text": "S. Korea",
+  "text": "South Korea",
   "flag": "https://raw.githubusercontent.com/NovelCOVID/API/master/assets/flags/kr.png",
   "value": "KR"
 }, {
