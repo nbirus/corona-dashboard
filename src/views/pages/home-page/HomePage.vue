@@ -400,6 +400,7 @@ export default {
 		&__per-million {
 			flex: 0 1 100%;
 			order: unset;
+			display: none !important;
 		}
 		&__news {
 			order: 1;

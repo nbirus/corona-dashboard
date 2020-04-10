@@ -104,7 +104,7 @@ function linerecovered(data) {
 
 // extra data
 const casesDataSet = {
-  label: 'Cases',
+  label: 'cases',
   data: [],
   backgroundColor: [blue],
   borderColor: [blueBorder],
@@ -116,7 +116,7 @@ const casesDataSet = {
   order: 3,
 }
 const deathsDataSet = {
-  label: 'Deaths',
+  label: 'deaths',
   data: [],
   backgroundColor: [red],
   borderColor: [redBorder],

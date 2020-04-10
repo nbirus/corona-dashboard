@@ -5,7 +5,10 @@
 				<h1>Covid-19 Dashboard</h1>
 				<p>
 					The data used to generate this dashboard can be found
-					<a target="_blank" href="https://github.com/NovelCOVID/API">here</a>.
+					<a
+						target="_blank"
+						href="https://github.com/NovelCOVID/API"
+					>here</a>.
 				</p>
 			</div>
 			<div class="nav__buttons">
@@ -119,7 +122,8 @@ export default {
 			}
 		}
 		&__buttons {
-			padding: 1rem 0;
+			padding: 1.5rem 0 1rem;
+			width: 100%;
 		}
 		&__select {
 			width: 100%;

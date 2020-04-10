@@ -91,7 +91,7 @@ export default {
 			return [
 				{
 					key: 'cases',
-					label: 'Cases',
+					label: 'cases',
 					value: this.data.cases,
 				},
 				{
