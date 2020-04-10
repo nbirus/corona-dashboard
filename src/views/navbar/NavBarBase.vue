@@ -36,11 +36,21 @@ export default {
 			value: CountryItems[0],
 		}
 	},
+	computed: {
+		key() {
+			return this.$store.getters['data/key']
+		},
+	},
 	methods: {
 		change(e) {
 			if (this.$h.exists(e)) {
 				this.$store.dispatch('data/setKey', e.value)
 			}
+		},
+	},
+	watch: {
+		key(key) {
+			this.value = CountryItems.find(c => c.value === key)
 		},
 	},
 }
@@ -88,7 +98,7 @@ export default {
 		padding: 1rem 0;
 	}
 	&__select {
-		width: 250px;
+		width: 275px;
 		font-size: 1.2rem !important;
 	}
 }

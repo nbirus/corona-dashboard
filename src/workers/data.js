@@ -120,9 +120,6 @@ export function format(countryData, historyData, jhucsseData) {
     map,
   }
 
-  // console.log(timeline.cases);
-  
-
   // average totals
   totals.casesPerOneMillion = averageArray(casesPerOneMillion)
   totals.deathsPerOneMillion = averageArray(deathsPerOneMillion)

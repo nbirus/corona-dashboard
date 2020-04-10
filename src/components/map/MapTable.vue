@@ -11,7 +11,12 @@
 			<div class="bold">country</div>
 			<div class="bold">{{ type }}</div>
 		</li>
-		<li class="map-table__row" v-for="(data, i) in activeData" :key="i">
+		<li
+			class="map-table__row"
+			v-for="(data, i) in activeData"
+			:key="i"
+			@click="$store.dispatch('data/setKey', data.key)"
+		>
 			<div
 				v-if="data && max && i < 20"
 				class="bar"
@@ -52,9 +57,11 @@ export default {
 				.map(key => {
 					let cases = this.$h.get(this.value, `${key}.timeline.cases.${this.dateIndex}`, 0)
 					let deaths = this.$h.get(this.value, `${key}.timeline.deaths.${this.dateIndex}`, 0)
+
 					return {
+						key: this.$h.get(this.value, `${key}.info.iso2`, 'world'),
 						name: this.$h.get(this.value, `${key}.info.name`, 'Other'),
-						flag: this.$h.get(this.value, `${key}.info.flag`, 'Other'),
+						flag: this.$h.get(this.value, `${key}.info.flag`),
 						cases,
 						deaths,
 					}
@@ -96,7 +103,7 @@ export default {
 		align-items: center;
 		transition: opacity 0.2s ease;
 		position: relative;
-		// border-top: solid thin $border-color-light;
+		cursor: pointer !important;
 
 		span {
 			display: block;

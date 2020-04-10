@@ -44,7 +44,7 @@
 							<v-avatar color="grey lighten-4" v-on="on">
 								<v-icon>
 									mdi-arrow-{{
-									data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
+										data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
 									}}
 								</v-icon>
 							</v-avatar>
