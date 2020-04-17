@@ -21,9 +21,7 @@
 			<span class="body-2" v-text="hoverCountry.name"></span>
 			&nbsp;
 			<strong :key="`${dDateIndex}-${type}`" class="bold">
-				{{
-				$h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString
-				}}
+				{{ $h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString }}
 			</strong>
 		</v-card>
 	</div>

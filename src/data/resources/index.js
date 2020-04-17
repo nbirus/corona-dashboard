@@ -13,7 +13,7 @@ export default {
 	countries: {
 		query: () => ({
 			baseURL: 'https://corona.lmao.ninja',
-			endpoint: 'countries',
+			endpoint: 'v2/countries',
 		}),
 		formatter(response) {
 			return get(response, 'data', {})
