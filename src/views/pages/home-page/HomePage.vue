@@ -44,7 +44,7 @@
 							<v-avatar color="grey lighten-4" v-on="on">
 								<v-icon>
 									mdi-arrow-{{
-										data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
+									data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
 									}}
 								</v-icon>
 							</v-avatar>
@@ -235,7 +235,13 @@ export default {
 		.per-million {
 			.header {
 				margin-top: 0.15rem;
-				margin-bottom: 0.75rem;
+				margin-bottom: 1rem;
+				margin-left: -0.5rem;
+				font-size: 0.9rem;
+				background-color: fade-out(black, 0.95);
+				width: 132px;
+				border-radius: 25px;
+				text-align: center;
 			}
 			.body {
 				display: flex;
