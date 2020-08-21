@@ -1,8 +1,8 @@
 <template>
 	<v-app ref="app">
-		<div class="clip"></div>
-		<div class="clip clip-2"></div>
-
+		<img class="wave" src="wave.svg" />
+		<!-- <img class="wave wave-2" src="wave-2.svg" /> -->
+		<!-- <img class="wave wave-3" src="wave-3.svg" /> -->
 		<!-- nav bar -->
 		<app-nav-bar />
 
@@ -48,23 +48,13 @@ export default {
 .loader {
 	z-index: 3;
 }
-.clip {
+.wave {
 	position: absolute;
 	left: 0;
 	right: 0;
 	top: 0;
-	height: 300px;
-	clip-path: polygon(0 0, 100% 0, 100% 44%, 0 79%);
-	background: linear-gradient(90deg, lighten(#d4dadc, 9) 0%, lighten(#d4dadc, 5) 100%);
-	display: none;
-
-	&.clip-2 {
-		height: 1000px;
-		clip-path: polygon(0 0, 100% 0, 100% 75%, 0 26%);
-		background: linear-gradient(90deg, darken(#d4dadc, 5) 0%, lighten(#d4dadc, 11) 100%);
-		opacity: 0.25;
-		display: none;
-	}
+	width: 100vw;
+	opacity: 0.025;
 }
 .nav {
 	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;

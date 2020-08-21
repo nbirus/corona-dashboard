@@ -66,7 +66,7 @@ export default {
 		justify-content: space-between;
 	}
 	.v-toolbar__content {
-		padding-top: 3rem;
+		padding-top: 5rem;
 		padding-bottom: 0;
 	}
 }

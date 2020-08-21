@@ -5,7 +5,7 @@
 				v-if="!loading"
 				class="bar-item critical"
 				:style="`flex: 0 1 ${criticalPercent}%`"
-				v-text="`${criticalPercent}%`"
+				v-text="`${criticalPercent === 0 ? 1 : criticalPercent}%`"
 			></div>
 			<div
 				v-if="!loading"

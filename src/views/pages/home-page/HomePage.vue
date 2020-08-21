@@ -33,27 +33,26 @@
 			</div>
 		</div>
 		<div class="home-page__total-info">
-			<div class="key-value">
+			<v-card class="key-value">
 				<div class="icon">
-					<v-icon size="60" v-if="data.totals">
-						mdi-arrow-{{
-						data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
-						}}
-					</v-icon>
+					<v-icon
+						size="60"
+						v-if="data.totals"
+					>mdi-arrow-{{ data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up' }}</v-icon>
 				</div>
 				<div class="value" v-if="data.totals">{{ data.totals.deathRate | localeString }}%</div>
 				<div class="key">death rate</div>
-			</div>
-			<div class="key-value">
+			</v-card>
+			<v-card class="key-value">
 				<div class="icon"></div>
 				<div class="value" v-if="data.totals">{{ data.totals.casesPerOneMillion | localeString }}</div>
 				<div class="key">cases / million</div>
-			</div>
-			<div class="key-value">
+			</v-card>
+			<v-card class="key-value">
 				<div class="icon"></div>
 				<div class="value" v-if="data.totals">{{ data.totals.deathsPerOneMillion | localeString }}</div>
 				<div class="key">deaths / million</div>
-			</div>
+			</v-card>
 			<!-- <v-card class="max per-million">
 				<spinner v-if="loading" />
 				<div v-else>
@@ -220,7 +219,7 @@ export default {
 	grid-gap: 3rem;
 	// grid-template-columns: 1fr 3.75fr;
 	grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto 600px auto 756px auto auto auto;
+	grid-template-rows: auto 600px auto auto auto auto auto;
 	overflow: hidden;
 	max-width: 100vw;
 	padding-top: 3rem;
@@ -250,56 +249,26 @@ export default {
 	&__total-info {
 		grid-row: 3;
 		grid-column: span 2;
-		margin: 4rem auto 2rem;
+		margin: 4rem auto 1rem;
 		width: 100%;
 		max-width: 900px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-around;
 
-		.death-rate {
-			flex: 0 0 100px;
-			margin-bottom: 2rem;
-		}
-		.per-million {
-			.header {
-				margin-top: 0.15rem;
-				margin-bottom: 1rem;
-				margin-left: -0.5rem;
-				font-size: 0.9rem;
-				background-color: fade-out(black, 0.95);
-				width: 132px;
-				border-radius: 25px;
-				text-align: center;
-			}
-			.body {
-				display: flex;
-				align-items: center;
-
-				.value {
-					font-size: 2rem;
-					font-weight: $bold;
-					line-height: 0.9;
-				}
-			}
-			.key-value-per:first-child {
-				margin-right: 4rem;
-			}
-		}
-		.max {
-			padding: 1rem 2rem;
-		}
 		.key-value {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			z-index: 3;
 			flex: 0 1 auto;
+			padding: 2rem 1.5rem;
+			min-width: 240px;
 
 			.icon {
-				width: 120px;
-				height: 120px;
-				border-radius: 50%;
+				width: 100px;
+				height: 100px;
+				border-radius: 50% !important;
 				background-color: fade-out(black, 0.9);
 				margin-bottom: 1rem;
 				border: solid 2px white;
@@ -318,10 +287,16 @@ export default {
 				grid-row: 2;
 				grid-column: 2;
 				font-size: 1.2rem;
-
-				transform: translateY(-0.25rem);
+				transform: translateY(-0.5rem);
 			}
 		}
+	}
+	&__bar {
+		grid-row: 4;
+		grid-column: span 2;
+		margin: 0 auto 1rem;
+		width: 100%;
+		max-width: 1100px;
 	}
 	&__timeline {
 		grid-row: 2;
@@ -361,7 +336,7 @@ export default {
 		}
 	}
 	&__map {
-		grid-row: 4;
+		grid-row: 5;
 		grid-column: span 2;
 		padding-top: 2rem;
 
@@ -369,13 +344,7 @@ export default {
 			display: block !important;
 		}
 	}
-	&__bar {
-		grid-row: 5;
-		grid-column: span 2;
-		margin: 1rem auto 2rem;
-		width: 100%;
-		max-width: 1100px;
-	}
+
 	&__world {
 		grid-row: 6;
 		grid-column: span 2;
