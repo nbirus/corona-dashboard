@@ -180,7 +180,7 @@ export default {
 		z-index: 9999;
 		background-color: fade-out(black, 0.2);
 		color: white;
-		padding: 0.5rem 0.75rem;
+		padding: 0.75rem 1rem;
 		border-radius: 0.75rem;
 		min-width: 155px;
 

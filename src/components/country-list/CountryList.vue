@@ -1,6 +1,6 @@
 <template>
 	<div class="country-list">
-		<v-layout class="country-list__header" justify-start>
+		<v-layout class="country-list__header" justify-center>
 			<v-text-field
 				style="max-width: 400px"
 				placeholder="Search for a country"
@@ -11,27 +11,6 @@
 				v-model="keyword"
 			/>
 		</v-layout>
-		<!-- :pagination="pagination"
-			:params="{ country: keyword }"
-		:sort="sort"-->
-		<!-- <v-expansion-panels flat class="country-list__list" :class="{ loading: _state.loading }">
-				<country-list-item
-					v-for="(item, i) in _state.data"
-					:key="i"
-					:data="item"
-					:sortKey="sortKey"
-				/>
-				<li
-					v-if="pagination.size < countries.length"
-					v-ripple
-					class="see-more"
-					@click="pagination.size += 15"
-				>
-					See more
-					<v-icon>mdi-chevron-down</v-icon>
-				</li>
-		</v-expansion-panels>-->
-		<!-- </data-wrapper> -->
 		<state-handler :loading="loading">
 			<data-table-wrapper
 				class="row-pad"
@@ -103,9 +82,7 @@ export default {
 	min-height: 300px;
 
 	&__header {
-		padding: 1rem;
-		display: flex;
-		justify-content: flex-end;
+		padding: 1.5rem 2rem;
 	}
 	&__list {
 		margin: 0 !important;

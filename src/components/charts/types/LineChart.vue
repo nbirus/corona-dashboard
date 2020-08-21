@@ -33,6 +33,7 @@ export default {
 	data() {
 		return {
 			options: {
+				type: 'line',
 				tooltips: {
 					mode: 'index',
 				},
@@ -55,14 +56,20 @@ export default {
 								offsetGridLines: true,
 								drawTicks: false,
 							},
-
 							ticks: {
 								fontSize: 14,
-								callback: function(value) {
+								callback: value => {
 									if (value !== 0) {
 										return abbreviateNumber(value)
 									}
 								},
+							},
+							afterBuildTicks: chartObj => {
+								if (this.logarithmic) {
+									const ticks = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
+									chartObj.ticks.splice(0, chartObj.ticks.length)
+									chartObj.ticks.push(...ticks)
+								}
 							},
 						},
 					],
@@ -85,8 +92,6 @@ export default {
 		data: {
 			handler(data) {
 				this.$nextTick(() => {
-					console.log(data)
-
 					this.renderChart(data, this.options)
 				})
 			},

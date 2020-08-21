@@ -7,10 +7,10 @@
 		v-slot="{ _state }"
 	>-->
 	<ul class="map-table">
-		<li class="map-table__header">
+		<!-- <li class="map-table__header">
 			<div class="bold">country</div>
 			<div class="bold">{{ type }}</div>
-		</li>
+		</li>-->
 		<li
 			class="map-table__row"
 			v-for="(data, i) in activeData"

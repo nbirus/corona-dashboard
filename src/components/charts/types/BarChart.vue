@@ -44,7 +44,7 @@ export default {
 					position: 'top',
 					reverse: true,
 					labels: {
-						padding: 40,
+						padding: 16,
 						fontSize: 14,
 					},
 				},
