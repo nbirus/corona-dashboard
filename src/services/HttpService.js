@@ -1,6 +1,10 @@
 import axios from 'axios'
-import { exists } from '@/services/UtilsService'
-import { stringify } from 'querystring'
+import {
+	exists
+} from '@/services/UtilsService'
+import {
+	stringify
+} from 'querystring'
 
 /** Remove empty paramaters, correctly stringify arrays and objects */
 export const paramsSerializer = params => {

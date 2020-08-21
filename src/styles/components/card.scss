@@ -1,7 +1,9 @@
 .v-card {
 	overflow: hidden;
-	border-radius: 0.75rem !important;
-	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+	border-radius: 1rem !important;
+	box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.15) !important;
+	// box-shadow: none !important;
+	border: none !important;
 }
 
 .leaflet-bar {
@@ -20,6 +22,7 @@
 	// box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
 	box-shadow: none;
 }
+
 .v-input.nav__select {
 	.v-input__slot {
 		min-height: 55px;

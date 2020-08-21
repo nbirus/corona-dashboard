@@ -23,8 +23,8 @@
 				:class="type"
 				:style="`width: ${(data[type] / max) * 100}%`"
 			></div>
-			<span class="index">{{ i + 1 }}.</span>
-			<img width="16" class="img mr-2" :src="data.flag" :alt="data.name" />
+			<!-- <span class="index">{{ i + 1 }}.</span> -->
+			<img width="14" class="img mr-2" :src="data.flag" :alt="data.name" />
 			<span class="name">{{ data.name }}</span>
 			<span class="cases body-2">{{ data[type] | localeString }}</span>
 		</li>

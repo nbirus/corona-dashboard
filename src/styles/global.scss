@@ -7,7 +7,7 @@
 	font-size: 16px;
 	color: color(gray-darken3) !important;
 	background-color: darken(#f8f9fa, 1);
-	background-color: lighten(#d4dadc, 10);
+	background-color: lighten(#d4dadc, 11);
 	// background-color: white;
 }
 
@@ -77,7 +77,7 @@ hr.light-border {
 }
 
 // fixes
-.v-text-field > .v-input__control > .v-input__slot:after {
+.v-text-field>.v-input__control>.v-input__slot:after {
 	color: color(primary-base);
 }
 

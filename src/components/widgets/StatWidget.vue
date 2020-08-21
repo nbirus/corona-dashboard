@@ -96,23 +96,23 @@ export default {
 	flex-direction: column;
 
 	.bar {
-		height: 1.1rem;
+		height: 2rem;
 		width: 100%;
 		position: relative;
 		display: flex;
-		margin-bottom: 0.5rem;
+		margin-bottom: 1rem;
 	}
 	.bar-item {
-		padding-left: 0.35rem;
-		font-size: 0.85rem;
-		line-height: 1.3;
+		padding-left: 0.5rem;
+		font-size: 1rem;
+		line-height: 2;
 		min-width: 28px;
 	}
 	.active {
 		position: relative;
 		height: 100%;
 		background-color: fade-out(#1976d2, 0.75);
-		border: solid thin var(--v-primary-base);
+		// border: solid thin var(--v-primary-base);
 		color: var(--v-primary-darken3);
 		border-radius: 0 0.75rem 0.75rem 0;
 		border-left: none;
@@ -121,14 +121,14 @@ export default {
 		position: relative;
 		height: 100%;
 		background-color: fade-out(#4caf50, 0.75);
-		border: solid thin var(--v-success-base);
+		// border: solid thin var(--v-success-base);
 		color: var(--v-success-darken3);
 	}
 	.critical {
 		position: relative;
 		height: 100%;
 		background-color: fade-out(#fb8c00, 0.75);
-		border: solid thin var(--v-warning-base);
+		// border: solid thin var(--v-warning-base);
 		color: var(--v-warning-darken3);
 		z-index: 2;
 		border-radius: 0.75rem 0 0 0.75rem;
@@ -138,7 +138,7 @@ export default {
 		position: relative;
 		height: 100%;
 		background-color: fade-out(#ff5252, 0.75);
-		border: solid thin var(--v-error-base);
+		// border: solid thin var(--v-error-base);
 		color: var(--v-error-darken3);
 		z-index: 2;
 		border-radius: 0;
@@ -158,7 +158,7 @@ export default {
 
 		.value {
 			margin-right: 0.25rem;
-			font-size: 1rem;
+			font-size: 1.1rem;
 		}
 		.key {
 			margin-right: 0.25rem;

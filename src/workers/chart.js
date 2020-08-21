@@ -111,7 +111,7 @@ const casesDataSet = {
   pointBackgroundColor: 'white',
   pointBorderColor: blueBorder,
   pointBorderWidth: 1,
-  pointRadius: 2,
+  pointRadius: 3,
   borderWidth: 1,
   order: 3,
 }
@@ -123,7 +123,7 @@ const deathsDataSet = {
   pointBackgroundColor: 'white',
   pointBorderColor: redBorder,
   pointBorderWidth: 1,
-  pointRadius: 2,
+  pointRadius: 3,
   borderWidth: 1,
   order: 1,
 }
@@ -135,7 +135,7 @@ const recoveredDataSet = {
   pointBackgroundColor: greenBorder,
   pointBorderColor: greenBorder,
   pointBorderWidth: 1,
-  pointRadius: 2,
+  pointRadius: 3,
   borderWidth: 1,
   order: 2,
 }
@@ -144,7 +144,7 @@ function formatLineData(data, dataset, ago = daysAgo, extra = {}) {
   let length = data.dates.length
   let modifiedDataset = {
     ...dataset,
-    pointRadius: 3,
+    pointRadius: 4,
     borderWidth: 1,
     ...extra,
     data: data.data.splice(length - ago, length - 1).filter((d, i) => i % 3 === 0),

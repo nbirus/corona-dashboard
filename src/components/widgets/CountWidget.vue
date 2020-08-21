@@ -3,6 +3,7 @@
 		<div class="loader" v-if="loading">
 			<spinner />
 		</div>
+		<div class="count-widget__gradient"></div>
 
 		<chart-wrapper
 			v-if="!loading"
@@ -16,8 +17,6 @@
 			@change="chartLoading = $event.loading"
 		/>
 
-		<div class="count-widget__gradient"></div>
-
 		<!-- data -->
 		<div class="count-widget__data" :class="id">
 			<h1 class="text">{{ value | localeString }}</h1>
@@ -25,10 +24,10 @@
 		</div>
 
 		<!-- bottom data -->
-		<div :class="id" class="count-widget__banner body-2">
+		<div :class="id" class="count-widget__banner body-1">
 			<span>
 				<strong>{{ valueToday | localeString }}</strong>
-				today (+{{ percent }}%)
+				this week (+{{ percent }}%)
 			</span>
 		</div>
 	</div>
@@ -86,13 +85,13 @@ export default {
 
 <style lang="scss">
 div.count-widget {
-	min-height: 178px;
+	min-height: 220px;
 	transition: transform 0.2s ease;
 	overflow: hidden;
 	display: flex !important;
 	position: relative;
-	padding-top: 1.5rem;
-	padding-left: 2rem;
+	padding-top: 1.25rem;
+	padding-left: 1.75rem;
 
 	&.loading {
 		padding-top: 0;
@@ -147,19 +146,20 @@ div.count-widget {
 	&__chart {
 		position: absolute;
 		left: 0;
-		right: 0;
-		bottom: 28px;
-		height: calc(100% - 28px);
-		z-index: 2;
+		right: -1px;
+		bottom: 34px;
+		height: calc(100% - 80px);
+		z-index: 3;
 	}
 	&__banner {
 		position: absolute;
 		bottom: 0;
 		left: 0;
 		right: 0;
-		height: 30px;
-		background-color: fade-out(black, 0.975);
+		height: 35px;
+		background-color: white;
 		color: var(--v-secondary-lighten1);
+
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -186,7 +186,7 @@ div.count-widget {
 			color: darken(#9f0010, 20);
 		}
 		&.recovered {
-			background-color: rgba(219, 239, 220, 1);
+			// background-color: rgba(219, 239, 220, 1);
 			color: var(--v-success-darken3);
 		}
 	}

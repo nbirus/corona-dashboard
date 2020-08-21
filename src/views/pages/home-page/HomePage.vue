@@ -1,45 +1,55 @@
 <template>
 	<div class="home-page page limit-width" :key="key" :class="{ loading, country: key !== 'world' }">
-		<div class="home-page__total-cases">
-			<v-card class="max">
-				<count-widget
-					class="home-page__totals-cases"
-					id="cases"
-					color="blue"
-					label="total cases"
-					:loading="loading"
-					:value="$h.get(data, 'totals.cases')"
-					:value-today="$h.get(data, 'totals.todayCases')"
-					:chart-data="$h.get(data, 'timeline.cases')"
-					:dates="$h.get(data, 'timeline.dates')"
-				/>
-			</v-card>
-		</div>
-		<div class="home-page__total-deaths">
-			<v-card class="max">
-				<count-widget
-					class="home-page__totals-deaths"
-					id="deaths"
-					color="red"
-					label="deaths"
-					:loading="loading"
-					:value="$h.get(data, 'totals.deaths')"
-					:value-today="$h.get(data, 'totals.todayDeaths')"
-					:chart-data="$h.get(data, 'timeline.deaths')"
-					:dates="$h.get(data, 'timeline.dates')"
-				/>
-			</v-card>
+		<div class="home-page__total-container">
+			<div class="home-page__total-cases">
+				<v-card class="max">
+					<count-widget
+						class="home-page__totals-cases"
+						id="cases"
+						color="blue"
+						label="total cases"
+						:loading="loading"
+						:value="$h.get(data, 'totals.cases')"
+						:value-today="$h.get(data, 'totals.todayCases')"
+						:chart-data="$h.get(data, 'timeline.cases')"
+						:dates="$h.get(data, 'timeline.dates')"
+					/>
+				</v-card>
+			</div>
+			<div class="home-page__total-deaths">
+				<v-card class="max">
+					<count-widget
+						class="home-page__totals-deaths"
+						id="deaths"
+						color="red"
+						label="total deaths"
+						:loading="loading"
+						:value="$h.get(data, 'totals.deaths')"
+						:value-today="$h.get(data, 'totals.todayDeaths')"
+						:chart-data="$h.get(data, 'timeline.deaths')"
+						:dates="$h.get(data, 'timeline.dates')"
+					/>
+				</v-card>
+			</div>
 		</div>
 		<div class="home-page__total-info">
-			<v-card class="max death-rate">
-				<spinner v-if="loading" />
-				<v-layout align-center space-between v-else>
-					<div class="key-value">
-						<div class="value">{{ data.totals.deathRate | localeString }}%</div>
-						<div class="key">death rate</div>
-					</div>
-					<v-flex></v-flex>
-					<v-tooltip top>
+			<div class="key-value">
+				<div class="icon"></div>
+				<div class="value">{{ data.totals.deathRate | localeString }}%</div>
+				<div class="key">death rate</div>
+			</div>
+			<div class="key-value">
+				<div class="icon"></div>
+				<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
+				<div class="key">cases / million</div>
+			</div>
+			<div class="key-value">
+				<div class="icon"></div>
+				<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
+				<div class="key">deaths / million</div>
+			</div>
+			<!-- <v-flex></v-flex> -->
+			<!-- <v-tooltip top>
 						<template v-slot:activator="{ on }">
 							<v-avatar color="grey lighten-4" v-on="on">
 								<v-icon>
@@ -50,10 +60,9 @@
 							</v-avatar>
 						</template>
 						<span>The death rate was {{ data.totals.deathRateYesterday }}% yesterday</span>
-					</v-tooltip>
-				</v-layout>
-			</v-card>
-			<v-card class="max per-million">
+			</v-tooltip>-->
+
+			<!-- <v-card class="max per-million">
 				<spinner v-if="loading" />
 				<div v-else>
 					<div class="header">Per Million People</div>
@@ -68,28 +77,28 @@
 						</div>
 					</div>
 				</div>
-			</v-card>
+			</v-card>-->
 		</div>
 		<div class="home-page__timeline chart">
 			<v-card class="max">
-				<div class="header">
-					<h2 class="text-center">Timeline</h2>
-				</div>
+				<!-- <div class="header">
+					<h1 class="text-center">Timeline</h1>
+				</div>-->
 				<div class="body">
 					<chart-wrapper
 						type="line"
 						id="timeline"
 						:loading="loading"
-						:data="$h.get(data, 'timeline', [])"
+						:data="fomratTimeline($h.get(data, 'timeline', []))"
 					/>
 				</div>
 			</v-card>
 		</div>
 		<div class="home-page__bar">
-			<v-card class="max">
+			<div class="max">
 				<spinner :size="90" v-if="loading" />
 				<stat-widget v-else :totals="data.totals" />
-			</v-card>
+			</div>
 		</div>
 		<div class="home-page__map" v-if="key === 'world'">
 			<v-card class="max">
@@ -196,6 +205,13 @@ export default {
 				this.showNewsMillion = this.$h.get(e, '0.isIntersecting', false)
 			}
 		},
+		fomratTimeline(data) {
+			return {
+				cases: data.cases.filter((v, i) => i % 3 === 0),
+				deaths: data.deaths.filter((v, i) => i % 3 === 0),
+				dates: data.dates.filter((v, i) => i % 3 === 0),
+			}
+		},
 	},
 }
 </script>
@@ -203,30 +219,45 @@ export default {
 <style lang="scss">
 .home-page {
 	display: grid;
-	grid-gap: 2rem;
-	grid-template-columns: 1fr 3.75fr;
-	grid-template-rows: 175px 175px 145px 80px 725px 600px auto;
+	grid-gap: 3rem;
+	// grid-template-columns: 1fr 3.75fr;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: auto 600px auto 756px auto auto auto;
 	overflow: hidden;
 	max-width: 100vw;
+	padding-top: 3rem;
 
 	&.country {
 		grid-template-rows: 175px 175px 145px 80px auto;
 	}
 
 	&__total-cases {
-		grid-row: 1;
-		grid-column: 1;
+		flex: 1;
+		margin-right: 1rem;
+		overflow: visible;
 	}
 	&__total-deaths {
-		grid-row: 2;
-		grid-column: 1;
+		flex: 1;
+		margin-left: 1rem;
+	}
+	&__total-container {
+		grid-row: 1;
+		grid-column: span 2;
+		display: flex;
+		justify-content: center;
+		margin: 0 auto;
+		width: 100%;
+		max-width: 700px;
 	}
 	&__total-info {
-		grid-row: 3 / 5;
-		grid-column: 1;
-
+		grid-row: 3;
+		grid-column: span 2;
+		margin: 4rem auto 2rem;
+		width: 100%;
+		max-width: 900px;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
+		justify-content: space-around;
 
 		.death-rate {
 			flex: 0 0 100px;
@@ -261,41 +292,57 @@ export default {
 			padding: 1rem 2rem;
 		}
 		.key-value {
-			display: grid;
-			grid-template-columns: 0px auto;
-			grid-template-rows: 3rem 1rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
 			z-index: 3;
+			flex: 0 1 auto;
 
 			.icon {
-				grid-row: 1 / 2;
-				grid-column: 1;
-				display: none;
-				text-align: center;
+				width: 120px;
+				height: 120px;
+				border-radius: 50%;
+				background-color: fade-out(black, 0.9);
+				margin-bottom: 1rem;
+				border: solid 2px white;
 			}
 			.value {
 				grid-row: 1;
 				grid-column: 2;
 				font-size: 2.2rem;
 				color: black;
+				font-size: 3.5rem;
 			}
 			.key {
 				grid-row: 2;
 				grid-column: 2;
+				font-size: 1.2rem;
+
 				transform: translateY(-0.25rem);
 			}
 		}
 	}
 	&__timeline {
-		grid-row: 1 / 4;
-		grid-column: 2;
+		grid-row: 2;
+		grid-column: span 2;
+		max-width: 1100px;
+		margin: 0 auto;
+		width: 100%;
 	}
 	&__bar {
 		grid-row: 4;
-		grid-column: 2;
+		grid-column: span 2;
+		margin: 0 auto;
+		width: 100%;
+		max-width: 1100px;
+		border-top: solid thin fade-out(black, 0.9);
+		padding-top: 2rem;
+		display: none;
 	}
 	&__map {
-		grid-row: 5;
+		grid-row: 4;
 		grid-column: span 2;
+		padding-top: 2rem;
 
 		.max {
 			display: block !important;
@@ -307,11 +354,14 @@ export default {
 		display: grid;
 		grid-template-columns: 1fr 2.5fr;
 		grid-gap: 2rem;
+		display: none;
 	}
 	&__per-million {
 		order: 2;
+		display: none;
 	}
 	&__news {
+		display: none;
 		order: 1;
 		.max {
 			max-height: 600px;
@@ -324,24 +374,25 @@ export default {
 		}
 	}
 	&__countries {
-		grid-row: 7;
+		// display: none;
+		grid-row: 5;
 		grid-column: span 2;
 	}
 	.chart {
 		.max {
 			display: block !important;
-			padding: 0 1rem 1rem;
+			padding: 2rem 1.5rem 1rem;
 		}
 		.header {
 			padding-top: 1.25rem;
 		}
 		.body {
-			transform: translateY(-1rem);
+			// transform: translateY(-1rem);
 			height: 100%;
 		}
 
 		#timeline {
-			min-height: calc(514px - 1.5rem);
+			min-height: 536px;
 		}
 		#million {
 			min-height: calc(600px - 4.3rem);
@@ -359,7 +410,7 @@ export default {
 }
 
 @media screen and (max-width: 480px) {
-	.home-page {
+	.home-page2 {
 		grid-template-columns: 1fr;
 		grid-template-rows: auto auto 370px auto auto auto;
 		padding: 2rem 1rem !important;
@@ -421,10 +472,7 @@ export default {
 		.chart {
 			.max {
 				display: block !important;
-				padding: 0 1rem 1rem;
-			}
-			.header {
-				padding-top: 1rem;
+				padding: 2rem 1rem 1rem;
 			}
 			.body {
 				transform: translateY(-1.5rem);

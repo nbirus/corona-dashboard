@@ -76,6 +76,15 @@ export default {
 			interval: null,
 			timeout: null,
 			chartOptions: {
+				yAxis: {
+					axisLabel: {
+						show: false,
+						formatter: function() {
+							console.log('HERE')
+							return this.value + '%'
+						},
+					},
+				},
 				scales: {
 					xAxes: [
 						{

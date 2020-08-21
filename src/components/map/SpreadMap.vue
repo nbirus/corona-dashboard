@@ -20,9 +20,10 @@
 		<v-card class="spread-map__popover" :style="hoverStyle" v-if="$h.exists(hoverCountry)">
 			<span class="body-2" v-text="hoverCountry.name"></span>
 			&nbsp;
-			<strong :key="`${dDateIndex}-${type}`" class="bold">
-				{{ $h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString }}
-			</strong>
+			<strong
+				:key="`${dDateIndex}-${type}`"
+				class="bold"
+			>{{ $h.get(hoverCountry, `timeline.${type}.${dDateIndex}`, 0) | localeString }}</strong>
 		</v-card>
 	</div>
 </template>
@@ -200,15 +201,15 @@ let scale = [
 	1000,
 	1250,
 	1500,
-	2000,
 	5000,
 	7500,
 	10000,
-	25000,
 	50000,
 	75000,
-	80000,
 	100000,
+	250000,
+	500000,
+	1000000,
 ]
 function getColor(d = 0, type) {
 	let color = ''
