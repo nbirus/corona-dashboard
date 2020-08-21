@@ -66,7 +66,7 @@ export default {
 							},
 							afterBuildTicks: chartObj => {
 								if (this.logarithmic) {
-									const ticks = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
+									const ticks = [1, 10, 100, 1000, 10000, 100000, 1000000, 10000000]
 									chartObj.ticks.splice(0, chartObj.ticks.length)
 									chartObj.ticks.push(...ticks)
 								}

@@ -80,7 +80,6 @@ export default {
 					axisLabel: {
 						show: false,
 						formatter: function() {
-							console.log('HERE')
 							return this.value + '%'
 						},
 					},
@@ -422,10 +421,10 @@ export default {
 @media screen and (min-width: 950px) {
 	.controller__date {
 		&:first-child,
-		&:nth-child(15n) {
+		&:nth-child(29n) {
 			display: block;
 		}
-		&:nth-child(7n) {
+		&:nth-child(15n) {
 			span {
 				display: none !important;
 			}

@@ -32,44 +32,6 @@
 				</v-card>
 			</div>
 		</div>
-		<div class="home-page__total-info">
-			<v-card class="key-value">
-				<div class="icon">
-					<v-icon
-						size="60"
-						v-if="data.totals"
-					>mdi-arrow-{{ data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up' }}</v-icon>
-				</div>
-				<div class="value" v-if="data.totals">{{ data.totals.deathRate | localeString }}%</div>
-				<div class="key">death rate</div>
-			</v-card>
-			<v-card class="key-value">
-				<div class="icon"></div>
-				<div class="value" v-if="data.totals">{{ data.totals.casesPerOneMillion | localeString }}</div>
-				<div class="key">cases / million</div>
-			</v-card>
-			<v-card class="key-value">
-				<div class="icon"></div>
-				<div class="value" v-if="data.totals">{{ data.totals.deathsPerOneMillion | localeString }}</div>
-				<div class="key">deaths / million</div>
-			</v-card>
-			<!-- <v-card class="max per-million">
-				<spinner v-if="loading" />
-				<div v-else>
-					<div class="header">Per Million People</div>
-					<div class="body">
-						<div class="key-value-per">
-							<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
-							<div class="key">cases</div>
-						</div>
-						<div class="key-value-per">
-							<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
-							<div class="key">deaths</div>
-						</div>
-					</div>
-				</div>
-			</v-card>-->
-		</div>
 		<div class="home-page__timeline">
 			<v-card class="max">
 				<div class="header">
@@ -91,15 +53,45 @@
 				</div>
 			</v-card>
 		</div>
-		<div class="home-page__map" v-if="key === 'world'">
-			<v-card class="max">
-				<map-container :key="key" :loading="loading" />
-			</v-card>
-		</div>
-		<div class="home-page__map" v-else>
-			<v-card class="max">
-				<map-country-container :loading="loading" />
-			</v-card>
+		<div class="home-page__total-info">
+			<div class="bg"></div>
+			<div class="key-value">
+				<div class="icon">
+					<v-icon size="60" v-if="data.totals">
+						mdi-arrow-{{
+						data.totals.deathRateYesterday > data.totals.deathRate ? 'down' : 'up'
+						}}
+					</v-icon>
+				</div>
+				<div class="value" v-if="data.totals">{{ data.totals.deathRate | localeString }}%</div>
+				<div class="key">death rate</div>
+			</div>
+			<div class="key-value">
+				<div class="icon"></div>
+				<div class="value" v-if="data.totals">{{ data.totals.casesPerOneMillion | localeString }}</div>
+				<div class="key">cases / million</div>
+			</div>
+			<div class="key-value">
+				<div class="icon"></div>
+				<div class="value" v-if="data.totals">{{ data.totals.deathsPerOneMillion | localeString }}</div>
+				<div class="key">deaths / million</div>
+			</div>
+			<!-- <v-card class="max per-million">
+				<spinner v-if="loading" />
+				<div v-else>
+					<div class="header">Per Million People</div>
+					<div class="body">
+						<div class="key-value-per">
+							<div class="value">{{ data.totals.casesPerOneMillion | localeString }}</div>
+							<div class="key">cases</div>
+						</div>
+						<div class="key-value-per">
+							<div class="value">{{ data.totals.deathsPerOneMillion | localeString }}</div>
+							<div class="key">deaths</div>
+						</div>
+					</div>
+				</div>
+			</v-card>-->
 		</div>
 		<div class="home-page__bar">
 			<div class="max">
@@ -107,6 +99,17 @@
 				<stat-widget v-else :totals="data.totals" />
 			</div>
 		</div>
+		<div class="home-page__map" v-if="key === 'world'">
+			<div class="max">
+				<map-container :key="key" :loading="loading" />
+			</div>
+		</div>
+		<div class="home-page__map" v-else>
+			<v-card class="max">
+				<map-country-container :loading="loading" />
+			</v-card>
+		</div>
+
 		<div class="home-page__world" v-if="key === 'world'" v-intersect="onIntersectSecond">
 			<div class="home-page__per-million chart" v-if="showNewsMillion">
 				<v-card class="max">
@@ -220,13 +223,8 @@ export default {
 	// grid-template-columns: 1fr 3.75fr;
 	grid-template-columns: 1fr 1fr;
 	grid-template-rows: auto 600px auto auto auto auto auto;
-	overflow: hidden;
 	max-width: 100vw;
 	padding-top: 3rem;
-
-	&.country {
-		grid-template-rows: 175px 175px 145px 80px auto;
-	}
 
 	&__total-cases {
 		flex: 1;
@@ -245,58 +243,6 @@ export default {
 		margin: 0 auto;
 		width: 100%;
 		max-width: 700px;
-	}
-	&__total-info {
-		grid-row: 3;
-		grid-column: span 2;
-		margin: 4rem auto 1rem;
-		width: 100%;
-		max-width: 900px;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
-
-		.key-value {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			z-index: 3;
-			flex: 0 1 auto;
-			padding: 2rem 1.5rem;
-			min-width: 240px;
-
-			.icon {
-				width: 100px;
-				height: 100px;
-				border-radius: 50% !important;
-				background-color: fade-out(black, 0.9);
-				margin-bottom: 1rem;
-				border: solid 2px white;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-			}
-			.value {
-				grid-row: 1;
-				grid-column: 2;
-				font-size: 2.2rem;
-				color: black;
-				font-size: 3.5rem;
-			}
-			.key {
-				grid-row: 2;
-				grid-column: 2;
-				font-size: 1.2rem;
-				transform: translateY(-0.5rem);
-			}
-		}
-	}
-	&__bar {
-		grid-row: 4;
-		grid-column: span 2;
-		margin: 0 auto 1rem;
-		width: 100%;
-		max-width: 1100px;
 	}
 	&__timeline {
 		grid-row: 2;
@@ -335,10 +281,76 @@ export default {
 			min-height: calc(100% - 1rem);
 		}
 	}
+	&__total-info {
+		grid-row: 3;
+		grid-column: span 2;
+		margin: 3rem auto 2rem;
+		padding-top: 2.75rem;
+		width: 100%;
+
+		max-width: 900px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		position: relative;
+
+		.bg {
+			background-color: #daebf9;
+			width: 100vw;
+			position: absolute;
+			height: 350px;
+			top: 0;
+			// clip-path: polygon(0 12%, 100% 0, 100% 87%, 0 100%);
+		}
+
+		.key-value {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			z-index: 3;
+			flex: 0 1 auto;
+			padding: 2rem 1.5rem;
+			min-width: 240px;
+
+			.icon {
+				width: 100px;
+				height: 100px;
+				border-radius: 50% !important;
+				background-color: var(--v-primary-base);
+				margin-bottom: 0.5rem;
+				color: white;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.value {
+				grid-row: 1;
+				grid-column: 2;
+				font-size: 2.2rem;
+				color: black;
+				font-size: 3rem;
+			}
+			.key {
+				// color: black;
+				grid-row: 2;
+				grid-column: 2;
+				font-size: 1.2rem;
+				transform: translateY(-0.5rem);
+			}
+		}
+	}
+	&__bar {
+		grid-row: 4;
+		grid-column: span 2;
+		margin: 0 auto 1rem;
+		width: 100%;
+		max-width: 1100px;
+		display: none;
+	}
+
 	&__map {
 		grid-row: 5;
 		grid-column: span 2;
-		padding-top: 2rem;
 
 		.max {
 			display: block !important;
@@ -387,7 +399,6 @@ export default {
 		}
 	}
 	&__countries {
-		// display: none;
 		grid-row: 7;
 		grid-column: span 2;
 	}

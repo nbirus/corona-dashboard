@@ -5,10 +5,7 @@
 				<h1>Covid-19 Dashboard</h1>
 				<p>
 					The data used to generate this dashboard can be found
-					<a
-						target="_blank"
-						href="https://github.com/NovelCOVID/API"
-					>here</a>.
+					<a target="_blank" href="https://github.com/NovelCOVID/API">here</a>.
 				</p>
 			</div>
 			<div class="nav__buttons">

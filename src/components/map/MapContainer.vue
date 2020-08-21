@@ -109,6 +109,8 @@ export default {
 		grid-column: 1;
 		min-height: 650px;
 		max-height: 650px;
+		border-radius: 1rem 1rem 0 0;
+		overflow: hidden;
 	}
 	&__timeline {
 		flex: 0 0 auto;
@@ -119,13 +121,17 @@ export default {
 		padding: 0;
 		z-index: 99999;
 		overflow: visible;
-		border-right: solid thin $border-color-light;
 		height: 75px;
+		border-radius: 0 0 1rem 1rem;
+		overflow: hidden;
 	}
 	&__table {
 		grid-row: span 2;
 		grid-column: 2;
 		max-height: 725px;
+		margin-left: 1rem;
+		border-radius: 1rem;
+		overflow: hidden;
 	}
 	&__tracker {
 		background-color: fade-out(black, 0.1);
@@ -135,7 +141,6 @@ export default {
 		bottom: 4.75rem;
 		min-width: 60px;
 		text-align: center;
-
 		border-radius: 8px;
 		padding: 0.25rem 0.5rem 0.1rem;
 		z-index: 9999;
